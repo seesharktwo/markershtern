@@ -87,3 +87,33 @@ adr by team#2
 
 		ОБМЕН СОБЫТИЯМИ По kafka (CRUD)
 			используя proto конвертировать ответы из c#-objs в сообщения и отправлять в шину 
+
+	Просмотр списка товаров, доступных для торговли
+		Проблема будет решаться с помощью микросервиса заявок
+		микросервис должен содержать в своем интерфейсе метод на получение списка всех товаров с bid and ask
+			service OrderService
+			{
+				/// какие-либо другие методы, которые определяются в задаче самого этого микросервиса
+				....
+
+				/// метод для запроса списка продуктов для торговли
+				/// метод находит bid and ask для каждого товара, на который существуют заявки и формирует ответ
+				grpc GetProductsWithBidAndAsk(StreamProductsWithBidAndAskRequest) returns stream ProductWithBindAndAskResponce
+			}
+
+			message StreamProductsWithBidAndAskRequest
+			{
+				??? нет вариантов для добавления сюда каких-либо полей
+			}
+
+			message ProductWithBidAndAskResponce
+			{
+				string Id = 1;
+
+				string Name = 2;
+
+				float Bid = 3;
+
+				float Ask = 4;
+
+			}
