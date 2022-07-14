@@ -40,20 +40,33 @@ GYGOG -->DownBlock
 В микросервис транзакции приходит событие, провести определенный тип транзакции, по таким то полям. 
 Микросервис формирует 
 GlobalDataTransaction{
+
 	Id
+	
 	TypeTransaction
+	
 	IsCompleted
+	
 	IsError
+	
 	CreateData
+	
 }
 и дочерние обьекты 
 ConcreateDataTransaction{
+
 	IdGlobalTransaction
+	
 	TargetServis
+	
 	IsComplited
+	
 	IsError
+	
 	CreateData
+	
 	Details of the operation in progress {Данные}
+	
 }
 
 GlobalDataTransaction используется как всеобщая метка о транзакции, используется во всех микросервисах.
@@ -134,6 +147,7 @@ sequenceDiagram
 }
 
 Событие покупки товара {
+
 	guid id
 	
 	guid idЗаявки
