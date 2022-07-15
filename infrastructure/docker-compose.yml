@@ -9,7 +9,7 @@ services:
     networks:
       - kafka-network
     volumes:
-      - zookeeper:/dat
+      - zookeeper:/data
       - zookeeper:/datalog
       - ./zookeeper/zoo.cfg:/conf/zoo.cfg
 
