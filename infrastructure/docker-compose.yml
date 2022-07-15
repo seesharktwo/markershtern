@@ -9,8 +9,8 @@ services:
     networks:
       - kafka-network
     volumes:
-      - zookeeper:/usr/local/zookeeper/data
-      - zookeeper:/usr/local/zookeeper/logs
+      - zookeeper:/dat
+      - zookeeper:/datalog
       - ./zookeeper/zoo.cfg:/conf/zoo.cfg
 
   kafka:
