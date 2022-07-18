@@ -1,0 +1,6 @@
+C:\Users\sss\Desktop\markershtern\Facade\Facade\Facade\obj\Debug\net5.0\Facade.csproj.AssemblyReference.cache
+C:\Users\sss\Desktop\markershtern\Facade\Facade\Facade\obj\Debug\net5.0\Facade.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\sss\Desktop\markershtern\Facade\Facade\Facade\obj\Debug\net5.0\Facade.AssemblyInfoInputs.cache
+C:\Users\sss\Desktop\markershtern\Facade\Facade\Facade\obj\Debug\net5.0\Facade.AssemblyInfo.cs
+C:\Users\sss\Desktop\markershtern\Facade\Facade\Facade\obj\Debug\net5.0\Facade.csproj.CoreCompileInputs.cache
+C:\Users\sss\Desktop\markershtern\Facade\Facade\Facade\obj\Debug\net5.0\Facade.MvcApplicationPartsAssemblyInfo.cache

@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+option csharp_namespace = "Facade";
+
+package greet;
+
+service ProductService {
+  rpc GetAllProducts(AllProductsRequest) returns(AllProductsResponce);
+}
+
+message AllProductsRequest
+{
+	
+}
+
+message AllProductsResponce
+{
+	repeated ProductResponce Products = 1;
+}
+
+message ProductResponce
+{
+	string Id = 2;
+
+	string Name = 3;
+}
