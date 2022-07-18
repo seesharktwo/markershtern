@@ -61,7 +61,7 @@ adr by ted7007
 
 
 	service ProductService {
-	  rpc GetAllProducts(AllProductsRequest) returns(stream AllProductsResponce);
+	  rpc GetAllProducts(AllProductsRequest) returns(AllProductsResponce);
 	}
 	
 	message AllProductsRequest
