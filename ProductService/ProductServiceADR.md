@@ -71,7 +71,7 @@ adr by ted7007
 	
 	message AllProductsResponce
 	{
-		repeated ProductResponce = 1;
+		repeated ProductResponce Products = 1;
 	}
 	
 	message ProductResponce
