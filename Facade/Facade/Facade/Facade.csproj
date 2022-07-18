@@ -5,11 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\userProducts.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\userProducts.proto" GrpcServices="Client" />
     <PackageReference Include="Google.Protobuf" Version="3.21.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
     <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />

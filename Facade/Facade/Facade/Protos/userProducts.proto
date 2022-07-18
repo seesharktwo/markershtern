@@ -1,0 +1,34 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Facade";
+
+package userProducts;
+
+service UserProductsService {
+  rpc GetUserProducts(ProductsRequest) returns(ProductsResponse);
+}
+
+message ProductsRequest { 
+    string userId = 1; 
+}
+
+message ProductsResponse { 
+    string userId = 1; 
+    repeated Product products = 2;
+    repeated string errors = 3; 
+} 
+
+message Product { 
+    string productId = 1; 
+    string name = 2; 
+    string authorMarker = 3; 
+    DecimalValue price = 4; 
+    string description = 5; 
+    int32 count = 6; 
+}
+
+message DecimalValue { 
+    int64 units = 1; 
+    sfixed32 nanos = 2; 
+}
+
