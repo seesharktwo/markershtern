@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "D:\\git\\seesharktwo\\markershtern\\Facade\\Facade\\Facade\\Facade\\Facade.csproj": {}
+    "C:\\Users\\sss\\Desktop\\markershtern\\Facade\\Facade\\Facade\\Facade.csproj": {}
   },
   "projects": {
-    "D:\\git\\seesharktwo\\markershtern\\Facade\\Facade\\Facade\\Facade\\Facade.csproj": {
+    "C:\\Users\\sss\\Desktop\\markershtern\\Facade\\Facade\\Facade\\Facade.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\git\\seesharktwo\\markershtern\\Facade\\Facade\\Facade\\Facade\\Facade.csproj",
+        "projectUniqueName": "C:\\Users\\sss\\Desktop\\markershtern\\Facade\\Facade\\Facade\\Facade.csproj",
         "projectName": "Facade",
-        "projectPath": "D:\\git\\seesharktwo\\markershtern\\Facade\\Facade\\Facade\\Facade\\Facade.csproj",
-        "packagesPath": "C:\\Users\\andre\\.nuget\\packages\\",
-        "outputPath": "D:\\git\\seesharktwo\\markershtern\\Facade\\Facade\\Facade\\Facade\\obj\\",
+        "projectPath": "C:\\Users\\sss\\Desktop\\markershtern\\Facade\\Facade\\Facade\\Facade.csproj",
+        "packagesPath": "C:\\Users\\sss\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\sss\\Desktop\\markershtern\\Facade\\Facade\\Facade\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\andre\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\sss\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -44,6 +46,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Confluent.Kafka": {
+              "target": "Package",
+              "version": "[1.9.0, )"
+            },
             "Google.Protobuf": {
               "target": "Package",
               "version": "[3.21.2, )"
@@ -81,7 +87,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.300\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.407\\RuntimeIdentifierGraph.json"
         }
       }
     }

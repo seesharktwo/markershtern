@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+option csharp_namespace = "event";
+
+package greet;
+
+message NewProductRequest
+{
+	string Name = 1;
+}
