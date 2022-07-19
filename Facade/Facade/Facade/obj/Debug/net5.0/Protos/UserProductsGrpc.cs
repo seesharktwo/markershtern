@@ -8,9 +8,9 @@
 using grpc = global::Grpc.Core;
 
 namespace Facade {
-  public static partial class UserProductsService
+  public static partial class SenderProductsService
   {
-    static readonly string __ServiceName = "userProducts.UserProductsService";
+    static readonly string __ServiceName = "userProducts.SenderProductsService";
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
     static void __Helper_SerializeMessage(global::Google.Protobuf.IMessage message, grpc::SerializationContext context)
@@ -46,17 +46,17 @@ namespace Facade {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Facade.ProductsRequest> __Marshaller_userProducts_ProductsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.ProductsRequest.Parser));
+    static readonly grpc::Marshaller<global::Facade.GetUserProductsRequest> __Marshaller_userProducts_GetUserProductsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.GetUserProductsRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Facade.ProductsResponse> __Marshaller_userProducts_ProductsResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.ProductsResponse.Parser));
+    static readonly grpc::Marshaller<global::Facade.GetUserProductsReply> __Marshaller_userProducts_GetUserProductsReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.GetUserProductsReply.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::Facade.ProductsRequest, global::Facade.ProductsResponse> __Method_GetUserProducts = new grpc::Method<global::Facade.ProductsRequest, global::Facade.ProductsResponse>(
+    static readonly grpc::Method<global::Facade.GetUserProductsRequest, global::Facade.GetUserProductsReply> __Method_GetUserProducts = new grpc::Method<global::Facade.GetUserProductsRequest, global::Facade.GetUserProductsReply>(
         grpc::MethodType.Unary,
         __ServiceName,
         "GetUserProducts",
-        __Marshaller_userProducts_ProductsRequest,
-        __Marshaller_userProducts_ProductsResponse);
+        __Marshaller_userProducts_GetUserProductsRequest,
+        __Marshaller_userProducts_GetUserProductsReply);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -64,58 +64,58 @@ namespace Facade {
       get { return global::Facade.UserProductsReflection.Descriptor.Services[0]; }
     }
 
-    /// <summary>Client for UserProductsService</summary>
-    public partial class UserProductsServiceClient : grpc::ClientBase<UserProductsServiceClient>
+    /// <summary>Client for SenderProductsService</summary>
+    public partial class SenderProductsServiceClient : grpc::ClientBase<SenderProductsServiceClient>
     {
-      /// <summary>Creates a new client for UserProductsService</summary>
+      /// <summary>Creates a new client for SenderProductsService</summary>
       /// <param name="channel">The channel to use to make remote calls.</param>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public UserProductsServiceClient(grpc::ChannelBase channel) : base(channel)
+      public SenderProductsServiceClient(grpc::ChannelBase channel) : base(channel)
       {
       }
-      /// <summary>Creates a new client for UserProductsService that uses a custom <c>CallInvoker</c>.</summary>
+      /// <summary>Creates a new client for SenderProductsService that uses a custom <c>CallInvoker</c>.</summary>
       /// <param name="callInvoker">The callInvoker to use to make remote calls.</param>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public UserProductsServiceClient(grpc::CallInvoker callInvoker) : base(callInvoker)
+      public SenderProductsServiceClient(grpc::CallInvoker callInvoker) : base(callInvoker)
       {
       }
       /// <summary>Protected parameterless constructor to allow creation of test doubles.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected UserProductsServiceClient() : base()
+      protected SenderProductsServiceClient() : base()
       {
       }
       /// <summary>Protected constructor to allow creation of configured clients.</summary>
       /// <param name="configuration">The client configuration.</param>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected UserProductsServiceClient(ClientBaseConfiguration configuration) : base(configuration)
+      protected SenderProductsServiceClient(ClientBaseConfiguration configuration) : base(configuration)
       {
       }
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Facade.ProductsResponse GetUserProducts(global::Facade.ProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Facade.GetUserProductsReply GetUserProducts(global::Facade.GetUserProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return GetUserProducts(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Facade.ProductsResponse GetUserProducts(global::Facade.ProductsRequest request, grpc::CallOptions options)
+      public virtual global::Facade.GetUserProductsReply GetUserProducts(global::Facade.GetUserProductsRequest request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_GetUserProducts, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Facade.ProductsResponse> GetUserProductsAsync(global::Facade.ProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Facade.GetUserProductsReply> GetUserProductsAsync(global::Facade.GetUserProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return GetUserProductsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Facade.ProductsResponse> GetUserProductsAsync(global::Facade.ProductsRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Facade.GetUserProductsReply> GetUserProductsAsync(global::Facade.GetUserProductsRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetUserProducts, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      protected override UserProductsServiceClient NewInstance(ClientBaseConfiguration configuration)
+      protected override SenderProductsServiceClient NewInstance(ClientBaseConfiguration configuration)
       {
-        return new UserProductsServiceClient(configuration);
+        return new SenderProductsServiceClient(configuration);
       }
     }
 

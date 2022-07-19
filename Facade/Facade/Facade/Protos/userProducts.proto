@@ -4,19 +4,19 @@ option csharp_namespace = "Facade";
 
 package userProducts;
 
-service UserProductsService {
-  rpc GetUserProducts(ProductsRequest) returns(ProductsResponse);
+service SenderProductsService {
+    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply);
 }
 
-message ProductsRequest { 
-    string userId = 1; 
-}
+message GetUserProductsRequest {
+    string user_id = 1;
+} 
 
-message ProductsResponse { 
-    string userId = 1; 
+message GetUserProductsReply {
+    string user_id = 1;
     repeated Product products = 2;
     repeated string errors = 3; 
-} 
+}
 
 message Product { 
     string productId = 1; 

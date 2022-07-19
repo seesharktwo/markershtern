@@ -24,22 +24,23 @@ namespace Facade {
     static UserProductsReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChlQcm90b3MvdXNlclByb2R1Y3RzLnByb3RvEgx1c2VyUHJvZHVjdHMiIQoP",
-            "UHJvZHVjdHNSZXF1ZXN0Eg4KBnVzZXJJZBgBIAEoCSJbChBQcm9kdWN0c1Jl",
-            "c3BvbnNlEg4KBnVzZXJJZBgBIAEoCRInCghwcm9kdWN0cxgCIAMoCzIVLnVz",
-            "ZXJQcm9kdWN0cy5Qcm9kdWN0Eg4KBmVycm9ycxgDIAMoCSKPAQoHUHJvZHVj",
-            "dBIRCglwcm9kdWN0SWQYASABKAkSDAoEbmFtZRgCIAEoCRIUCgxhdXRob3JN",
-            "YXJrZXIYAyABKAkSKQoFcHJpY2UYBCABKAsyGi51c2VyUHJvZHVjdHMuRGVj",
-            "aW1hbFZhbHVlEhMKC2Rlc2NyaXB0aW9uGAUgASgJEg0KBWNvdW50GAYgASgF",
-            "IiwKDERlY2ltYWxWYWx1ZRINCgV1bml0cxgBIAEoAxINCgVuYW5vcxgCIAEo",
-            "DzJnChNVc2VyUHJvZHVjdHNTZXJ2aWNlElAKD0dldFVzZXJQcm9kdWN0cxId",
-            "LnVzZXJQcm9kdWN0cy5Qcm9kdWN0c1JlcXVlc3QaHi51c2VyUHJvZHVjdHMu",
-            "UHJvZHVjdHNSZXNwb25zZUIJqgIGRmFjYWRlYgZwcm90bzM="));
+            "ChlQcm90b3MvdXNlclByb2R1Y3RzLnByb3RvEgx1c2VyUHJvZHVjdHMiKQoW",
+            "R2V0VXNlclByb2R1Y3RzUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJImAKFEdl",
+            "dFVzZXJQcm9kdWN0c1JlcGx5Eg8KB3VzZXJfaWQYASABKAkSJwoIcHJvZHVj",
+            "dHMYAiADKAsyFS51c2VyUHJvZHVjdHMuUHJvZHVjdBIOCgZlcnJvcnMYAyAD",
+            "KAkijwEKB1Byb2R1Y3QSEQoJcHJvZHVjdElkGAEgASgJEgwKBG5hbWUYAiAB",
+            "KAkSFAoMYXV0aG9yTWFya2VyGAMgASgJEikKBXByaWNlGAQgASgLMhoudXNl",
+            "clByb2R1Y3RzLkRlY2ltYWxWYWx1ZRITCgtkZXNjcmlwdGlvbhgFIAEoCRIN",
+            "CgVjb3VudBgGIAEoBSIsCgxEZWNpbWFsVmFsdWUSDQoFdW5pdHMYASABKAMS",
+            "DQoFbmFub3MYAiABKA8ydAoVU2VuZGVyUHJvZHVjdHNTZXJ2aWNlElsKD0dl",
+            "dFVzZXJQcm9kdWN0cxIkLnVzZXJQcm9kdWN0cy5HZXRVc2VyUHJvZHVjdHNS",
+            "ZXF1ZXN0GiIudXNlclByb2R1Y3RzLkdldFVzZXJQcm9kdWN0c1JlcGx5Qgmq",
+            "AgZGYWNhZGViBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.ProductsRequest), global::Facade.ProductsRequest.Parser, new[]{ "UserId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.ProductsResponse), global::Facade.ProductsResponse.Parser, new[]{ "UserId", "Products", "Errors" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.GetUserProductsRequest), global::Facade.GetUserProductsRequest.Parser, new[]{ "UserId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.GetUserProductsReply), global::Facade.GetUserProductsReply.Parser, new[]{ "UserId", "Products", "Errors" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Facade.Product), global::Facade.Product.Parser, new[]{ "ProductId", "Name", "AuthorMarker", "Price", "Description", "Count" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Facade.DecimalValue), global::Facade.DecimalValue.Parser, new[]{ "Units", "Nanos" }, null, null, null, null)
           }));
@@ -48,16 +49,16 @@ namespace Facade {
 
   }
   #region Messages
-  public sealed partial class ProductsRequest : pb::IMessage<ProductsRequest>
+  public sealed partial class GetUserProductsRequest : pb::IMessage<GetUserProductsRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<ProductsRequest> _parser = new pb::MessageParser<ProductsRequest>(() => new ProductsRequest());
+    private static readonly pb::MessageParser<GetUserProductsRequest> _parser = new pb::MessageParser<GetUserProductsRequest>(() => new GetUserProductsRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<ProductsRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetUserProductsRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -73,7 +74,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductsRequest() {
+    public GetUserProductsRequest() {
       OnConstruction();
     }
 
@@ -81,18 +82,18 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductsRequest(ProductsRequest other) : this() {
+    public GetUserProductsRequest(GetUserProductsRequest other) : this() {
       userId_ = other.userId_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductsRequest Clone() {
-      return new ProductsRequest(this);
+    public GetUserProductsRequest Clone() {
+      return new GetUserProductsRequest(this);
     }
 
-    /// <summary>Field number for the "userId" field.</summary>
+    /// <summary>Field number for the "user_id" field.</summary>
     public const int UserIdFieldNumber = 1;
     private string userId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -107,12 +108,12 @@ namespace Facade {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as ProductsRequest);
+      return Equals(other as GetUserProductsRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ProductsRequest other) {
+    public bool Equals(GetUserProductsRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -185,7 +186,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ProductsRequest other) {
+    public void MergeFrom(GetUserProductsRequest other) {
       if (other == null) {
         return;
       }
@@ -237,16 +238,16 @@ namespace Facade {
 
   }
 
-  public sealed partial class ProductsResponse : pb::IMessage<ProductsResponse>
+  public sealed partial class GetUserProductsReply : pb::IMessage<GetUserProductsReply>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<ProductsResponse> _parser = new pb::MessageParser<ProductsResponse>(() => new ProductsResponse());
+    private static readonly pb::MessageParser<GetUserProductsReply> _parser = new pb::MessageParser<GetUserProductsReply>(() => new GetUserProductsReply());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<ProductsResponse> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetUserProductsReply> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -262,7 +263,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductsResponse() {
+    public GetUserProductsReply() {
       OnConstruction();
     }
 
@@ -270,7 +271,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductsResponse(ProductsResponse other) : this() {
+    public GetUserProductsReply(GetUserProductsReply other) : this() {
       userId_ = other.userId_;
       products_ = other.products_.Clone();
       errors_ = other.errors_.Clone();
@@ -279,11 +280,11 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductsResponse Clone() {
-      return new ProductsResponse(this);
+    public GetUserProductsReply Clone() {
+      return new GetUserProductsReply(this);
     }
 
-    /// <summary>Field number for the "userId" field.</summary>
+    /// <summary>Field number for the "user_id" field.</summary>
     public const int UserIdFieldNumber = 1;
     private string userId_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -320,12 +321,12 @@ namespace Facade {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as ProductsResponse);
+      return Equals(other as GetUserProductsReply);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ProductsResponse other) {
+    public bool Equals(GetUserProductsReply other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -408,7 +409,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ProductsResponse other) {
+    public void MergeFrom(GetUserProductsReply other) {
       if (other == null) {
         return;
       }

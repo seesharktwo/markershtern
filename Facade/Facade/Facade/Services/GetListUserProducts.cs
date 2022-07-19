@@ -39,11 +39,11 @@ namespace Facade.Services
         private async Task<List<Product>> LoadDataAsync(string userId)
         {
 
-            var request = new ProductsRequest { UserId = userId };
+            var request = new GetUserProductsRequest { UserId = userId };
 
             using (var channel = GrpcChannel.ForAddress(_connectionString))
             {
-                var client = new UserProductsService.UserProductsServiceClient(channel);
+                var client = new SenderProductsService.SenderProductsServiceClient(channel);
                 var reply = await client.GetUserProductsAsync(request);
                 
                 if(reply.Errors.Count != 0)
