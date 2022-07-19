@@ -19,7 +19,7 @@ _______________________________________________________________________________
     },  
     Line_2...
 
-Запись в БД будет создаваться в момент, когда пользователь прошел регистрацию.
+Запись в БД будет создаваться, когда произошло событие регистрации пользователя.
 
 Микросервис подписан на:
 - событие регистрации пользователя,
@@ -66,9 +66,9 @@ _______________________________________________________________________________
 ### .proto
 
 	message Product {
-		string productId = 1;
+		string product_id = 1;
 		string name = 2;
-		string authorMarker = 3;
+		string author_marker = 3;
 		decimalValue price = 4;
 		string description = 5;
 		int32 count = 6;
@@ -123,11 +123,11 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 	}
 	
 	message GetUserProductsRequest {
-	    string userId = 1;
+	    string user_id = 1;
 	} - Сообщение приходит, когда пользователь запрашивает список продуктов.
 
 	message GetUserProductsReply {
-	    string userId = 1;
+	    string user_id = 1;
 	    product products = 2;
 	    repeated string errors = 3; 
 	} - Сообщение для ответа на запрос получения списка продуктов. 
@@ -135,37 +135,37 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 ### Для кафки:
 
 	message UserRegisteredEvent {
-	    string userId = 1;
+	    string user_id = 1;
 	} - Сообщение приходит, когда пользователь регистрируется. Оно нужно для создания записи в БД.
 
 	message ProductAddedEvent {
-	    string userId = 1;
+	    string user_id = 1;
 	    product product = 2;
 	} - Сообщение приходит, когда пользователь добавляет/покупает продукты.
 
 	message ResultChangeRecordEventReply {
-	    string userId = 1;
+	    string user_id = 1;
 	    repeated string errors = 2;
 	} - Сообщение о удачном/неудачном создании/изменении записи в БД.
 
 	message ProductSoldEvent {
-	    string userId = 1;
-	    string productId = 2;
+	    string user_id = 1;
+	    string product_id = 2;
 	    int32 count = 3;
 	} - Сообщение приходит, когда пользователь хочет продать товар.
 
 	message ProductSoldEventReply {
-	    string userId = 1;
+	    string user_id = 1;
 	    repeated string errors = 2;
 	} - Сообщение для ответа на запрос продажи товара.
 
 	message ProductRemovedEvent {
-	    string userId = 1;
-	    string productId = 2;
+	    string user_id = 1;
+	    string product_id = 2;
 	} - Сообщение приходит, когда пользователь хочет удалить товар.
 
 	message ProductRemovedEventReply {
-	    string userId = 1;
+	    string user_id = 1;
 	    repeated string errors = 2;
 	} - Сообщение для ответа на запрос удаления товара.
 _______________________________________________________________________________
