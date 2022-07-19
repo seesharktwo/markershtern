@@ -1,4 +1,4 @@
-version: "3"
+version: "3.9"
 
 services:
   zookeeper:
@@ -11,14 +11,20 @@ services:
     volumes:
       - zookeeper-data:/data
       - zookeeper-datalog:/datalog
-      - ./zookeeper/zoo.cfg:/conf/zoo.cfg
+      - ./zookeeper/zoo.cfg:/conf/zoo.cfg:ro
+    mem_limit: ${ZOO_MAX_MEM:-1024m}
     environment:
+      JVMFLAGS: "-Xmx${ZOO_MAX_MEM:-1024m}"
       ZOO_MY_ID: 1
 
   kafka:
     build: ./kafka
+    depends_on:
+      - zookeeper
     restart: unless-stopped
+    mem_limit: ${KAFKA_MAX_MEM:-1024m}
     environment:
+      KAFKA_HEAP_OPTS: "-Xmx${KAFKA_MAX_MEM:-1024m} -Xms${KAFKA_MAX_MEM:-1024m}"
       ALLOW_PLAINTEXT_LISTENER: "yes"
       KAFKA_CFG_ZOOKEEPER_CONNECT: "zookeeper:2181"
     ports:
