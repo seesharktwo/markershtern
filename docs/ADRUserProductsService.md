@@ -119,7 +119,7 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 ### для фасада через gRPC:
 
 	service SenderProductsService {
-	    rpc GetUserProducts (GetUserProductsResponse) returns (GetUserProductsReply)
+	    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply)
 	}
 	
 	message GetUserProductsRequest {
