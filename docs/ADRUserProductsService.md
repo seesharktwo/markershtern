@@ -128,7 +128,7 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 
 	message GetUserProductsReply {
 	    string user_id = 1;
-	    product products = 2;
+	    repeated product products = 2;
 	    repeated string errors = 3; 
 	} - Сообщение для ответа на запрос получения списка продуктов. 
     
