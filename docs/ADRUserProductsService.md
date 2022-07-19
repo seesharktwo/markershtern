@@ -1,34 +1,32 @@
-Context
+### Context
 
 Микросервис, отвечающий за отображение не находящихся в продаже личных товаров, 
 которые пользователь купил, либо добавил.
 _______________________________________________________________________________
-Status
+### Status
 
 Предложено
 _______________________________________________________________________________
-Decision
+### Decision
 
 Запись В БД представляет собой:
-Line_1 
-{ 
-	UserId, Set Prodcuts [
-	Product_1 { ProductId, Name, AuthorMarker, Price, Count, Description },
-	Product_2 { ProductId, Name, AuthorMarker, Price, Count, Description } 
-	]
-}
-Line_2...
+
+    Line_1 {  
+    	UserId, Set Prodcuts [  
+    	Product_1 { ProductId, Name, AuthorMarker, Price, Count, Description },  
+    	Product_2 { ProductId, Name, AuthorMarker, Price, Count, Description }   
+    	]   
+    },  
+    Line_2...
 
 Запись в БД будет создаваться в момент, когда пользователь прошел регистрацию.
-Используется метод создания записи.
 
-Микросервис подписан на события:
-    регистрации пользователя,
-    получения списка продуктов,
-    полечения информации о продукте,
-    удаление товара, 
-    добавление товара,
-    покупку товара,
+Микросервис подписан на:
+- событие регистрации пользователя,
+- событие запроса списка продуктов,
+- событие удаления товара, 
+- событие добавления товара,
+- событие покупки товара,
 
 В каждом методе, где используется ID, нужно использовать метод перевода из string в
 Guid.
@@ -65,117 +63,109 @@ Guid.
 
 
 _______________________________________________________________________________
-.proto
+### .proto
 
-
-service LineEditor {
-    rpc (UserRegistered) returns (EditLineResponse)
-    rpc (EditLineRequest) returns (EditLineResponse)
-    rpc (ProductsRequest) returns (ProductsResponse)
-    rpc (ProductDescriptionRequest) returns (ProductDescriptionResponse)
-    rpc (ProductSellRequest) returns (ProductSellResponse)
-    rpc (ProductDeleteRequest) returns (ProductDeleteResponse)
-}
-
-https://docs.microsoft.com/ru-ru/dotnet/architecture/grpc-for-wcf-developers/protobuf-data-types
-https://visualrecode.com/blog/csharp-decimals-in-grpc/
-Так как Protocol Buffers не поддерживает Decimal, то следует использовать это(две ссылки выше поясняют):
-
-message DecimalValue {
-	int64 units = 1;
-	sfixed nanos = 2;
-}
-
-и реализовать класс DecimalValue:
-
-public partial class DecimalValue
-{
-    private const decimal NanoFactor = 1_000_000_000;
-    public DecimalValue(long units, int nanos)
-    {
-        Units = units;
-        Nanos = nanos;
-    }
-
-    public static implicit operator decimal(CustomTypes.DecimalValue grpcDecimal)
-    {
-        return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
-    }
-
-    public static implicit operator CustomTypes.DecimalValue(decimal value)
-    {
-        var units = decimal.ToInt64(value);
-        var nanos = decimal.ToInt32((value - units) * NanoFactor);
-        return new CustomTypes.DecimalValue(units, nanos);
-    }
-}
-
-message UserRegisteredRequest {
-    string userId = 1;
-} - Сообщение приходит, когда пользователь регистрируется. Оно нужно для создания записи в БД.
-
-message Product {
-	string productId = 1;
-	string name = 2;
-    string authorMarker = 3;
-	decimalValue price = 4;
-    string description = 5;
-    int32 count = 6;
-} 
-
-message EditLineRequest {
-    string userId = 1;
-	product product = 2;
-} - Сообщение приходит, когда пользователь добавляет/покупает продукты.
-
-message EditLineResponse {
-    string userId = 1;
-    repeated string errors = 2;
-} - Сообщение о удачном/неудачном создании/изменении записи в БД.
-
-message ProductsRequest {
-    string userId = 1;
-} - Сообщение приходит, когда пользователь запрашивает список продуктов.
-
-message ProductsResponse {
-    string userId = 1;
-    product products = 2;
-    repeated string errors = 3; 
-} - Сообщение для ответа на запрос получения списка продуктов. 
-
-message ProductDescriptionRequest {
-    string userId = 1;
-    string productId = 2;
-} - Сообщение приходит, когда пользователь запрашивает информацию о продукте.
-
-message ProductDescriptionResponse {
-    string userId = 1;
-    product product = 2;
-    repeated string errors = 2;
-} - Сообщение для ответа на запрос получения информации о продукте.
-
-message ProductSellRequest {
-    string userId = 1;
-    string productId = 2;
-    int32 count = 3;
-} - Сообщение приходит, когда пользователь хочет продать товар.
-
-message ProductSellResponse {
-    string userId = 1;
-    repeated string errors = 2;
-} - Сообщение для ответа на запрос продажи товара.
-
-message ProductDeleteRequest {
-    string userId = 1;
-    string productId = 2;
-} - Сообщение приходит, когда пользователь хочет удалить товар.
-
-message ProductDeleteResponse {
-    string userId = 1;
-    repeated string errors = 2;
-} - Сообщение для ответа на запрос удаления товара.
-
+	message Product {
+		string productId = 1;
+		string name = 2;
+		string authorMarker = 3;
+		decimalValue price = 4;
+		string description = 5;
+		int32 count = 6;
+	} 
+	
 Так как Protocol Buffers не поддерживает напрямую тип Guid, то ID различных
 объектов представлены как тип string, который в будущем будем расшифровываться 
 по схеме 8-4-4-4-12: 3422b448-2460-4fd2-9183-8000de6f8343
+
+Так как Protocol Buffers не поддерживает Decimal, то следует использовать это(две ссылки выше поясняют):
+
+https://docs.microsoft.com/ru-ru/dotnet/architecture/grpc-for-wcf-developers/protobuf-data-types
+
+https://visualrecode.com/blog/csharp-decimals-in-grpc/
+
+
+	message DecimalValue {
+		int64 units = 1;
+		sfixed32 nanos = 2;
+	}
+
+и реализовать класс DecimalValue:
+
+	public partial class DecimalValue {
+	
+		private const decimal NanoFactor = 1_000_000_000;
+		
+		public DecimalValue(long units, int nanos) 
+		{
+			Units = units;
+			Nanos = nanos;
+		}
+
+		public static implicit operator decimal(CustomTypes.DecimalValue grpcDecimal)
+		{
+			return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
+		}
+
+		public static implicit operator CustomTypes.DecimalValue(decimal value) 
+		{
+			var units = decimal.ToInt64(value);
+			var nanos = decimal.ToInt32((value - units) * NanoFactor);
+			return new CustomTypes.DecimalValue(units, nanos);
+		}
+    }
+    
+
+### для фасада через gRPC:
+
+	service SenderProductsService {
+	    rpc GetUserProducts (GetUserProductsResponse) returns (GetUserProductsReply)
+	}
+	
+	message GetUserProductsRequest {
+	    string userId = 1;
+	} - Сообщение приходит, когда пользователь запрашивает список продуктов.
+
+	message GetUserProductsReply {
+	    string userId = 1;
+	    product products = 2;
+	    repeated string errors = 3; 
+	} - Сообщение для ответа на запрос получения списка продуктов. 
+    
+### Для кафки:
+
+	message UserRegisteredEvent {
+	    string userId = 1;
+	} - Сообщение приходит, когда пользователь регистрируется. Оно нужно для создания записи в БД.
+
+	message ProductAddedEvent {
+	    string userId = 1;
+	    product product = 2;
+	} - Сообщение приходит, когда пользователь добавляет/покупает продукты.
+
+	message ResultChangeRecordEventReply {
+	    string userId = 1;
+	    repeated string errors = 2;
+	} - Сообщение о удачном/неудачном создании/изменении записи в БД.
+
+	message ProductSoldEvent {
+	    string userId = 1;
+	    string productId = 2;
+	    int32 count = 3;
+	} - Сообщение приходит, когда пользователь хочет продать товар.
+
+	message ProductSoldEventReply {
+	    string userId = 1;
+	    repeated string errors = 2;
+	} - Сообщение для ответа на запрос продажи товара.
+
+	message ProductRemovedEvent {
+	    string userId = 1;
+	    string productId = 2;
+	} - Сообщение приходит, когда пользователь хочет удалить товар.
+
+	message ProductRemovedEventReply {
+	    string userId = 1;
+	    repeated string errors = 2;
+	} - Сообщение для ответа на запрос удаления товара.
 _______________________________________________________________________________
