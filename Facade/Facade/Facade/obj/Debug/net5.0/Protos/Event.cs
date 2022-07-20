@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace event {
+namespace Facade {
 
   /// <summary>Holder for reflection information generated from Protos/event.proto</summary>
   public static partial class EventReflection {
@@ -25,11 +25,11 @@ namespace event {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "ChJQcm90b3MvZXZlbnQucHJvdG8SBWdyZWV0IiEKEU5ld1Byb2R1Y3RSZXF1",
-            "ZXN0EgwKBE5hbWUYASABKAlCCKoCBWV2ZW50YgZwcm90bzM="));
+            "ZXN0EgwKBE5hbWUYASABKAlCCaoCBkZhY2FkZWIGcHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::event.NewProductRequest), global::event.NewProductRequest.Parser, new[]{ "Name" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.NewProductRequest), global::Facade.NewProductRequest.Parser, new[]{ "Name" }, null, null, null, null)
           }));
     }
     #endregion
@@ -50,7 +50,7 @@ namespace event {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::event.EventReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Facade.EventReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

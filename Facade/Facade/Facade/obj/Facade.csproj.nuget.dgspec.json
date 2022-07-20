@@ -44,6 +44,10 @@
         "net5.0": {
           "targetAlias": "net5.0",
           "dependencies": {
+            "Confluent.Kafka": {
+              "target": "Package",
+              "version": "[1.9.0, )"
+            },
             "Google.Protobuf": {
               "target": "Package",
               "version": "[3.21.2, )"
