@@ -1,0 +1,16 @@
+version: '3.8'
+  
+services:
+
+
+  mongo:
+    image:
+      mongo:4.2.8
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb:/data/db
+      - mongodb_config:/data/configdb
+volumes:
+  mongodb:
+  mongodb_config:

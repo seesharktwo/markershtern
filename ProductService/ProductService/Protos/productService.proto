@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+option csharp_namespace = "ProductService";
+
+// implementation service
+service Product
+{
+	// Method for getting all products
+	rpc GetAllProducts(AllProductsRequest) returns(AllProductsResponce);
+	
+}
+
+// The request message
+message AllProductsRequest 
+{
+}
+
+// The responce message containing products
+message AllProductsResponce {
+  repeated ProductResponce Products = 1;
+}
+
+// The responce message containing product's Id and product's Name
+message ProductResponce {
+  string Id = 1;
+  string Name = 2;
+}
