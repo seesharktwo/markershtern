@@ -109,11 +109,17 @@ sequenceDiagram
 PoolBalanceTransact 
 {
 	ID транзакции 
+	
 	ID Глобальной транзакции 
+	
 	Значение 
+	
 	дата
+	
 	Id счета
+	
 	bool выполнен
+	
 	Bool отменен
 	
 }
@@ -121,11 +127,17 @@ PoolBalanceTransact
 PoolProductTransact 
 {
 	ID транзакции 
+	
 	ID Глобальной транзакции 
+	
 	Значение 
+	
 	дата
+	
 	Id склада
+	
 	bool выполнен
+	
 	Bool отменен
 	
 }
@@ -133,9 +145,13 @@ PoolProductTransact
 глобальная транзакция 
 {
 	Id транзакции 
+	
 	Значение
+	
 	Дата
+	
 	IsComplite
+	
 	IsError
 }
 
@@ -146,30 +162,44 @@ PoolProductTransact
 ClosingOrder
 {
 	double sum,
+	
 	int countProduct,
+	
 	string idProduct,
+	
 	string idOrder,
+	
 	string idUserBuyer,
+	
 	string idUserSeller,
+	
 }
 
 AbortingTransaction
 {
 	string idGlobalTransact
+	
 	string idTransact
+	
 	string source
+	
 }
 
 CompletedTransaction
 {
 	string idGlobalTransact
+	
 	string idTransact
+	
 	string source
+	
 }
 
 NotValidStatus
 {
+
 	string source
+	
 }
 
 ### Продюсер 
@@ -177,24 +207,39 @@ NotValidStatus
 BalanceTransact
 {
 	string idGlobalTransact,
+	
 	string idTransact,
+	
 	string idOrder,
+	
 	string idUser,
+	
 	double sum,
+	
 	bool isAdd,
+	
 	bool isReverse
+	
 }
 
 ProductTransact
 {
 	string idGlobalTransact,
+	
 	string idTransact,
+	
 	string idOProduct,
+	
 	string idUser,
+	
 	string idOrder,
+	
 	int count,
+	
 	bool isAdd,
+	
 	bool isReverse
+	
 }
 
 
