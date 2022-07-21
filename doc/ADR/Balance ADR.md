@@ -107,6 +107,8 @@ CompletedTransaction {
 
 NotValidStatus {
 
+	id
+	
 	string source
 }
 
