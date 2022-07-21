@@ -204,6 +204,8 @@ CompletedTransaction
 NotValidStatus
 {
 
+	string id 
+	
 	string source
 	
 }
