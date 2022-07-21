@@ -108,6 +108,7 @@ sequenceDiagram
 
 PoolBalanceTransact 
 {
+
 	ID транзакции 
 	
 	ID Глобальной транзакции 
@@ -126,6 +127,7 @@ PoolBalanceTransact
 
 PoolProductTransact 
 {
+
 	ID транзакции 
 	
 	ID Глобальной транзакции 
@@ -144,6 +146,7 @@ PoolProductTransact
 
 глобальная транзакция 
 {
+
 	Id транзакции 
 	
 	Значение
@@ -161,6 +164,7 @@ PoolProductTransact
 
 ClosingOrder
 {
+
 	double sum,
 	
 	int countProduct,
@@ -177,6 +181,7 @@ ClosingOrder
 
 AbortingTransaction
 {
+
 	string idGlobalTransact
 	
 	string idTransact
@@ -187,6 +192,7 @@ AbortingTransaction
 
 CompletedTransaction
 {
+
 	string idGlobalTransact
 	
 	string idTransact
@@ -206,6 +212,7 @@ NotValidStatus
 
 BalanceTransact
 {
+
 	string idGlobalTransact,
 	
 	string idTransact,
@@ -224,6 +231,7 @@ BalanceTransact
 
 ProductTransact
 {
+
 	string idGlobalTransact,
 	
 	string idTransact,
