@@ -20,8 +20,8 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 
     Line_1 {  
     	UserId, Set Prodcuts [  
-    	Product_1 { ProductId, Name, AuthorMarker, Count, Description },  
-    	Product_2 { ProductId, Name, AuthorMarker, Count, Description }   
+    	Product_1 { ProductId, Name, AuthorMarker, Count },  
+    	Product_2 { ProductId, Name, AuthorMarker, Count }   
     	]   
     },  
     Line_2...
@@ -33,6 +33,7 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 - событие удаления товара, 
 - событие добавления товара,
 - событие покупки товара,
+- событие продажи товара.
 
 В каждом методе, где используется ID, нужно использовать метод перевода из string в
 Guid.
