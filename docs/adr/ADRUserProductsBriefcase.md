@@ -33,7 +33,6 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 - событие совершения сделки,
 - событие удаления товара, 
 - событие добавления товара,
-- событие покупки товара,
 - событие продажи товара.
 
 В каждом методе, где используется ID, нужно использовать метод перевода из string в
@@ -75,6 +74,7 @@ Guid.
 		string name = 2;
 		string author_marker = 3;
 		int32 quantity = 4;
+		int32 quantity_for_trading = 5;
 	} 
 ```
 	
