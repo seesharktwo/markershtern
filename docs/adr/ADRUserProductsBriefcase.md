@@ -69,13 +69,13 @@ Guid.
 ### .proto
 
 ```proto
-	message Product {
-		string product_id = 1;
-		string name = 2;
-		string author_marker = 3;
-		int32 quantity = 4;
-		int32 quantity_for_trading = 5;
-	} 
+message Product {
+	string product_id = 1;
+	string name = 2;
+	string author_marker = 3;
+	int32 quantity = 4;
+	int32 quantity_for_trading = 5;
+} 
 ```
 	
 Так как Protocol Buffers не поддерживает напрямую тип Guid, то ID различных
@@ -89,10 +89,10 @@ https://docs.microsoft.com/ru-ru/dotnet/architecture/grpc-for-wcf-developers/pro
 https://visualrecode.com/blog/csharp-decimals-in-grpc/
 
 ```proto
-	message DecimalValue {
-		int64 units = 1;
-		sfixed32 nanos = 2;
-	}
+message DecimalValue {
+	int64 units = 1;
+	sfixed32 nanos = 2;
+}
 ```
 
 и реализовать класс DecimalValue:
@@ -127,24 +127,24 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 поиск записи в БД, после чего берется список продуктов вместе с user_id, сериализуетя в GetUserProductsReply и отправляется Фасаду.
 
 ```proto
-	service SenderProductsService {
-	    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply)
-	}
+service SenderProductsService {
+    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply)
+}
 ```
 
 ```proto
-	message GetUserProductsRequest {
-	    string user_id = 1;
-	}
+message GetUserProductsRequest {
+    string user_id = 1;
+}
 ```
 \- Сообщение приходит, когда пользователь запрашивает список продуктов. Микросервис использует user_id для поиска записи, после чего берет список товаров.
 
 ```proto
-	message GetUserProductsReply {
-	    string user_id = 1;
-	    repeated product products = 2;
-	    repeated string errors = 3; 
-	}
+message GetUserProductsReply {
+    string user_id = 1;
+    repeated product products = 2;
+    repeated string errors = 3; 
+}
 ```
 \- Сообщение для ответа на запрос получения списка продуктов.  
 Возможные ошибки:  
@@ -153,19 +153,19 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 ### Для кафки:
 
 ```proto
-	message Authorization_UserRegisteredEvent {
-	    string user_id = 1;
-	}
+message Authorization_UserRegisteredEvent {
+    string user_id = 1;
+}
 ```
 \- Микросервис портфеля активов подписан на топик события регистрации пользователя. Микросервис получает это сообщение,  
 после чего создает запись в БД с user_id и пустым списком продуктов, если нет ошибок.
 
 
 ```proto
-	message Authorization_UserRegisteredEventReply {
-	    string user_id = 1;
-	    repeated string errors = 2;
-	}
+message Authorization_UserRegisteredEventReply {
+    string user_id = 1;
+    repeated string errors = 2;
+}
 ```  
 \- Микросервис портфеля активов подписан на топик события регистрации пользователя. Если в ходе выполнения создания новой записи возникли ошибки, то они включаются в список errors. Если ошибок нет, то список пуст, что говорит о успешном выполнении операции.  
 Возможные ошибки:  
@@ -173,19 +173,19 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 
 
 ```proto
-	message Order_ProductAddedEvent {
-	    string user_id = 1;
-	    product product = 2;
-	}  
+message Order_ProductAddedEvent {
+    string user_id = 1;
+    product product = 2;
+}  
 ```
 \- Микросервис портфеля активов подписан на топик события добавления товара пользователем.  
 Микросервис получает это сообщение, по user_id ищет запись в БД, и, если проблем нет,то добавляет product в запись.
 
 ```proto
-	message Briefcase_ProductAddedEventReply {
-	    string user_id = 1;
-	    repeated string errors = 2;
-	}
+message Briefcase_ProductAddedEventReply {
+    string user_id = 1;
+    repeated string errors = 2;
+}
 ```
 \- Микросервис портфеля активов подписан на топик события добавления товара.  
 Если в ходе выполнения операций по изменению записей возникли ошибки, то эти ошибки включаются в список errors. Микросервис отправляет эти ошибки в другой топик, на который подписаны другие микросервисы.  
@@ -203,7 +203,7 @@ message Order_OrderCompletedEvent {
 \- Микросервис портфеля активов подписан на топик события совершения сделки. Микросервис проверяет существование двух пользователей по UserID, находит нужный продукт, отнимает quantity продукта у user_id_from и прибавляет его user_id_to. 
 
 ```proto
-message Order_OrderCompletedEventReply {
+message Briefcase_OrderCompletedEventReply {
  string user_id_from = 1;
  string user_id_to = 2;
  repeated string errors = 3;
@@ -213,25 +213,25 @@ message Order_OrderCompletedEventReply {
 Возможные ошибки:  
 - Пользователь с таким user_id_from не был найден.
 - Пользователь с таким user_id_to не был найден.
-- У пользователь user_id_from не был найден товар product_id.
-- У пользователь user_id_from не был найден товар product_id в нужном количестве.
+- У пользователя user_id_from не был найден товар product_id.
+- У пользователя user_id_from не был найден товар product_id в нужном количестве.
 
 
 ```proto
-	message Order_ProductSoldEvent {
-	    string user_id = 1;
-	    string product_id = 2;
-	    int32 quantity = 3;
-	}
+message Order_ProductSoldEvent {
+    string user_id = 1;
+    string product_id = 2;
+    int32 quantity = 3;
+}
 ```
 \- Микросервис портфеля активов подписан на топик события продажи товара. Микросервис делает поиск записи в БД по user_id   
 , ищет товар по product_id, если проблем нет, то проверяет, что quantity <= QuantityForTrading.
 
 ```proto
-	message Briefcase_ProductSoldEventReply {
-	    string user_id = 1;
-	    repeated string errors = 2;
-	}
+message Briefcase_ProductSoldEventReply {
+    string user_id = 1;
+    repeated string errors = 2;
+}
 ```
 \- Микросервис портфеля активов подписан на топик события продажи товара. Если все в порядке, то список ошибок будет пуст. Если в ходе проверки возникли ошибки, то отправляет это сообщение со списком ошибок.  
 Возможные ошибки:
@@ -241,19 +241,19 @@ message Order_OrderCompletedEventReply {
 
 
 ```proto
-	message Order_ProductRemovedEvent {
-	    string user_id = 1;
-	    string product_id = 2;
-	}
+message Order_ProductRemovedEvent {
+    string user_id = 1;
+    string product_id = 2;
+}
 ```
 \- Микросервис портфеля активов подписан на событие удаления товара. Микросервис делает поиск записи в БД по user_id,  
 ищет товар по product_id, если проблем нет, то полностью удаляет указанный товар с портфеля пользователя
 
 ```proto
-	message Briefcase_ProductRemovedEventReply {
-	    string user_id = 1;
-	    repeated string errors = 2;
-	}
+message Briefcase_ProductRemovedEventReply {
+    string user_id = 1;
+    repeated string errors = 2;
+}
 ```
 \- Микросервис портфеля активов подписан на событие удаления товара. Если в ходе выполнения операции по удалению  
 товара возникла ошибка, то отправляет это сообщение со списком ошибок.  
