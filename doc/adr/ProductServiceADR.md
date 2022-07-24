@@ -27,10 +27,10 @@ flowchart TD
 	F["Facade"] ==GetProductsRequest==> P["Product MicroService"]
 	P ==GetProductsResponce==> F
 	subgraph kafka
-		CreatedBuyOrder
-		CreatedSellOrder
-		DeletedBuyOrder
-		DeletedSellOrder
+		BuyOrderCreated
+		SellOrderCreated
+		BuyOrderDeleted
+		SellOrderDeleted
 	end
 	O["Order MicroService"]
 	P ==consume==>kafka
@@ -49,42 +49,42 @@ flowchart TD
 }
 ```
 	
-Наш микросервис подписан на топик заявок, пусть будет CreatedBuyOrder, CreatedSellOrder, DeletedBuyOrder, DeletedSellOrder(смотря как это реализуется в микросервисе заявок) куда будут приходить события на создание новой заявки.  
+Наш микросервис подписан на топик заявок, пусть будет BuyOrderCreated, SellOrderCreated, BuyOrderDeleted, SellOrderDeleted(смотря как это реализуется в микросервисе заявок) куда будут приходить события на создание новой заявки.  
 Из этих событий будет формироваться база текущих заявок, из которой будут извлекаться данные о текущих ценах товаров.
 
 
-Как я вижу процесс получения запросов и общение с кафкой используя proto:  
+Мною предлагается следующий процесс общения с кафкой используя proto:  
 Микросервис товаров опрашивает топик на новые сообщения.  
-Каждое полученное сообщение будет десериализовыаться из байтовых значений в c#-objs используя десериализатор на основе proto событий заявок:  
- >Это предположительное определение сообщений, окончательный вариант должен быть предложен микросервисом заяовк  
+Каждое полученное сообщение будет десериализовываться из байтовых значений в c#-objs используя десериализатор на основе proto событий заявок:  
+ >Это предположительное определение сообщений, окончательный вариант должен быть предложен микросервисом заявок  
 ```proto
 // Сообщение с данными созданной заявки на покупку
-message CreatedBuyOrder
+message BuyOrderCreated
 {
 	string id = 1
 	string name = 2;
-	int count = 3;
+	int quanity = 3;
 	DecimalValue price = 4;
 }
 
 // Сообщение с данными созданной заявки на продажу
-message CreatedSellOrder
+message SellOrderCreated
 {
 	string id = 1
 	string name = 2;
-	int count = 3;
+	int quanity = 3;
 	DecimalValue price = 4;
 }
 
 // Сообщение с данными удаленной заявки на покупку
-message DeletedBuyOrder
+message BuyOrderDeleted
 {
 	string id = 1
 }
 
 
 // Сообщение с данными удаленной заявки на продажу
-message DeletedSellOrder
+message SellOrderDeleted
 {
 	string id = 1
 }
@@ -120,7 +120,7 @@ message DecimalValue
 
 ```proto
 service ProductService {
-  rpc GetProducts(GetProductsRequest) returns(GetProductsResponce);
+  rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
 }
 
 message GetProductsRequest
@@ -128,7 +128,7 @@ message GetProductsRequest
 
 }
 
-message GetProductsResponce
+message GetProductsResponse
 {
 	repeated Product products = 1;
 }
