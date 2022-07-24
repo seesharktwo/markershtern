@@ -3,6 +3,8 @@
 Микросервис, отвечающий за отображение личных товаров, 
 которые пользователь купил, либо добавил.
 
+Требования: Получение клиентом списка товаров, находящихся у него в портфеле, каждый из который имеет Id, Name, Quantity, QuantityForTrading
+
 ссылка на требования:
 https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.ex6x3ie43ne2
 
@@ -110,31 +112,7 @@ message DecimalValue {
 }
 ```
 
-и реализовать класс DecimalValue:
-
-	public partial class DecimalValue {
-	
-		private const decimal NanoFactor = 1_000_000_000;
-		
-		public DecimalValue(long units, int nanos) 
-		{
-			Units = units;
-			Nanos = nanos;
-		}
-
-		public static implicit operator decimal(CustomTypes.DecimalValue grpcDecimal)
-		{
-			return grpcDecimal.Units + grpcDecimal.Nanos / NanoFactor;
-		}
-
-		public static implicit operator CustomTypes.DecimalValue(decimal value) 
-		{
-			var units = decimal.ToInt64(value);
-			var nanos = decimal.ToInt32((value - units) * NanoFactor);
-			return new CustomTypes.DecimalValue(units, nanos);
-		}
-    }
-    
+и реализовать класс DecimalValue.
 
 ### для фасада через gRPC:
 
@@ -157,8 +135,10 @@ message GetUserProductsRequest {
 ```proto
 message GetUserProductsReply {
     string user_id = 1;
-    repeated product products = 2;
-    repeated string errors = 3; 
+    oneof reply {
+    	repeated product products = 2;
+    	Errors erros = 3;
+    }
 }
 ```
 \- Сообщение для ответа на запрос получения списка продуктов.  
@@ -179,7 +159,7 @@ message Authorization_UserRegisteredEvent {
 ```proto
 message Authorization_UserRegisteredEventReply {
     string user_id = 1;
-    repeated string errors = 2;
+    Errors error = 2;
 }
 ```  
 \- Микросервис портфеля активов подписан на топик события регистрации пользователя. Если в ходе выполнения создания новой записи возникли ошибки, то они включаются в список errors. Если ошибок нет, то список пуст, что говорит о успешном выполнении операции.  
@@ -199,7 +179,7 @@ message Order_ProductAddedEvent {
 ```proto
 message Briefcase_ProductAddedEventReply {
     string user_id = 1;
-    repeated string errors = 2;
+    Errors error = 2;
 }
 ```
 \- Микросервис портфеля активов подписан на топик события добавления товара.  
@@ -221,7 +201,7 @@ message Order_OrderCompletedEvent {
 message Briefcase_OrderCompletedEventReply {
  string user_id_from = 1;
  string user_id_to = 2;
- repeated string errors = 3;
+ Errors error = 3;
 }
 ```  
 \- Микросервис портфеля активов подписан на топик события совершения сделки. Если в ходе операций по изменению записей возникли ошибки, то они заносятся в топик, на которые подписаны другие микросервисы.  
@@ -245,7 +225,7 @@ message Order_ProductSoldEvent {
 ```proto
 message Briefcase_ProductSoldEventReply {
     string user_id = 1;
-    repeated string errors = 2;
+    Errors error = 2;
 }
 ```
 \- Микросервис портфеля активов подписан на топик события продажи товара. Если все в порядке, то список ошибок будет пуст. Если в ходе проверки возникли ошибки, то отправляет это сообщение со списком ошибок.  
@@ -267,7 +247,7 @@ message Order_ProductRemovedEvent {
 ```proto
 message Briefcase_ProductRemovedEventReply {
     string user_id = 1;
-    repeated string errors = 2;
+    Error errors = 2;
 }
 ```
 \- Микросервис портфеля активов подписан на событие удаления товара. Если в ходе выполнения операции по удалению  
