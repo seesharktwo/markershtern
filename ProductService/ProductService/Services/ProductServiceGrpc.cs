@@ -1,30 +1,31 @@
-﻿
-
-using Grpc.Core;
+﻿using Grpc.Core;
+using ProductService.Protos.Services;
 
 namespace ProductService.Services
 {
-    public class ProductServiceGrpc : Product.ProductBase
+    // Сервис реализующий контракт на получение списка с Bid and Ask
+    public class ProductServiceGrpc : Protos.Services.ProductService.ProductServiceBase
     {
         private readonly ProductContext _context;
+
         private readonly ILogger<ProductServiceGrpc> _logger;
         public ProductServiceGrpc(ILogger<ProductServiceGrpc> logger, ProductContext context)
-        {
+        {   
             _logger = logger;
             _context = context;
         }
 
-        public async override Task<AllProductsResponce> GetAllProducts(AllProductsRequest request, ServerCallContext context)
+
+
+        public override async Task<GetProductsResponse> GetProducts(GetProductsRequest request, ServerCallContext context)
         {
-            var productsMessages = new List<ProductResponce>();
-            var responce = new AllProductsResponce();
-            var products = await _context.GetAsync();
+            var responce = new GetProductsResponse();
+            var products = await  _context.GetAsync();
             products.ForEach(p =>
             {
-                var productResponce = Mapper.Map<Models.Product, ProductResponce>(p);
-                productsMessages.Add(productResponce);
+                var productResponce = Mapper.Map<Models.Product, Product>(p);
+                responce.Products.Add(productResponce);
             }); 
-            responce.Products.AddRange(productsMessages);
             return responce;
         }
 

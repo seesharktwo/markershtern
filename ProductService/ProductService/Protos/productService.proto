@@ -1,27 +1,34 @@
 syntax = "proto3";
 
-option csharp_namespace = "ProductService";
+import "decimalValue.proto";
+
+option csharp_namespace = "ProductService.Protos.Services";
 
 // implementation service
-service Product
-{
-	// Method for getting all products
-	rpc GetAllProducts(AllProductsRequest) returns(AllProductsResponce);
-	
+service ProductService {
+  rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
 }
 
 // The request message
-message AllProductsRequest 
+message GetProductsRequest
 {
-}
 
+}
 // The responce message containing products
-message AllProductsResponce {
-  repeated ProductResponce Products = 1;
+message GetProductsResponse
+{
+	repeated Product products = 1;
 }
 
 // The responce message containing product's Id and product's Name
-message ProductResponce {
-  string Id = 1;
-  string Name = 2;
+message Product
+{
+	string id = 1;
+
+	string name = 2;
+
+	customTypes.DecimalValue bid = 3;
+
+	customTypes.DecimalValue ask = 4;
 }
+

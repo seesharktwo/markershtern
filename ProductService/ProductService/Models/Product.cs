@@ -10,5 +10,9 @@ namespace ProductService.Models
         public string? Id { get; set; }
 
         public string Name { get; set; }
+
+        public decimal Bid { get; set; }
+
+        public decimal Ask { get; set; }
     }
 }
