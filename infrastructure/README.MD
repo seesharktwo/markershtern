@@ -11,6 +11,12 @@ docker compose up -d
 ### Connection ports
 ```md
 - Kafka: 9092
+- Mongodb: 27017
+```
+
+### Default credentials
+```md
+- Mongo: admin:admin
 ```
 
 ### Set memory limits for JVM via env vars
