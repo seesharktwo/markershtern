@@ -24,34 +24,38 @@ namespace Facade {
     static GreetReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChJQcm90b3MvZ3JlZXQucHJvdG8SBWdyZWV0IhQKEkFsbFByb2R1Y3RzUmVx",
-            "dWVzdCI/ChNBbGxQcm9kdWN0c1Jlc3BvbmNlEigKCFByb2R1Y3RzGAEgAygL",
-            "MhYuZ3JlZXQuUHJvZHVjdFJlc3BvbmNlIisKD1Byb2R1Y3RSZXNwb25jZRIK",
-            "CgJJZBgCIAEoCRIMCgROYW1lGAMgASgJMlkKDlByb2R1Y3RTZXJ2aWNlEkcK",
-            "DkdldEFsbFByb2R1Y3RzEhkuZ3JlZXQuQWxsUHJvZHVjdHNSZXF1ZXN0Ghou",
-            "Z3JlZXQuQWxsUHJvZHVjdHNSZXNwb25jZUIJqgIGRmFjYWRlYgZwcm90bzM="));
+            "ChJQcm90b3MvZ3JlZXQucHJvdG8SBWdyZWV0IhQKEkdldFByb2R1Y3RzUmVx",
+            "dWVzdCI3ChNHZXRQcm9kdWN0c1Jlc3BvbnNlEiAKCHByb2R1Y3RzGAEgAygL",
+            "Mg4uZ3JlZXQuUHJvZHVjdCJnCgdQcm9kdWN0EgoKAmlkGAEgASgJEgwKBG5h",
+            "bWUYAiABKAkSIAoDYmlkGAMgASgLMhMuZ3JlZXQuRGVjaW1hbFZhbHVlEiAK",
+            "A2FzaxgEIAEoCzITLmdyZWV0LkRlY2ltYWxWYWx1ZSIsCgxEZWNpbWFsVmFs",
+            "dWUSDQoFdW5pdHMYASABKAMSDQoFbmFub3MYAiABKAUyVgoOUHJvZHVjdFNl",
+            "cnZpY2USRAoLR2V0UHJvZHVjdHMSGS5ncmVldC5HZXRQcm9kdWN0c1JlcXVl",
+            "c3QaGi5ncmVldC5HZXRQcm9kdWN0c1Jlc3BvbnNlQgmqAgZGYWNhZGViBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.AllProductsRequest), global::Facade.AllProductsRequest.Parser, null, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.AllProductsResponce), global::Facade.AllProductsResponce.Parser, new[]{ "Products" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.ProductResponce), global::Facade.ProductResponce.Parser, new[]{ "Id", "Name" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.GetProductsRequest), global::Facade.GetProductsRequest.Parser, null, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.GetProductsResponse), global::Facade.GetProductsResponse.Parser, new[]{ "Products" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.Product), global::Facade.Product.Parser, new[]{ "Id", "Name", "Bid", "Ask" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.DecimalValue), global::Facade.DecimalValue.Parser, new[]{ "Units", "Nanos" }, null, null, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
-  public sealed partial class AllProductsRequest : pb::IMessage<AllProductsRequest>
+  public sealed partial class GetProductsRequest : pb::IMessage<GetProductsRequest>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<AllProductsRequest> _parser = new pb::MessageParser<AllProductsRequest>(() => new AllProductsRequest());
+    private static readonly pb::MessageParser<GetProductsRequest> _parser = new pb::MessageParser<GetProductsRequest>(() => new GetProductsRequest());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<AllProductsRequest> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetProductsRequest> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -67,7 +71,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AllProductsRequest() {
+    public GetProductsRequest() {
       OnConstruction();
     }
 
@@ -75,25 +79,25 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AllProductsRequest(AllProductsRequest other) : this() {
+    public GetProductsRequest(GetProductsRequest other) : this() {
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AllProductsRequest Clone() {
-      return new AllProductsRequest(this);
+    public GetProductsRequest Clone() {
+      return new GetProductsRequest(this);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as AllProductsRequest);
+      return Equals(other as GetProductsRequest);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(AllProductsRequest other) {
+    public bool Equals(GetProductsRequest other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -153,7 +157,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(AllProductsRequest other) {
+    public void MergeFrom(GetProductsRequest other) {
       if (other == null) {
         return;
       }
@@ -194,16 +198,16 @@ namespace Facade {
 
   }
 
-  public sealed partial class AllProductsResponce : pb::IMessage<AllProductsResponce>
+  public sealed partial class GetProductsResponse : pb::IMessage<GetProductsResponse>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<AllProductsResponce> _parser = new pb::MessageParser<AllProductsResponce>(() => new AllProductsResponce());
+    private static readonly pb::MessageParser<GetProductsResponse> _parser = new pb::MessageParser<GetProductsResponse>(() => new GetProductsResponse());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<AllProductsResponce> Parser { get { return _parser; } }
+    public static pb::MessageParser<GetProductsResponse> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -219,7 +223,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AllProductsResponce() {
+    public GetProductsResponse() {
       OnConstruction();
     }
 
@@ -227,37 +231,37 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AllProductsResponce(AllProductsResponce other) : this() {
+    public GetProductsResponse(GetProductsResponse other) : this() {
       products_ = other.products_.Clone();
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public AllProductsResponce Clone() {
-      return new AllProductsResponce(this);
+    public GetProductsResponse Clone() {
+      return new GetProductsResponse(this);
     }
 
-    /// <summary>Field number for the "Products" field.</summary>
+    /// <summary>Field number for the "products" field.</summary>
     public const int ProductsFieldNumber = 1;
-    private static readonly pb::FieldCodec<global::Facade.ProductResponce> _repeated_products_codec
-        = pb::FieldCodec.ForMessage(10, global::Facade.ProductResponce.Parser);
-    private readonly pbc::RepeatedField<global::Facade.ProductResponce> products_ = new pbc::RepeatedField<global::Facade.ProductResponce>();
+    private static readonly pb::FieldCodec<global::Facade.Product> _repeated_products_codec
+        = pb::FieldCodec.ForMessage(10, global::Facade.Product.Parser);
+    private readonly pbc::RepeatedField<global::Facade.Product> products_ = new pbc::RepeatedField<global::Facade.Product>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Facade.ProductResponce> Products {
+    public pbc::RepeatedField<global::Facade.Product> Products {
       get { return products_; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override bool Equals(object other) {
-      return Equals(other as AllProductsResponce);
+      return Equals(other as GetProductsResponse);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(AllProductsResponce other) {
+    public bool Equals(GetProductsResponse other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -322,7 +326,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(AllProductsResponce other) {
+    public void MergeFrom(GetProductsResponse other) {
       if (other == null) {
         return;
       }
@@ -372,16 +376,16 @@ namespace Facade {
 
   }
 
-  public sealed partial class ProductResponce : pb::IMessage<ProductResponce>
+  public sealed partial class Product : pb::IMessage<Product>
   #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       , pb::IBufferMessage
   #endif
   {
-    private static readonly pb::MessageParser<ProductResponce> _parser = new pb::MessageParser<ProductResponce>(() => new ProductResponce());
+    private static readonly pb::MessageParser<Product> _parser = new pb::MessageParser<Product>(() => new Product());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public static pb::MessageParser<ProductResponce> Parser { get { return _parser; } }
+    public static pb::MessageParser<Product> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -397,7 +401,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductResponce() {
+    public Product() {
       OnConstruction();
     }
 
@@ -405,20 +409,22 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductResponce(ProductResponce other) : this() {
+    public Product(Product other) : this() {
       id_ = other.id_;
       name_ = other.name_;
+      bid_ = other.bid_ != null ? other.bid_.Clone() : null;
+      ask_ = other.ask_ != null ? other.ask_.Clone() : null;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public ProductResponce Clone() {
-      return new ProductResponce(this);
+    public Product Clone() {
+      return new Product(this);
     }
 
-    /// <summary>Field number for the "Id" field.</summary>
-    public const int IdFieldNumber = 2;
+    /// <summary>Field number for the "id" field.</summary>
+    public const int IdFieldNumber = 1;
     private string id_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -429,8 +435,8 @@ namespace Facade {
       }
     }
 
-    /// <summary>Field number for the "Name" field.</summary>
-    public const int NameFieldNumber = 3;
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 2;
     private string name_ = "";
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -441,15 +447,39 @@ namespace Facade {
       }
     }
 
+    /// <summary>Field number for the "bid" field.</summary>
+    public const int BidFieldNumber = 3;
+    private global::Facade.DecimalValue bid_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public override bool Equals(object other) {
-      return Equals(other as ProductResponce);
+    public global::Facade.DecimalValue Bid {
+      get { return bid_; }
+      set {
+        bid_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "ask" field.</summary>
+    public const int AskFieldNumber = 4;
+    private global::Facade.DecimalValue ask_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public global::Facade.DecimalValue Ask {
+      get { return ask_; }
+      set {
+        ask_ = value;
+      }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public bool Equals(ProductResponce other) {
+    public override bool Equals(object other) {
+      return Equals(other as Product);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(Product other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -458,6 +488,8 @@ namespace Facade {
       }
       if (Id != other.Id) return false;
       if (Name != other.Name) return false;
+      if (!object.Equals(Bid, other.Bid)) return false;
+      if (!object.Equals(Ask, other.Ask)) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
 
@@ -467,6 +499,8 @@ namespace Facade {
       int hash = 1;
       if (Id.Length != 0) hash ^= Id.GetHashCode();
       if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (bid_ != null) hash ^= Bid.GetHashCode();
+      if (ask_ != null) hash ^= Ask.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -486,12 +520,20 @@ namespace Facade {
       output.WriteRawMessage(this);
     #else
       if (Id.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(Id);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteString(Name);
+      }
+      if (bid_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Bid);
+      }
+      if (ask_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Ask);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -504,12 +546,20 @@ namespace Facade {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
       if (Id.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(10);
         output.WriteString(Id);
       }
       if (Name.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(18);
         output.WriteString(Name);
+      }
+      if (bid_ != null) {
+        output.WriteRawTag(26);
+        output.WriteMessage(Bid);
+      }
+      if (ask_ != null) {
+        output.WriteRawTag(34);
+        output.WriteMessage(Ask);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -527,6 +577,12 @@ namespace Facade {
       if (Name.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
       }
+      if (bid_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Bid);
+      }
+      if (ask_ != null) {
+        size += 1 + pb::CodedOutputStream.ComputeMessageSize(Ask);
+      }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
       }
@@ -535,7 +591,7 @@ namespace Facade {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public void MergeFrom(ProductResponce other) {
+    public void MergeFrom(Product other) {
       if (other == null) {
         return;
       }
@@ -544,6 +600,18 @@ namespace Facade {
       }
       if (other.Name.Length != 0) {
         Name = other.Name;
+      }
+      if (other.bid_ != null) {
+        if (bid_ == null) {
+          Bid = new global::Facade.DecimalValue();
+        }
+        Bid.MergeFrom(other.Bid);
+      }
+      if (other.ask_ != null) {
+        if (ask_ == null) {
+          Ask = new global::Facade.DecimalValue();
+        }
+        Ask.MergeFrom(other.Ask);
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
     }
@@ -560,12 +628,26 @@ namespace Facade {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 18: {
+          case 10: {
             Id = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             Name = input.ReadString();
+            break;
+          }
+          case 26: {
+            if (bid_ == null) {
+              Bid = new global::Facade.DecimalValue();
+            }
+            input.ReadMessage(Bid);
+            break;
+          }
+          case 34: {
+            if (ask_ == null) {
+              Ask = new global::Facade.DecimalValue();
+            }
+            input.ReadMessage(Ask);
             break;
           }
         }
@@ -583,12 +665,263 @@ namespace Facade {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 18: {
+          case 10: {
             Id = input.ReadString();
             break;
           }
-          case 26: {
+          case 18: {
             Name = input.ReadString();
+            break;
+          }
+          case 26: {
+            if (bid_ == null) {
+              Bid = new global::Facade.DecimalValue();
+            }
+            input.ReadMessage(Bid);
+            break;
+          }
+          case 34: {
+            if (ask_ == null) {
+              Ask = new global::Facade.DecimalValue();
+            }
+            input.ReadMessage(Ask);
+            break;
+          }
+        }
+      }
+    }
+    #endif
+
+  }
+
+  public sealed partial class DecimalValue : pb::IMessage<DecimalValue>
+  #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      , pb::IBufferMessage
+  #endif
+  {
+    private static readonly pb::MessageParser<DecimalValue> _parser = new pb::MessageParser<DecimalValue>(() => new DecimalValue());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pb::MessageParser<DecimalValue> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Facade.GreetReflection.Descriptor.MessageTypes[3]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecimalValue() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecimalValue(DecimalValue other) : this() {
+      units_ = other.units_;
+      nanos_ = other.nanos_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public DecimalValue Clone() {
+      return new DecimalValue(this);
+    }
+
+    /// <summary>Field number for the "units" field.</summary>
+    public const int UnitsFieldNumber = 1;
+    private long units_;
+    /// <summary>
+    /// The whole units of the amount.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public long Units {
+      get { return units_; }
+      set {
+        units_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "nanos" field.</summary>
+    public const int NanosFieldNumber = 2;
+    private int nanos_;
+    /// <summary>
+    /// Number of nano (10^-9) units of the amount.
+    /// The value must be between -999,999,999 and +999,999,999 inclusive.
+    /// If `units` is positive, `nanos` must be positive or zero.
+    /// If `units` is zero, `nanos` can be positive, zero, or negative.
+    /// If `units` is negative, `nanos` must be negative or zero.
+    /// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int Nanos {
+      get { return nanos_; }
+      set {
+        nanos_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override bool Equals(object other) {
+      return Equals(other as DecimalValue);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public bool Equals(DecimalValue other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Units != other.Units) return false;
+      if (Nanos != other.Nanos) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Units != 0L) hash ^= Units.GetHashCode();
+      if (Nanos != 0) hash ^= Nanos.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void WriteTo(pb::CodedOutputStream output) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      output.WriteRawMessage(this);
+    #else
+      if (Units != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(Units);
+      }
+      if (Nanos != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Nanos);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
+      if (Units != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(Units);
+      }
+      if (Nanos != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(Nanos);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(ref output);
+      }
+    }
+    #endif
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public int CalculateSize() {
+      int size = 0;
+      if (Units != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Units);
+      }
+      if (Nanos != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Nanos);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(DecimalValue other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Units != 0L) {
+        Units = other.Units;
+      }
+      if (other.Nanos != 0) {
+        Nanos = other.Nanos;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public void MergeFrom(pb::CodedInputStream input) {
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+      input.ReadRawMessage(this);
+    #else
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Units = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            Nanos = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    #endif
+    }
+
+    #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    void pb::IBufferMessage.InternalMergeFrom(ref pb::ParseContext input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
+            break;
+          case 8: {
+            Units = input.ReadInt64();
+            break;
+          }
+          case 16: {
+            Nanos = input.ReadInt32();
             break;
           }
         }

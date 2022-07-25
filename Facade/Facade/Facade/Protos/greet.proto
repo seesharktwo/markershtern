@@ -5,22 +5,40 @@ option csharp_namespace = "Facade";
 package greet;
 
 service ProductService {
-  rpc GetAllProducts(AllProductsRequest) returns(AllProductsResponce);
+  rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
 }
 
-message AllProductsRequest
+message GetProductsRequest
 {
-	
+
 }
 
-message AllProductsResponce
+message GetProductsResponse
 {
-	repeated ProductResponce Products = 1;
+	repeated Product products = 1;
 }
 
-message ProductResponce
+message Product
 {
-	string Id = 2;
+	string id = 1;
 
-	string Name = 3;
+	string name = 2;
+
+	DecimalValue bid = 3;
+
+	DecimalValue ask = 4;
+}
+
+message DecimalValue
+{
+	// The whole units of the amount.
+	int64 units = 1;
+
+	// Number of nano (10^-9) units of the amount.
+	// The value must be between -999,999,999 and +999,999,999 inclusive.
+	// If `units` is positive, `nanos` must be positive or zero.
+	// If `units` is zero, `nanos` can be positive, zero, or negative.
+	// If `units` is negative, `nanos` must be negative or zero.
+	// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	int32 nanos = 2;
 }

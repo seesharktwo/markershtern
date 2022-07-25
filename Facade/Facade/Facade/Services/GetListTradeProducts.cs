@@ -16,11 +16,11 @@ namespace Facade.Services
             _connectionString = GetConnectionString();
         }
 
-        public async Task<(bool isComplite, List<ProductResponce> products, Exception exception)>
+        public async Task<(bool isComplite, List<Product> products, Exception exception)>
             GetProductsAsync()
         {
             Exception exception = null;
-            List<ProductResponce> products = new List<ProductResponce>();
+            List<Product> products = new List<Product>();
 
             try
             {
@@ -35,12 +35,12 @@ namespace Facade.Services
             return (false, products, exception);
         }
 
-        private async Task<List<ProductResponce>> LoadDataAsync()
+        private async Task<List<Product>> LoadDataAsync()
         {
             using (var channel = GrpcChannel.ForAddress(_connectionString)) 
             {
                 var client = new ProductService.ProductServiceClient(channel);
-                var reply = await client.GetAllProductsAsync(new AllProductsRequest());
+                var reply = await client.GetProductsAsync(new GetProductsRequest());
                 return reply.Products.ToList();
             }
         }

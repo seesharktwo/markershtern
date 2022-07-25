@@ -46,22 +46,34 @@ namespace Facade {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Facade.AllProductsRequest> __Marshaller_greet_AllProductsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.AllProductsRequest.Parser));
+    static readonly grpc::Marshaller<global::Facade.GetProductsRequest> __Marshaller_greet_GetProductsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.GetProductsRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Facade.AllProductsResponce> __Marshaller_greet_AllProductsResponce = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.AllProductsResponce.Parser));
+    static readonly grpc::Marshaller<global::Facade.GetProductsResponse> __Marshaller_greet_GetProductsResponse = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.GetProductsResponse.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::Facade.AllProductsRequest, global::Facade.AllProductsResponce> __Method_GetAllProducts = new grpc::Method<global::Facade.AllProductsRequest, global::Facade.AllProductsResponce>(
+    static readonly grpc::Method<global::Facade.GetProductsRequest, global::Facade.GetProductsResponse> __Method_GetProducts = new grpc::Method<global::Facade.GetProductsRequest, global::Facade.GetProductsResponse>(
         grpc::MethodType.Unary,
         __ServiceName,
-        "GetAllProducts",
-        __Marshaller_greet_AllProductsRequest,
-        __Marshaller_greet_AllProductsResponce);
+        "GetProducts",
+        __Marshaller_greet_GetProductsRequest,
+        __Marshaller_greet_GetProductsResponse);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
       get { return global::Facade.GreetReflection.Descriptor.Services[0]; }
+    }
+
+    /// <summary>Base class for server-side implementations of ProductService</summary>
+    [grpc::BindServiceMethod(typeof(ProductService), "BindService")]
+    public abstract partial class ProductServiceBase
+    {
+      [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+      public virtual global::System.Threading.Tasks.Task<global::Facade.GetProductsResponse> GetProducts(global::Facade.GetProductsRequest request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
     }
 
     /// <summary>Client for ProductService</summary>
@@ -92,24 +104,24 @@ namespace Facade {
       }
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Facade.AllProductsResponce GetAllProducts(global::Facade.AllProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Facade.GetProductsResponse GetProducts(global::Facade.GetProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return GetAllProducts(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return GetProducts(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Facade.AllProductsResponce GetAllProducts(global::Facade.AllProductsRequest request, grpc::CallOptions options)
+      public virtual global::Facade.GetProductsResponse GetProducts(global::Facade.GetProductsRequest request, grpc::CallOptions options)
       {
-        return CallInvoker.BlockingUnaryCall(__Method_GetAllProducts, null, options, request);
+        return CallInvoker.BlockingUnaryCall(__Method_GetProducts, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Facade.AllProductsResponce> GetAllProductsAsync(global::Facade.AllProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Facade.GetProductsResponse> GetProductsAsync(global::Facade.GetProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
-        return GetAllProductsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+        return GetProductsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Facade.AllProductsResponce> GetAllProductsAsync(global::Facade.AllProductsRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Facade.GetProductsResponse> GetProductsAsync(global::Facade.GetProductsRequest request, grpc::CallOptions options)
       {
-        return CallInvoker.AsyncUnaryCall(__Method_GetAllProducts, null, options, request);
+        return CallInvoker.AsyncUnaryCall(__Method_GetProducts, null, options, request);
       }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
@@ -117,6 +129,25 @@ namespace Facade {
       {
         return new ProductServiceClient(configuration);
       }
+    }
+
+    /// <summary>Creates service definition that can be registered with a server</summary>
+    /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public static grpc::ServerServiceDefinition BindService(ProductServiceBase serviceImpl)
+    {
+      return grpc::ServerServiceDefinition.CreateBuilder()
+          .AddMethod(__Method_GetProducts, serviceImpl.GetProducts).Build();
+    }
+
+    /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
+    /// Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+    /// <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+    /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+    [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
+    public static void BindService(grpc::ServiceBinderBase serviceBinder, ProductServiceBase serviceImpl)
+    {
+      serviceBinder.AddMethod(__Method_GetProducts, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Facade.GetProductsRequest, global::Facade.GetProductsResponse>(serviceImpl.GetProducts));
     }
 
   }
