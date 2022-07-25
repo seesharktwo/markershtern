@@ -72,7 +72,7 @@ UserId.
 message Product {
 	string product_id = 1;
 	string name = 2;
-	string author_marker = 3;
+	string author_id = 3;
 	int32 quantity = 4;
 	int32 quantity_for_trading = 5;
 } 
