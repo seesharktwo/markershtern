@@ -173,26 +173,12 @@ message RemoveProductResponse {
 ### Для кафки:
 
 ```proto
-message Authorization_UserRegisteredEvent {
+message UserRegisteredEvent {
     string user_id = 1;
 }
 ```
 \- Микросервис портфеля активов подписан на топик события регистрации пользователя. Микросервис получает это сообщение,  
 после чего создает запись в БД с user_id и пустым списком продуктов, если нет ошибок.
-
-
-```proto
-message Authorization_UserRegisteredEventResponse {
-    string user_id = 1;
-    oneof result {
-    	Errors error = 2;
-    	bool success = 3;
-    } 
-}
-```  
-\- Микросервис портфеля активов подписан на топик события регистрации пользователя. Если в ходе выполнения создания новой записи возникла ошибка, то она включается в error. Если ошибок нет, то success true, что говорит о успешном выполнении операции.  
-Возможные ошибки:  
-- Запись с таким UserID уже существует.
 
 ```proto
 message Order_OrderCompletedEvent {
@@ -203,24 +189,6 @@ message Order_OrderCompletedEvent {
 }
 ```  
 \- Микросервис портфеля активов подписан на топик события совершения сделки. Микросервис проверяет существование двух пользователей по UserID, находит нужный продукт, отнимает quantity продукта у user_id_from и прибавляет его user_id_to. 
-
-```proto
-message Briefcase_OrderCompletedEventResponse {
- string user_id_from = 1;
- string user_id_to = 2;
- oneof result {
-    	Errors error = 2;
-    	bool success = 3;
-    }
-}
-```  
-\- Микросервис портфеля активов подписан на топик события совершения сделки. Если в ходе операций по изменению записей возникла ошибка, то мы отправляем сообщение в топик с error, иначе success true.  
-Возможные ошибки:  
-- Пользователь с таким user_id_from не был найден.
-- Пользователь с таким user_id_to не был найден.
-- У пользователя user_id_from не был найден товар product_id.
-- У пользователя user_id_from не был найден товар product_id в нужном количестве.
-
 
 ```proto
 message Order_ProductSoldEvent {
