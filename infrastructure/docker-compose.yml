@@ -34,12 +34,18 @@ services:
   prometheus:
     image: bitnami/prometheus
     restart: on-failure
-    ports:
-     - 9090:9090
     profiles:
-      - metrics
+      - monitor
     volumes:
       - ./config/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml 
+
+  grafana:
+    image: grafana/grafana
+    restart: on-failure
+    profiles:
+      - monitor
+    ports:
+        - 3030:3000
 
 volumes:
   kafka:
