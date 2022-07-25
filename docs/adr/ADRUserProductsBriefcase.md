@@ -23,7 +23,7 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
     Line_1 {  
     	UserId, Set Prodcuts [  
     	Product_1 { ProductId, Name, AuthorMarker, Quantity, QuantityForTrading },  
-    	Product_2 { ProductId, Name, AuthorMarker, Quantity, QuantityForTrading }   
+    	Product_2 { ProductId, Name, AuthorId, Quantity, QuantityForTrading }   
     	]   
     },  
     Line_2...
