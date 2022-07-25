@@ -184,7 +184,7 @@ message GetProductsResponse
 
 Требования:
 Система выводит список товаров для продажи. Если система не может вывести список - система выводит сообщение об ошибке.
-(Секция с требованиями)[https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.q61z6p80nw0e]
+[Секция с требованиями](https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.q61z6p80nw0e)
 
 Решение:  
 Проблема решается с помощью микросервиса фасада.
