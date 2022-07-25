@@ -143,7 +143,7 @@ message OrderIsDone {
    string user_id = 1;
    string order_id = 2;
    string user_id_to = 3; 
-   DecimalValue = 4;
+   DecimalValue value = 4;
 }
 ```   
 \- Сообщение для Facade, которое указывает, что заявка была закрыта.
