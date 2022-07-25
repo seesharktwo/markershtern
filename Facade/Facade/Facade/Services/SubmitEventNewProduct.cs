@@ -11,16 +11,16 @@ namespace Facade.Services
 {
     public class SubmitEventNewProduct
     {
-        ProducerConfig _consumerConfig;
+        ProducerConfig _producerConfig;
 
         public SubmitEventNewProduct()
         {
-            _consumerConfig = BuilldConfig();
+            _producerConfig = BuilldConfig();
         }
 
         public void Submit(NewProductRequest newProductRequest,Action callback)
         {
-            var producer = new ProducerBuilder<Null, NewProductRequest>(_consumerConfig);
+            var producer = new ProducerBuilder<Null, NewProductRequest>(_producerConfig);
             producer.SetValueSerializer(new ProducerSerializer<NewProductRequest>());
             var producerBuild = producer.Build();
 
