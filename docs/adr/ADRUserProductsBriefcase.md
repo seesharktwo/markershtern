@@ -131,7 +131,7 @@ message GetUserProductsRequest {
 \- Сообщение приходит, когда пользователь запрашивает список продуктов. Микросервис использует user_id для поиска записи, после чего берет список товаров.
 
 ```proto
-message GetUserProductsReply {
+message GetUserProductsResponse {
     string user_id = 1;
     oneof reply {
     	repeated Product products = 2;
@@ -151,19 +151,6 @@ message AddProductRequest {
 ```
 \- Микросервис получает это сообщение от Facade через gRPC, по user_id ищет запись в БД, и, если проблем нет, то добавляет product в запись.
 
-```proto
-message AddProductReply {
-    string user_id = 1;
-    oneof result {
-    	Errors error = 2;
-    	bool success = 3;
-    }
-}
-```
-\- Если в ходе выполнения операций по изменению записей возникла ошибка, то эта ошибка вписывается в error. Микросервис отправляет это сообщение обратно Facade через gRPC
-Возможные ошибки:  
-- Пользователя с таким UserID не существует.  
-
 
 ```proto
 message RemoveProductRequest {
@@ -175,7 +162,7 @@ message RemoveProductRequest {
 ищет товар по product_id, если Quantity == QuantityForTrading, то полностью удаляет указанный товар с портфеля пользователя.
 
 ```proto
-message RemoveProductReply {
+message RemoveProductResponse {
     string user_id = 1;
     oneof result {
     	Errors error = 2;
@@ -202,7 +189,7 @@ message Authorization_UserRegisteredEvent {
 
 
 ```proto
-message Authorization_UserRegisteredEventReply {
+message Authorization_UserRegisteredEventResponse {
     string user_id = 1;
     oneof result {
     	Errors error = 2;
@@ -225,7 +212,7 @@ message Order_OrderCompletedEvent {
 \- Микросервис портфеля активов подписан на топик события совершения сделки. Микросервис проверяет существование двух пользователей по UserID, находит нужный продукт, отнимает quantity продукта у user_id_from и прибавляет его user_id_to. 
 
 ```proto
-message Briefcase_OrderCompletedEventReply {
+message Briefcase_OrderCompletedEventResponse {
  string user_id_from = 1;
  string user_id_to = 2;
  oneof result {
@@ -253,7 +240,7 @@ message Order_ProductSoldEvent {
 , ищет товар по product_id, если проблем нет, то проверяет, что quantity <= QuantityForTrading.
 
 ```proto
-message Briefcase_ProductSoldEventReply {
+message Briefcase_ProductSoldEventResponse {
     string user_id = 1;
     oneof result {
     	Errors error = 2;
