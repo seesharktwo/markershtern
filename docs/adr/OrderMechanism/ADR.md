@@ -210,7 +210,7 @@ message Order_ChangeBalanceEvent {
 \- Сообщение для Микросервиса Баланса о необходимости изменения балансов пользователей.   
 
 ```proto   
-Order_ChangeBriefcaseEvent {
+message Order_ChangeBriefcaseEvent {
    string user_id_from = 1;
    string user_id_to = 2;  
    string product_id = 3;
