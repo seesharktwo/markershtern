@@ -22,8 +22,8 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 
     Line_1 {  
     	UserId, Set Prodcuts [  
-    	Product_1 { ProductId, Name, AuthorId, Quantity, QuantityForTrading },  
-    	Product_2 { ProductId, Name, AuthorId, Quantity, QuantityForTrading }   
+    	Product_1 { ProductId, Name, AuthorId, Quantity },  
+    	Product_2 { ProductId, Name, AuthorId, Quantity }   
     	]   
     },  
     Line_2...
@@ -38,10 +38,8 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 В каждом методе, где используется ID, нужно использовать метод перевода из string в
 Guid.
 
-Создание Записи (string userId) -  
-Проверяет, сущетсвует ли запись в БД. Если запись с таким UserID существует, то
-отправить ответ с описанием ошибки с UserId. Если все в порядке, то создать новую запись и 
-отправить ответное сообщение с UserId.
+Создание Записи (string userId) - Создает новую запись в БД с userId. Если такая запись с таким userId уже есть,   
+то новая запись не создается. 
 
 Редактирование Записи(string userId, product product) -  
 Проверяет, существует ли запись в БД.  Если записи с таким UserID не существует, то  
@@ -74,26 +72,21 @@ message Product {
 	string name = 2;
 	string author_id = 3;
 	int32 quantity = 4;
-	int32 quantity_for_trading = 5;
 } 
 ```
 
 ```proto
 enum Errors {
 	USER_NOT_FOUND = 1;
-	USER_ID_MATCHES_EXISTING = 2;
-	USER_NOT_HAVE_PRODUCT = 3;
-	USER_NOT_HAVE_QUANTITY_PRODUCT = 4;
-	QUANTITY_SALE_EXCEEDS_AVAILABLE_QUANTITY = 5;
-	PRODUCT_ON_SALE = 6;
+	USER_NOT_HAVE_PRODUCT = 2;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 3;
+	PRODUCT_ON_SALE = 4;
 }
 ```  
 1. Пользователь с таким Id не был найден.  
-2. Пользователь с таким Id уже существует.  
-3. Пользователь не имеет продукт с таким Id.  
-4. Пользователь не имеет необходимое количества продукта.  
-5. Количество товара в заявке на продажу превышает доступное количество товара, доступное для торговли.  
-6. Товар не может быть удален, так как находится на торговле.
+2. Пользователь не имеет продукт с таким Id.  
+3. Пользователь не имеет необходимое количества продукта.   
+4. Товар не может быть удален, так как находится на торговле.
 
 Так как Protocol Buffers не поддерживает напрямую тип Guid, то ID различных
 объектов представлены как тип string, который в будущем будем расшифровываться 
@@ -159,7 +152,7 @@ message RemoveProductRequest {
 }
 ```
 \- Микросервис получает это сообщение через gRPC от Facade. Микросервис делает поиск записи в БД по user_id,  
-ищет товар по product_id, если Quantity == QuantityForTrading, то полностью удаляет указанный товар с портфеля пользователя.
+ищет товар по product_id. Если такой товар имеется, то Микросервис через Kafka отправляет сообщение, чтобы убедиться, что товар не находится в продаже. Если нет, то полностью удаляет указанный товар с портфеля пользователя.
 
 ```proto
 message RemoveProductResponse {
@@ -237,7 +230,7 @@ message Order_ProductSoldEvent {
 }
 ```
 \- Микросервис портфеля активов подписан на топик события продажи товара. Микросервис делает поиск записи в БД по user_id   
-, ищет товар по product_id, если проблем нет, то проверяет, что quantity <= QuantityForTrading.
+, ищет товар по product_id, проверяет, имеется ли товар в необходимом количестве.
 
 ```proto
 message Briefcase_ProductSoldEventResponse {
@@ -252,6 +245,23 @@ message Briefcase_ProductSoldEventResponse {
 Возможные ошибки:
 - Пользователя с таким UserID не существует в БД.  
 - Продукта с таким ProductID не существует в портфеле пользователя.  
-- Количество товара для продажи превышает QuantityForTrading товара в портфеле пользователя.
+- Количество товара недостаточно.
+
+```proto   
+message Briefcase_ProductQuantityDecreaseEvent {   
+   string user_id = 1;
+   string product_id = 2;
+   int32 quantity = 3;
+}
+```   
+\- Это сообщение отправляется, когда у пользователя отнимается некоторое количество товара после факта продажи. На это событие должен быть подписан Микросервис заявок. Он ищет заявку в БД по Type = "sell_order" по user_id, а далее по product_id. Если в заявке указанное количество больше, чем quantity, то заявку необходимо отменить, так как она недействительна.
+
+```proto   
+message Briefcase_ProductRemovedEvent {
+   string user_id = 1;
+   string product_id = 2;
+}
+```   
+\- Это сообщение отправляется, когда пользователь удаляет свой товар из портфеля активов. На это событие подписан Микросервис Заявок. Он ищет заявки с Type = "sell_order", по user_id, по product_id. Далее закрывает все заявки, подходящие под эти условия. 
 
 ---
