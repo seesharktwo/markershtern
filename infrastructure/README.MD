@@ -16,7 +16,7 @@ Always starts up:
 - kafka
 
 Profiles avail:
-- monitor: prometheus + grafana
+- monitor: node_exporter + prometheus + grafana
 ```
 
 ### Connection ports

@@ -44,6 +44,7 @@ services:
       - monitor
     volumes:
       - ./config/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml 
+      - prometheus_data:/opt/bitnami/prometheus/data
 
   grafana:
     image: grafana/grafana
@@ -55,3 +56,4 @@ services:
 
 volumes:
   kafka:
+  prometheus_data:
