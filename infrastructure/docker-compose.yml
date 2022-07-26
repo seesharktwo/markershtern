@@ -31,6 +31,12 @@ services:
     volumes:
       - kafka:/bitnami/kafka
 
+  node_exporter:
+    image: bitnami/node-exporter
+    restart: on-failure
+    profiles:
+      - monitor
+
   prometheus:
     image: bitnami/prometheus
     restart: on-failure
