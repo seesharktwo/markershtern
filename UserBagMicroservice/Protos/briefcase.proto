@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+option csharp_namespace = "UserBagMicroservice.Protos";
+
+service UserBriefcase {
+	rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply);
+}
+
+message Product {
+	string product_id = 1;
+	string name = 2;
+	string author_id = 3;
+	int32 quantity = 4;
+}
+
+message UserBag {
+	string user_id = 1;
+	repeated Product products = 2;
+}
+
+enum Errors {
+	USER_NOT_FOUND = 0;
+	USER_ID_MATCHES_EXISTING = 1;
+	USER_NOT_HAVE_PRODUCT = 2;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 3;
+	QUANTITY_SALE_EXCEEDS_AVAILABLE_QUANTITY = 4;
+	PRODUCT_ON_SALE = 5;
+}
+
+message ToWrapper {
+	repeated Product products = 1;
+}
+
+message GetUserProductsRequest {
+	string user_id = 1;
+}
+
+message GetUserProductsReply {
+	string user_id = 1;
+	oneof result {
+		ToWrapper wrapper = 2;
+		Errors error = 3;
+	}
+}
