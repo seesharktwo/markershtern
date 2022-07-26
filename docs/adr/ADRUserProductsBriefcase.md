@@ -181,7 +181,7 @@ message UserRegisteredEvent {
 после чего создает запись в БД с user_id и пустым списком продуктов, если нет ошибок.
 
 ```proto
-message Order_OrderCompletedEvent {
+message OrderCompletedEvent {
  string user_id_from = 1;
  string user_id_to = 2;
  string product_id = 3;
