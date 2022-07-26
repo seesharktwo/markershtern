@@ -29,8 +29,7 @@ flowchart TD
 	subgraph kafka
 		BuyOrderCreated
 		SellOrderCreated
-		BuyOrderDeleted
-		SellOrderDeleted
+		ProductPriceChanged
 	end
 	O["Order MicroService"]
 	P ==consume==>kafka
@@ -49,7 +48,7 @@ flowchart TD
 }
 ```
 	
-Наш микросервис подписан на топик заявок, пусть будет BuyOrderCreated, SellOrderCreated, BuyOrderDeleted, SellOrderDeleted(смотря как это реализуется в микросервисе заявок) куда будут приходить события на создание новой заявки.  
+Наш микросервис подписан на топик заявок, пусть будет BuyOrderCreated, SellOrderCreated, ProductPriceChanged(смотря как это реализуется в микросервисе заявок) куда будут приходить события на создание новой заявки.  
 Из этих событий будет формироваться база данных о текущих лучших преложений товаров.
 
 
