@@ -80,7 +80,7 @@ message SellOrderCreated
 // Сообщение, указывающее на изменение лучшей стоимости продукта
 message ProductPriceChanged 
 {
-	string id = 1;
+	string product_id = 1;
 	string name = 2;
 	PriceType type = 3; 
 	DecimalValue price = 4;
