@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using ProductService.Configs;
 using ProductService.Models;
 
 namespace ProductService

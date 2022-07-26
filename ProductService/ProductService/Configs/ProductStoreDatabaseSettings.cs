@@ -1,4 +1,4 @@
-﻿namespace ProductService.Models
+﻿namespace ProductService.Configs
 {
     public class ProductStoreDatabaseSettings
     {

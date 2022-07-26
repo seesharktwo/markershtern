@@ -1,6 +1,34 @@
 version: '3.8'
   
 services:
+  kafka:
+    image: bitnami/kafka
+    restart: unless-stopped
+    mem_limit: ${KAFKA_MAX_MEM:-1024m}
+    environment:
+      KAFKA_ENABLE_KRAFT: "yes"
+      KAFKA_CFG_PROCESS_ROLES: "broker,controller"
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+      KAFKA_HEAP_OPTS: "-Xmx${KAFKA_MAX_MEM:-1024m} -Xms${KAFKA_MAX_MEM:-1024m}"
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_BROKER_ID: 1
+      KAFKA_CFG_LISTENERS: "PLAINTEXT://:9092,CONTROLLER://:9093"
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: "CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT"
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_CFG_NUM_RECOVERY_THREADS_PER_DATA_DIR: 1
+      KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: true
+      KAFKA_CFG_NUM_PARTITIONS: 1
+      KAFKA_CFG_LOG_RETENTION_HOURS: 24
+      KAFKA_CFG_LOG_RETENTION_BYTES: 500000
+      KAFKA_CFG_ACKS: "all"
+      KAFKA_CFG_COMPRESSION_TYPE: "snappy"
+      KAFKA_CFG_RETRIES: 0
+      KAFKA_CFG_MAX_IN_FLIGHT_REQUESTS_PER_CONNECTION: 1
+      KAFKA_CFG_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092"
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka:/bitnami/kafka
 
 
   mongo:
@@ -14,3 +42,4 @@ services:
 volumes:
   mongodb:
   mongodb_config:
+  kafka:

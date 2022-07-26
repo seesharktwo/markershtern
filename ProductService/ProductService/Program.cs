@@ -1,5 +1,5 @@
 using ProductService;
-using ProductService.Models;
+using ProductService.Configs;
 using ProductService.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,11 +9,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
-// Интеграция в DI строки подключения
+// Интеграция в DI конфигурации для сервисов
 builder.Services.Configure<ProductStoreDatabaseSettings>(
     builder.Configuration.GetSection("ProductStoreDatabase"));
+builder.Services.Configure<KafkaConsumerSettings>(
+    builder.Configuration.GetSection("BootstrapServerKafka"));
 // Внедрение зависимости ProductContext
 builder.Services.AddSingleton<ProductContext>();
+builder.Services.AddHostedService<KafkaConsumerService>();
 
 
 var app = builder.Build();
