@@ -6,162 +6,198 @@ adr by ted7007
 
 Проблема:  
 
-Мироксервис с товарами.  Основная задача, модель товара.  
-Небходимо рассмотреть взаимодействие микросервиса с кафкой - сообщения, негативные сценарии, ошибки между сервисами
-Также стоит вопрос о модели товара, взаимодействии сервиса товара с mongoDB
+Мироксервис с товарами доступных для торговли. 
+Метод в микросервисе на получение списка товаров доступных для торговли.
 
-Требования:
+Требования:  
+Получение клиентом списка продуктов для торговли, каждый из которых будет содержать  id, название, bid and ask  
+[Секция с требованиями](https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.q61z6p80nw0e)
 
 
 Решение:
+ Основная задача, модель товара.  
+Небходимо рассмотреть взаимодействие микросервиса с кафкой - сообщения, негативные сценарии, ошибки между сервисами
+Также стоит вопрос о модели товара, взаимодействии сервиса товара с mongoDB
 
-Микросервис работает с уникальными товарами  
-  >Уникальность товара заключается в названии, не может быть две разновидности товара с одинаковым именем  
-Микросервис будет создавать уникальные товары, выводить их по id или списком.
 
-Модель товара: 
+Схема взаимодействия:  
 
-	{
-		[BSON.ObjectID]
-		string Id
-		[unique]
-		string Name 
-	}
-Наш микросервис подписан на топик , пусть будет NewProductRequest, куда будут приходить события на создание нового товара,  
-предположительно запросы будут идти из микроервиса портфеля  
-Как я вижу процесс получения запросов и общение с кафкой используя proto:  
+```mermaid
+flowchart TD  
+	F["Facade"] ==GetProductsRequest==> P["Product MicroService"]
+	P ==GetProductsResponce==> F
+	subgraph kafka
+		BuyOrderCreated
+		SellOrderCreated
+		ProductPriceChanged
+	end
+	O["Order MicroService"]
+	P ==consume==>kafka
+	O ==produce==>kafka
+
+```
+
+Модель товара:  
+```csharp
+{
+	[BSON.ObjectID]
+	string Id
+	string Name 
+	decimal Bid
+	decimal Ask
+}
+```
+	
+Наш микросервис подписан на топик заявок, пусть будет BuyOrderCreated, SellOrderCreated, ProductPriceChanged(смотря как это реализуется в микросервисе заявок) куда будут приходить события на создание новой заявки.  
+Из этих событий будет формироваться база данных о текущих лучших преложений товаров.
+
+
+Мною предлагается следующий процесс общения с кафкой используя proto:  
 Микросервис товаров опрашивает топик на новые сообщения.  
-Каждое полученное сообщение будет десериализовыаться из байтовых значений в c#-objs используя десериализатор на основе proto NewProductRequest
+Каждое полученное сообщение будет десериализовываться из байтовых значений в c#-objs используя десериализатор на основе proto событий заявок:  
+ >Это предположительное определение сообщений, окончательный вариант должен быть предложен микросервисом заявок  
+ Предлаг
+```proto
+// Сообщение с данными созданной заявки на покупку
+message BuyOrderCreated
+{
+	string id = 1
+	string name = 2;
+	int quanity = 3;
+	DecimalValue price = 4;
+	string user_id = 5;
+}
 
-	message NewProductRequest
-	{
-		string Name = 1;
-	}
-После того как сообщение было получено и десериализовано, через сервис продуктов, у которого будет доступ к контексту БД, проверяется название нового продукта на уникальность.  
-Если товар не повторяет другое название - он успешно добавляется в список уникальных товаров, сервис возвращает id нового товара в БД и затем формируется ответ.  
-Если товар повторяет другое название - то добавление его в список отклоняется и также формируется ответ
+// Сообщение с данными созданной заявки на продажу
+message SellOrderCreated
+{
+	string id = 1
+	string name = 2;
+	int quanity = 3;
+	DecimalValue price = 4;
+	string user_id = 5;
+}
+// Сообщение, указывающее на изменение лучшей стоимости продукта
+message ProductPriceChanged 
+{
+	string product_id = 1;
+	string name = 2;
+	PriceType type = 3; 
+	DecimalValue price = 4;
+}
+
+// Вид лучшего предложения
+enum PriceType
+{
+	// лучшее предложение стоимости покупки
+	BID = 0;
+	// лучшее предложение стоимости продажи
+	ASK = 1;
+}  
+
+```  
+
+```proto
+message DecimalValue
+{
+	// The whole units of the amount.
+	int64 units = 1;
+
+	// Number of nano (10^-9) units of the amount.
+	// The value must be between -999,999,999 and +999,999,999 inclusive.
+	// If `units` is positive, `nanos` must be positive or zero.
+	// If `units` is zero, `nanos` can be positive, zero, or negative.
+	// If `units` is negative, `nanos` must be negative or zero.
+	// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	int32 nanos = 2;
+}
+```
 	
-	message NewProductResponce
-	{
-		bool IsAccepted = 1;
-
-		string Id = 2;
-
-		string Name = 3;
-	}
-Если товар уникален - IsAccepted имеет значение true, остальные поля также заполняются,  
-иначе IsAccepted равно false значению, а остальные поля не заполняются (дефолт).  
-Ответ десериализуется также используя сериализацию на основе proto файла в байтовые значения.  
-Теперь микросервис отправляет бинарное сообщение в ответный топик, пусть будет NewProductResponce.   
-
-По поводу получения продюсером и консюмером proto файлов(для сериализации/десериализации) - я нашел решение, где эти proto файлы подключаются к каждому микросервису как библиотека.
-
-Применение функции, которая будет возвращать товар по id я сейчас не вижу. А вот список товаров может использовать например микросервис заявок, когда будет спрашивать у пользователя название товара для оформления заявки.  
-Получение списка уникальных товаров:  
-Эта функция будет происходить вызываться другим сервисом по grpc, соотвественно снизу прилагаю контракт в proto:  
+для DecimalValue нужно создать расширение для простого конвертирования в decimal, подробнее [тут](https://visualrecode.com/blog/csharp-decimals-in-grpc/)  
+Сообщения для общения с кафкой хранятся в общей библиотеке .proto файлов и подключаются по необходимости.  
 
 
-	service ProductService {
-	  rpc GetAllProducts(AllProductsRequest) returns(AllProductsResponce);
-	}
-	
-	message AllProductsRequest
-	{
-		
-	}
-	
-	message AllProductsResponce
-	{
-		repeated ProductResponce Products = 1;
-	}
-	
-	message ProductResponce
-	{
-		string Id = 2;
+> Итоговое решение о сущности также стоит за микросервисом заявок, а также от задач которые будет решать микросервис товаров.
 
-		string Name = 3;
-	}
-	
-Альтернативные вариант ответного сообщения:
-Передача нужного кол-ва следующих сообщений, количество можно например регулировать в запросе.
-
-	message ProductResponce
-	{
-		string Id = 2;
-
-		string Name = 3;
-	}
-Такое решение позволяет контролировать размер сообщения, когда выбранное мною решение отправляет все товары разом.  
- > Не вижу применения альтернативному варианту, ведь обычно требуются именно полный список уникальных продуктов
----  
-Статус:  
- * Предложено
+--- 
 
 Проблема:  
-Вывод списка товаров, доступных для торговли  
+Метод получения списка товаров для торговли в микросервисе товаров  
 
-Сноска из [требований](https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#):  
-Система отображает список всех товаров, которые сейчас находятся в торговле, включая название товара, лучшую цена для покупки (bid), лучшую цена продажи (ask), которые формируются из всех текущих заявок для выбранного товара. 
+Решение:
+Этот метод будет вызываться другим сервисом по grpc.  
+Метод будет реализован в микросервисе товаров. Реализация будет происходить за счет данных о текущих заявках
 
-Решение:  
-Проблема будет решаться с помощью микросервиса заявок так как именно там формируются bid and ask.  
-Сервис будет содержать в себе контракт для взаимодействия по grpc напрямую(кажется это называется клиент-серверное взаимодействие).  
-Таким образом у нас не будет засоряться kafka query сообщениями
+```proto
+service ProductService {
+  rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
+}
 
-	service OrderService
+message GetProductsRequest
+{
+
+}
+
+message GetProductsResponse
+{
+	message Product
 	{
-		// какие-либо другие методы, которые определяются в задаче самого этого микросервиса
-		....
+		string id = 1;
 
-		/* метод для запроса списка продуктов для торговли
-		 метод находит bid and ask для каждого товара, на который существуют заявки и формирует ответ */
-		grpc GetProductsWithBidAndAsk(StreamProductsWithBidAndAskRequest) returns AllProductWithBindAndAskResponce
+		string name = 2;
+
+		DecimalValue bid = 3;
+
+		DecimalValue ask = 4;
 	}
+	repeated Product products = 1;
+}
 
-	message AllProductsWithBidAndAskRequest {}
-
-	message AllProductsWithBidAndAskResponce
-	{
-		repeat ProductWithBidAndAskResponce = 1;
-	}
-
-	message ProductWithBidAndAskResponce
-	{
-		string Id = 1;
-
-		string Name = 2;
-
-		DecimalValue Bid = 3;
-
-		DecimalValue Ask = 4;
-
-	}
+```  
+В будущем нужно будет использовать метод с пагинацией.  
+Предлагается использовать следующее решение ([источник](https://itnan.ru/post.php?c=1&p=419083)):  
+Пагинация с курсором. В запросе будет приходить курсор запрашиваемой страницы,  
+который будет представлять из себя закодированную посредством Base64 информацию о поле (если курсор нулевой - значит идет вызов первой порции).  
+Далее в ответе будет приходить информация о следующем и предыдущем курсоре.  
+Альтернативные вариант ответного сообщения с пагинацией:  
+```proto
+message GetProductsRequest
+{
+	// Максимальное кол-во объектов на странице
+	int pages_size = 1;
 	
-	message DecimalValue
-	{
-		// The whole units of the amount.
-		int64 units = 1;
-		
-	        // Number of nano (10^-9) units of the amount.
-  		// The value must be between -999,999,999 and +999,999,999 inclusive.
- 	        // If `units` is positive, `nanos` must be positive or zero.
-		// If `units` is zero, `nanos` can be positive, zero, or negative.
- 		// If `units` is negative, `nanos` must be negative or zero.
-  		// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
-		int32 nanos = 2;
-	}
-для DecimalValue нужно создать расширение для простого конвертирования в decimal, подробнее [тут](https://visualrecode.com/blog/csharp-decimals-in-grpc/)
-	
+	// Курсор запрашиваемой страницы
+	string cursor = 2;
+}
 
----
+message GetProductsResponse
+{
+	repeated Product products = 1;
+
+	// Курсор следующей страницы
+	string next_crusor = 2;
+	
+	// Курсор предыдущей страницы
+	string previous_cursor = 3;
+}
+```  
+
+Контракт на общение service to service будет находиться в обрабатывающем микросервисе, его будет импортировать вызывающий сервис (в нашем случае facade)
+
+---  
+
 Статус:  
  * Предложено
 
 Проблема:  
 Получение списка товаров доступных для торговли фасадом
 
+Требования:
+Система выводит список товаров для продажи. Если система не может вывести список - система выводит сообщение об ошибке.
+[Секция с требованиями](https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.q61z6p80nw0e)
+
 Решение:  
 Проблема решается с помощью микросервиса фасада.
-Метод получения списка будет использовать контракт микросервиса заявок GetProductsWithBidAndAsk, делая на него запрос AllProductsWithBidAndAskRequest 
-и ожидая ответ AllProductsWithBidAndAskResponce.  
-Метод будет также отлавливать ошибку RpcException, если такая будет - фасад должен оповестить клиента о ошибке и попросить обновить страницу(по требованиям).
+Метод получения списка будет использовать контракт микросервиса заявок GetProductsWithBidAndAsk, делая на него запрос GetProductsRequest 
+и ожидая ответ GetProductsResponce.  
+Метод будет также отлавливать ошибку RpcException, если такая будет - фасад должен оповестить клиента о ошибке и попросить обновить страницу.
