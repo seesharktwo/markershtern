@@ -16,6 +16,7 @@ builder.Services.Configure<KafkaConsumerSettings>(
     builder.Configuration.GetSection("BootstrapServerKafka"));
 // Внедрение зависимости ProductContext
 builder.Services.AddSingleton<ProductContext>();
+builder.Services.AddSingleton<ProductService.Services.ProductService>();
 builder.Services.AddHostedService<KafkaConsumerService>();
 
 
