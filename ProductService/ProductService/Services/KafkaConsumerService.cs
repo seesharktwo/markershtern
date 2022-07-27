@@ -11,16 +11,16 @@ namespace ProductService.Services
     {
         private readonly ConsumerConfig _config;
 
-        private readonly ProductContext _context;
+        private readonly ProductService _service;
 
-        public KafkaConsumerService(IOptions<KafkaConsumerSettings> config, ProductContext context)
+        public KafkaConsumerService(IOptions<KafkaConsumerSettings> config, ProductService service)
         {
             this._config = new ConsumerConfig
             {
                 BootstrapServers = config.Value.BootstrapServers,
                 GroupId = config.Value.GroupId
             };
-            _context = context;
+            _service = service;
         }
 
         protected override Task ExecuteAsync(CancellationToken cancellationToken)
@@ -58,17 +58,8 @@ namespace ProductService.Services
                             var newOrder = JsonSerializer.Deserialize
                                 <BuyOrderCreated>
                                     (consumer.Message.Value);
-                            var product = await _context.GetByNameAsync(newOrder.Name);
-                            if (product is null)
-                            {
-                                product = new Models.Product
-                                {
-                                    Name = newOrder.Name,
-                                    Ask = newOrder.Price,
-                                    Bid = 0
-                                };
-                                await _context.CreateAsync(product);
-                            }
+                            _service.ProcessingBuyOrder(newOrder);
+                            
                             Debug.WriteLine($"Processing Product Name: {newOrder.Name}");
                         }
                     }
@@ -112,17 +103,7 @@ namespace ProductService.Services
                             var newOrder = JsonSerializer.Deserialize
                                 <SellOrderCreated>
                                     (consumer.Message.Value);
-                            var product = await _context.GetByNameAsync(newOrder.Name);
-                            if (product is null)
-                            {
-                                product = new Models.Product
-                                {
-                                    Name = newOrder.Name,
-                                    Bid = newOrder.Price,
-                                    Ask = 0
-                                };
-                                await _context.CreateAsync(product);
-                            }
+                            _service.ProcessingSellOrder(newOrder);
                             Debug.WriteLine($"Processing Product Name: {newOrder.Name}");
                         }
                     }
@@ -162,23 +143,7 @@ namespace ProductService.Services
                             var newOrder = JsonSerializer.Deserialize
                                 <ProductPriceChanged>
                                     (consumer.Message.Value);
-                            var product = await _context.GetAsync(newOrder.Id);
-                            if (!(product is null))
-                            {
-                                switch(newOrder.Type)
-                                {
-                                    case PriceType.Ask:
-                                        product.Ask = newOrder.Price;
-                                        
-                                        break;
-
-                                    case PriceType.Bid:
-                                        product.Bid = newOrder.Price;
-
-                                        break;
-                                }
-                                await _context.UpdateAsync(newOrder.Id, product);
-                            }
+                            _service.ProcessingPriceChangedEvent(newOrder);
                             Debug.WriteLine($"Processing Product Name: {newOrder.Name}");
                         }
                     }
