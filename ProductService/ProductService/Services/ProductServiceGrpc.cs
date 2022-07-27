@@ -23,7 +23,7 @@ namespace ProductService.Services
             var products = await  _context.GetAsync();
             products.ForEach(p =>
             {
-                var productResponce = Mapper.Map<Models.Product, Product>(p);
+                var productResponce = Mapper.Map<Models.Product, GetProductsResponse.Types.Product>(p);
                 responce.Products.Add(productResponce);
             }); 
             return responce;
