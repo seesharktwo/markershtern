@@ -23,8 +23,6 @@ namespace ProductService
 
             _productsCOllection = mongoDatabase.GetCollection<Models.Product>(
                 bookStoreDatabaseSettings.Value.ProductsCollectionName);
-
-            _productsCOllection.InsertOne(new Product { Ask = 40.04m, Bid = 35.03m, Name = "Euro" });
         }
 
         public async Task<List<Models.Product>> GetAsync() =>
