@@ -5,7 +5,7 @@ using UserBagMicroservice.Protos;
 
 namespace UserBagMicroservice.Services
 {
-    public class UserBriefcaseService
+    public class UserBriefcaseService : UserBriefcase.UserBriefcaseBase
     {
         private readonly IMongoRepository<Models.UserBag> _userBagRepository;
         private ILogger<UserBriefcaseService> _logger;

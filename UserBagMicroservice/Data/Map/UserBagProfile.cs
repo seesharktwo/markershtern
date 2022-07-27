@@ -2,8 +2,7 @@
 
 namespace UserBagMicroservice.Data.Map
 {
-    public class UserBagProfile<T> : Profile 
-        where T : class
+    public class UserBagProfile : Profile 
     {
         public UserBagProfile()
         {
