@@ -20,7 +20,7 @@ namespace UserBagMicroservice.Services
             _mapper = mapper;
         }
 
-        public async Task<GetUserProductsReply> GetUserProducts(GetUserProductsRequest request,
+        public override async Task<GetUserProductsReply> GetUserProducts(GetUserProductsRequest request,
             ServerCallContext context)
         {
             List<Models.Product> productModels = _userBagRepository.FindById(request.UserId).Products;
