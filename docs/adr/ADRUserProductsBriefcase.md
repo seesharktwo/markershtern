@@ -61,6 +61,7 @@ UserId.
 отправить ответ с описанием ошибки с UserId. Если все в порядке, удалить товар, отправить ответным сообщением  
 UserId.
 
+Для решения проблемы с обработкой дубликатов сообщений следует использовать дополнительную коллекцию в MongoDB.
 
 ---
 
@@ -181,17 +182,18 @@ message UserRegisteredEvent {
 после чего создает запись в БД с user_id и пустым списком продуктов, если нет ошибок.
 
 ```proto
-message OrderCompletedEvent {
- string user_id_from = 1;
- string user_id_to = 2;
- string product_id = 3;
- int32 quantity = 4;
+message OrderCompletedEvent {  
+ string message_id = 1;
+ string user_id_from = 2;
+ string user_id_to = 3;
+ string product_id = 4;
+ int32 quantity = 5;
 }
 ```  
 \- Микросервис портфеля активов подписан на топик события совершения сделки. Микросервис проверяет существование двух пользователей по UserID, находит нужный продукт, отнимает quantity продукта у user_id_from и прибавляет его user_id_to. 
 
 ```proto
-message Order_ProductSoldEvent {
+message Order_ProductOrderSoldCreatedEvent {
     string user_id = 1;
     string product_id = 2;
     int32 quantity = 3;
@@ -201,7 +203,7 @@ message Order_ProductSoldEvent {
 , ищет товар по product_id, проверяет, имеется ли товар в необходимом количестве.
 
 ```proto
-message Briefcase_ProductSoldEventResponse {
+message Briefcase_ProductOrderSoldCreatedEventResponse {
     string user_id = 1;
     oneof result {
     	Errors error = 2;
