@@ -126,7 +126,6 @@ message GetUserProductsRequest {
 
 ```proto
 message GetUserProductsResponse {
-    string user_id = 1;
     oneof reply {
     	repeated Product products = 2;
     	Errors error = 3;
