@@ -1,3 +1,4 @@
+
 version: "3.9"
 
 services:
@@ -29,20 +30,42 @@ services:
       - "9092:9092"
     volumes:
       - kafka:/bitnami/kafka
-  
+
   mongodb:
     image: mongo
     restart: on-failure
     ports:
       - 27017:27017
     volumes:
-      - mongo_db:/data/db
-      - mongo_conf:/data/configdb
+      - mongodb:/data/db
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
 
+  node_exporter:
+    image: bitnami/node-exporter
+    restart: on-failure
+    profiles:
+      - monitor
+
+  prometheus:
+    image: bitnami/prometheus
+    restart: on-failure
+    profiles:
+      - monitor
+    volumes:
+      - ./config/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml 
+      - prometheus_data:/opt/bitnami/prometheus/data
+
+  grafana:
+    image: grafana/grafana
+    restart: on-failure
+    profiles:
+      - monitor
+    ports:
+        - 3030:3000
+
 volumes:
   kafka:
   mongo_db:
-  mongo_conf:
+  prometheus_data:
