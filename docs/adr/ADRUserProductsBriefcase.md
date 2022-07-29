@@ -49,9 +49,6 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 - событие совершения сделки,
 - событие продажи товара.
 
-В каждом методе, где используется ID, нужно использовать метод перевода из string в
-Guid.
-
 Создание Записи (string userId) - Создает новую запись в БД с userId. Если такая запись с таким userId уже есть,   
 то новая запись не создается. 
 
