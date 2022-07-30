@@ -1,2 +1,2 @@
 # markershtern
--stock market
+stock market
