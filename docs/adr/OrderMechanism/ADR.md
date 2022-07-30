@@ -3,7 +3,8 @@
 Микросервис, реализующий механизм выставления заявок. 
 
 ссылка на требования:  
-https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.h3k0b09pdfj1
+https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.h3k0b09pdfj1   
+https://docs.google.com/document/d/1JFq_g9cSWn0372pxw0ZwDewUuu7ypM6o/edit#heading=h.ayxh9rn5x1ly
 
 ---
 
@@ -273,6 +274,49 @@ message CancleOrderRequest {
 ### для Apache Kafka   
 
 ```proto
-message GetF {
+// Микросервис подписан на топик события получения стоимости портфеля.
+message Briefcase_GotBriefcaseCostEvent {
+   string user_id = 1;
+   // По данным ID продуктов будет происходить поиск и вычисление рыночной стоимости.
+   repeated product_id = 1;
 }
+```
+
+```proto
+// Для отправки в топик в ответ на запрос стоимости.
+// Для данного сообщения следует найти более подходящее имя.
+message CostProduct {
+   string product_id = 1;
+   // Рыночная стоимость продукта на основе заявок.
+   DecimalValue price = 2;
+}
+```
+
+```proto
+// Сообщения для топика, на который подписан Микросервис портфеля.
+message Order_GotBriefcaseCostEventReply {
+   string user_id = 1;
+   // Рыночная стоимость 
+   repeated CostProduct costs = 2;
+}
+```
+
+```proto
+// Микросервис подписан на топик события изменения количества товара в портфеле.
+message Briefcase_ProductQuantityDecreaseEvent  {
+   string user_id = 1;
+   string product_id = 2;
+   // Микросервис сверяет количество в сообщении с количеством в заявках пользователя в user_id.   
+   // Если количество в заявке больше, то заявка должна закрыться.
+   int32 quantity = 3;
+}
+```
+
+```proto
+// Микросервис подписан на топик события удаления количества товара в портфеле.
+message Briefcase_ProductRemovedEvent {
+   string user_id = 1;
+   // Микросервис среди заявок user_id ищет заявки с таким product_id и удаляет их.
+   string product_id = 2;
+} 
 ```
