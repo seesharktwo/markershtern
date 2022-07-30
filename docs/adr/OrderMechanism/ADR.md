@@ -18,6 +18,8 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 Приблизительный принцип работы микросервиса:  
 Facade делает первичную валидацию, что заявку выставить возможно, после чего отправляет сообщение через gRPC в Микросервис. На основе данных формируется заявка и сохраняется.
 
+Заявка закрывается только после совершения транзакции.
+
 БД микросервиса содержит записи по типу:
 
 ```
@@ -183,7 +185,7 @@ enum Errors {
 
 ```proto   
 // Сообщение приходит от Facade. На основе полей формируется заявка.
-message ProductOrderRequest {
+message CreateOrderRequest {
   string user_id = 1;
   
   // Тип заявки
@@ -217,5 +219,60 @@ message OrderIsDone {
 ```    
 
 ```proto
+// Сообщение от Facade. Запрос на получение списка совершенных сделок.
+message GetCompletedOrdersRequest {
+   string user_id = 1;
+}
+```
 
+```proto
+// Сообщение для Facade. Ответ на запрос получения списка совершенных сделок.
+message GetCompletedOrdersResponse {
+   repeated InactiveOrder orders = 1;
+}
+```   
+
+```proto
+// Сообщение от Facade. Запрос на получение списка активных заявок.
+message GetActiveOrdersRequest {
+   string user_id = 1;
+}
+```
+
+```proto
+// Сообщение для Facade. Ответ на запрос получения списка активных заявок.
+message GetActiveOrdersRequest {
+   repeated ActiveOrder orders = 1;
+}
+```
+
+```proto
+// Сообщение от Facade. Запрос на получение количества активных заявок.
+message GetOrderNumberRequest {
+   string user_id = 1;
+}
+```
+
+```proto
+// Сообщение для Facade. Ответ на запрос получения количества активных заявок.
+message GetOrderNumberResponse {
+   int32 number = 1;
+}
+```
+
+```proto
+// Сообщение от Facade. Запрос на отмену активной заявки.
+message CancleOrderRequest {
+   // Сначала микросервис делает поиск по user_id
+   string user_id = 1;
+   string order_id = 2;
+}
+```   
+
+
+### для Apache Kafka   
+
+```proto
+message GetF {
+}
 ```
