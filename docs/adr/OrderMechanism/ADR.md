@@ -18,30 +18,49 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 Приблизительный принцип работы микросервиса:  
 Facade делает первичную валидацию, что заявку выставить возможно, после чего отправляет сообщение через gRPC в Микросервис. На основе данных формируется заявка и сохраняется.
 
-Микросервис подписан на:  
-- событие ответа от Микросервиса портфеля активов.  
-- событие ответа от Микросервиса баланса.  
-
-
 БД микросервиса содержит записи по типу:
 
 ```
-Active {
-	Line_1 {
-	Order_Id, Type, User_Id, Product_Id, Quantity, Price
-	},
-	Line_2 {
-	Order_Id, Type, User_Id, Product_Id, Quantity, Price
-	}
-}
-Inactive {
-	Line_1 {
-	Order_Id, User_Id_from, User_Id_to, Product_Id, Quantity, Price
-	}
-	Line_2 {
-	Order_Id, User_Id_from, User_Id_to, Product_Id, Qnatity, Price
-	}
-}
+{
+    "user_id" : "d28e5a67-8da4-4b76-97ce-1a648705c6e8",
+    "orders" : {
+      "active" : [
+         {
+            "order_id" : "91d6bbdf-6388-4da9-9991-9c92e8b751f7",
+            "type" : 1,
+            "product_id" : "b5a7c6d8-3533-4d45-97ba-500f202b9077",
+            "quantity" : 3232,
+            "price" : 123.00,
+            "timelife" : 2017-09-09,
+            "close_complete" : true,
+         },
+        ],
+      "inactive" : [
+         {
+            "users_id_to" : [
+	       {
+	          "user_id" : "d6eef007-549b-4f94-b5f5-5a5738070dbc",
+		  "quantity" : 300,
+		  "price" : 300
+	       },
+	       {
+	          "user_id" : "xdsefdsm-zxcb-4uj4-ikm5-53r53vbb0dbc",
+		  "quantity" : 33,
+		  "price" : 33
+	       }
+	    ],
+            "order_id" : "31d6bbdf-6312-4da9-9881-9cx2e8b121f7",
+            "type" : 2,
+            "product_id" : "43a7c6d2-3543-4d75-97ba-500f20asdr37",
+            "quantity" : 333,
+            "price" : 333.00,
+	    // Дата закрытия заявки
+            "date_completed" : 2022-02-09,
+            "close_complete" : false,
+         },
+        ]  
+    }
+  }
 ```
 
 ---
@@ -49,8 +68,6 @@ Inactive {
 ### Фоновый процесс   
 
 Микросервис заявок должен иметь фоновый процесс обработки заявок, который будет закрывать подходящие. 
-
-Микросервис берет заявку покупки, и сравнивает с заявкой продажи по цене и количеству. Если все в порядке, отправляет Микросервису Баланса через Kafka сообщение о необходимости изменить баланс пользователей, отправляет Микросервису портфеля через Kafka сообщение о необходимости изменить портфели пользователей, если все в порядке, то закрывает эти завки. 
 
 Доработаю этот процесс.
 
@@ -64,6 +81,84 @@ https://visualrecode.com/blog/csharp-decimals-in-grpc/
 message DecimalValue {
   int64 units = 1;
   sfixed32 nanos = 2;
+}
+```
+
+```proto
+// Типы заявок
+enum OrderTypes {
+   // Тип заявок на продажу.
+   Sell_order = 1;
+   // Тип заявок на покупку.
+   Buy_order = 2;
+}
+```
+
+```proto
+// Участник сделки
+message OrderMember {
+   string user_id = 1;
+   int32 quantity = 2;
+   DecimalValue value = 3;
+} 
+```
+
+
+```proto
+// Активная заявка.
+message ActiveOrder {
+
+   // Id заявки.
+   string order_id = 1;
+   
+   // Тип.
+   OrderTypes type = 2;
+   
+   // Id продукта.
+   string product_id = 3;
+   
+   // Количество продукта.
+   int32 quantity = 4;
+   
+   // Цена.
+   DecimalValue value = 5;
+   
+   // Время жизни заявки.
+   google.protobuf.Timespan timelife = 6;
+   
+   // Если true, то заявку нельзя закрыть частично.
+   bool close_complete = 7;
+}
+```
+
+
+```proto
+// Неактивная заявка
+message InactiveOrder {
+
+   // Пользователи, которые участвовали в сделке.
+   repeated OrderMember members = 1;
+   
+   // Id заявки.
+   string order_id = 2;
+   
+   // Тип заявки.
+   OrderTypes type = 3;
+   
+   // Id продукта
+   string product_id = 4;
+   
+   // Общее количество товара.
+   int32 quantity = 5;
+   
+   // Общая сумма использованная в сделке.
+   DecimalValue value = 6;
+   
+   // Дата завершения сделки.
+   google.protobuf.Timespan timelife = 6;
+   
+   // true - заявку не закрыть частично.
+   bool close_complete = 7;
 }
 ```
 
@@ -84,127 +179,43 @@ enum Errors {
 }
 ```  
 
-
-### Для gRPC
+### Для gRPC c Facade
 
 ```proto   
-// Сообщение приходит от Facade.
-message SellProductOrderRequest {
-  // На основе этих полей формируется заявка на продажу.
+// Сообщение приходит от Facade. На основе полей формируется заявка.
+message ProductOrderRequest {
   string user_id = 1;
+  
+  // Тип заявки
+  OrderTypes type = 7;
   string product_id = 2;
   DecimalValue price = 3;
   int32 quantity = 4;   
+  
+  // Время жизни заявки. Тут указана дата, до которой заявка действительна. 
   google.protobuf.Timespan timelife = 5;
-  bool close_b
+  
+  // Флаг указывающий, что заявка должна быть закрыта полностью.
+  // true - полностью, false - можно дробить.
+  bool close_complete = 6;
 }
 ```  
 
-\- Сообщение для ответа Facade, если ошибок нет, то в сообщении будет success true. 
-Возможные ошибки:  
-- Пользователь с таким UserID не был найден.  
-- Товар с таким ProductID не был найден.  
-- Товара с таким ProductID недостаточно(количество в портфеле меньше, чем указано в заявке).
-
-
 ```proto
-message BuyProductOrderRequest {
-  string order_id = 1;
-  string user_id = 2;
-  string product_id = 3;
-  DecimalValue price = 4;
-  int32 quantity = 5;
-}
-```  
-\- Сообщение приходит через gRPC от Facade, когда пользователь нажимает на кнопку "Купить". Микросервис отправляет другое сообщение через Kafka в микросервис баланса, чтобы узнать, есть ли у пользователя необходимая сумма.
-
-```proto
-message BuyProductOrderReply {
-  string user_id = 1;
-  oneof {
-  	Errors error = 2;
-	bool success = 3;
-  }
-}
-```  
-\- Сообщение для ответа Facade, если ошибок нет, то в сообщении будет success true.  
-Возможные ошибки:  
-- Пользователь с таким UserID не был найден.  
-
-```proto
+// Сообщение для Facade, которое передает информацию о закрытой заявке.
 message OrderIsDone {
    string user_id = 1;
    string order_id = 2;
    string user_id_to = 3; 
    DecimalValue value = 4;
+   int32 quantity = 5;
+   // Дата завершения заявки
+   google.protobuf.Timespan date_completed = 6;
+   bool close_complete = 7;
+   OrderTypes type = 8;
 }
-```   
-\- Сообщение для Facade, которое указывает, что заявка была закрыта.
-
-### Для Kafka
-
-```proto
-message Order_SaleOrderPlacedEvent {
-  string order_id = 1
-  string user_id = 2;
-  string product_id = 3;
-  int32 quantity = 4;
-}
-```  
-\- Сообщение для Микросервиса портфеля активов, которое уточняет, имеется ли у пользователя данный товар и в нужном количестве.  
+```    
 
 ```proto
-message Briefcase_SaleOrderPlacedEventReply {
-  string order_id = 1;
-  string user_id = 2;
-  oneof {
-  	Errors error = 3;
-	bool success = 4;
-  }
-}
+
 ```
-\- Сообщение от Микросервиса портфеля активов. Если success true, то у пользователя в наличии имеется нужный товар в указанном количестве. После этого заявка выставляется. 
-
-```proto
-message Briefcase_BuyOrderPlacedEvent {
-  string order_id = 1;
-  string user_id = 2;
-  DecimalValue value = 3;
-}
-```  
-\- Сообщение для Микросервиса баланса, которое уточняет, имеется ли у пользователя необходимое количество валюты для совершения сделки.
-
-
-```proto
-message Balance_BuyOrderPlacedEventReply {
-  string order_id = 1;
-  string user_id = 2;
-  oneof = {
-     Errors error = 3;
-     bool success = 4;
-  }
-}
-```  
-\- Сообщение от Микросервиса Баланса. Если необходимое количество суммы есть у пользователя, то success true, иначе ошибка. Если success true, то заявка на покупку выставляется.   
-Возможные ошибки:   
-- Пользователь с UserID не был найден.
-- У пользователя недостаточно средств.   
-
-```proto   
-message Order_ChangeBalanceEvent {
-   string user_id_from = 1;
-   string user_id_to = 2;
-   DecimalValue value = 3;
-}
-```   
-\- Сообщение для Микросервиса Баланса о необходимости изменения балансов пользователей.   
-
-```proto   
-message Order_ChangeBriefcaseEvent {
-   string user_id_from = 1;
-   string user_id_to = 2;  
-   string product_id = 3;
-   int32 quantity = 4;
-}
-```   
-\- Сообщение для Микросервиса Портфеля о необходимости изменения портфелей пользователей.   
