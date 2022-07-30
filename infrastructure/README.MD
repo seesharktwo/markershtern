@@ -13,7 +13,7 @@ docker compose up -d
 docker compose --profile profile_name up -d
 
 Always starts up:
-- kafka
+- kafka, 3 repl of mongodb
 
 Profiles avail:
 - monitor: node_exporter + prometheus + grafana
@@ -23,7 +23,7 @@ Profiles avail:
 ```md
 - Kafka: 9092
 - Grafana: 3030
-- Mongodb: 27017
+- Mongodb: 27017, 27018, 27019
 ```
 
 ### Default credentials
