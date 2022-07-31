@@ -41,8 +41,8 @@ Profiles avail:
 - Prometheus url: http://prometheus:9090
 
 ### Logging
-[About stack](https://grafana.com/oss/loki/)
-[More about Loki](https://habr.com/ru/company/badoo/blog/507718/)
+- [About stack](https://grafana.com/oss/loki/)
+- [More about Loki](https://habr.com/ru/company/badoo/blog/507718/)
 
 #### Docker setup
 If you add new container and want to see it with proper info in Grafana,
