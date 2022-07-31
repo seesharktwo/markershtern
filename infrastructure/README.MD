@@ -10,13 +10,14 @@ docker compose up -d
 
 ### Profiles
 ```cmd
-docker compose --profile profile_name up -d
+docker compose --profile profile_name [--profile another_profile] up -d
 
 Always starts up:
 - kafka
 
 Profiles avail:
 - monitor: node_exporter + prometheus + grafana
+- logging: loki + promtail
 ```
 
 ### Connection ports
@@ -38,3 +39,23 @@ Profiles avail:
 #### Grafana + Prometheus
 - [Basics](https://prometheus.io/docs/visualization/grafana/)
 - Prometheus url: http://prometheus:9090
+
+### Logging
+[About stack](https://grafana.com/oss/loki/)
+[More about Loki](https://habr.com/ru/company/badoo/blog/507718/)
+
+#### Docker setup
+If you add new container and want to see it with proper info in Grafana,
+you have to run all docker containers with these args:
+
+```cmd
+--log-driver json-file --log-opt tag="{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+```
+
+#### Promtail + Loki
+- [Basics](https://grafana.com/docs/loki/latest/clients/promtail/)
+- Promtail url: http://promtail:9080
+
+#### Grafana + Loki
+- [Basics](https://youtu.be/HDpE9v1Syz8)
+- Loki url: http://loki:3100

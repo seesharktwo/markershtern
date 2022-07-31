@@ -29,13 +29,21 @@ services:
     ports:
       - "9092:9092"
     volumes:
-      - kafka:/bitnami/kafka
+      - kafka:/bitnami/kafk
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   node_exporter:
     image: bitnami/node-exporter
     restart: on-failure
     profiles:
       - monitor
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   prometheus:
     image: bitnami/prometheus
@@ -45,14 +53,50 @@ services:
     volumes:
       - ./config/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml 
       - prometheus_data:/opt/bitnami/prometheus/data
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
   grafana:
     image: grafana/grafana
     restart: on-failure
     profiles:
       - monitor
+      - logging
     ports:
         - 3030:3000
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  promtail:
+    image: grafana/promtail
+    restart: on-failure
+    profiles:
+      - logging
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers
+      - ./config/promtail.yaml:/etc/promtail/config.yaml:ro
+    command: -config.file=/etc/promtail/config.yaml
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  loki:
+    image: grafana/loki
+    restart: on-failure
+    profiles:
+      - logging
+    command: -config.file=/etc/loki/config.yaml
+    volumes:
+      - ./config/loki.yaml:/etc/loki/config.yaml
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
 volumes:
   kafka:
