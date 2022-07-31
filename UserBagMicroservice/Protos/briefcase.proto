@@ -3,7 +3,7 @@ syntax = "proto3";
 option csharp_namespace = "UserBagMicroservice.Protos";
 
 service UserBriefcase {
-	rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply);
+	rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
 }
 
 message Product {
@@ -35,10 +35,9 @@ message GetUserProductsRequest {
 	string user_id = 1;
 }
 
-message GetUserProductsReply {
-	string user_id = 1;
+message GetUserProductsResponse {
 	oneof result {
-		ToWrapper wrapper = 2;
-		Errors error = 3;
+		ToWrapper wrapper = 1;
+		Errors error = 2;
 	}
 }

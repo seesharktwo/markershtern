@@ -20,7 +20,7 @@ namespace UserBagMicroservice.Services
             _mapper = mapper;
         }
 
-        public override async Task<GetUserProductsReply> GetUserProducts(GetUserProductsRequest request,
+        public override async Task<GetUserProductsResponse> GetUserProducts(GetUserProductsRequest request,
             ServerCallContext context)
         {
             List<Models.Product> productModels = _userBagRepository.FindById(request.UserId).Products;
@@ -28,9 +28,8 @@ namespace UserBagMicroservice.Services
 
             ToWrapper protoWrapper = _mapper.Map<ToWrapper>(modelWrapper);
 
-            return await Task.FromResult(new GetUserProductsReply
+            return await Task.FromResult(new GetUserProductsResponse
             {
-                UserId = request.UserId,
                 Wrapper = protoWrapper
             });
         }
