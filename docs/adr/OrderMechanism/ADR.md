@@ -283,6 +283,14 @@ message CancleOrderRequest {
 }
 ```   
 
+```proto
+// Сообщение от Facade. Запрос на получение рыночной цены
+message GetBriefcaseCostRequest {
+   string user_id = 1;
+   repeated string product_id = 2;
+}
+```
+
 
 ### для Apache Kafka   
 
@@ -307,7 +315,7 @@ message CostProduct {
 
 ```proto
 // Сообщения для топика, на который подписан Микросервис портфеля.
-message Order_GotBriefcaseCostEventReply {
+message Order_GotBriefcaseCostEventResponse {
    string user_id = 1;
    // Рыночная стоимость 
    repeated CostProduct costs = 2;
