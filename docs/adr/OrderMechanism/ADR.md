@@ -4,7 +4,6 @@
 
 ссылка на требования:  
 https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/edit#heading=h.h3k0b09pdfj1   
-https://docs.google.com/document/d/1JFq_g9cSWn0372pxw0ZwDewUuu7ypM6o/edit#heading=h.ayxh9rn5x1ly
 
 ---
 
@@ -18,23 +17,6 @@ https://docs.google.com/document/d/1JFq_g9cSWn0372pxw0ZwDewUuu7ypM6o/edit#headin
 
 Приблизительный принцип работы микросервиса:  
 \- Создание заявки. Facade делает первичную валидацию, что заявку выставить возможно, после чего отправляет сообщение через gRPC в Микросервис. На основе данных формируется заявка и сохраняется.   
-
-\- Отмена заявки. От Facade получаем сообщение с ID пользователя и заявки, делаем поиск в БД, удаляем из Active. Отмененная заявка не заносится в историю сделок.   
-
-\- Закрытие заявки. У микросервиса имеется фоновый процесс, который находит подходящие заявки и отправляет данные в топик Kafka, на который подписан микросервис транзакций.  
-
-\- Отправка истории сделок пользователя. Микросервис от Facade получает запрос на предоставление истории сделок. В сообщении содержится ID пользователя. Микросервис делает поиск документа по ID в БД, после чего достает список Inactive и отправляет его Facade.  
-
-\- Отправка списка активных заявок пользователя. Микросервис от Facade получает запрос на предоставление списка активных заявок. В сообщении содержится ID пользователя. Микросервис делает поиск документа по ID в БД, после чего достает список Active и отправляет его Facade.  
-
-\- Отправка количества активных заявок пользователя. Микросервис от Facade получает запрос на предоставление количества активных заявок. В сообщении содержится ID пользователя. Микросервис делает поиск документа по ID в БД, после чего подсчитывает количество элементов в Active и отправляет его в Facade. 
-
-\- Отправка рыночной стоимости продуктов пользователя. Микросервису от Facade приходит сообщение с ID пользователя и ID продуктов. После чего на основе этих данных выполняется поиск и вычисляется рыночная стоимость товаров и отправляется в Facade.
-
-\- Удаление недействительных заявок. Микросервис подписан на топик изменения, удаления товара пользователя, куда отправляет сообщения микросервис портфеля. Сообщение
-изменения содержит в себе ID пользователя, продукта, количество продукта в портфеле. Если количество продукта в портфеле меньше, чем в заявке, то она закрывается. Сообщение удаления содержит в себе ID пользователя, продукта. Микросервис делает поиск по ID, после чего удаляет заявки.
-
-Заявка закрывается только после совершения транзакции.
 
 БД микросервиса содержит записи по типу:
 
@@ -83,11 +65,7 @@ https://docs.google.com/document/d/1JFq_g9cSWn0372pxw0ZwDewUuu7ypM6o/edit#headin
 
 ---
 
-### Фоновый процесс   
 
-Микросервис заявок должен иметь фоновый процесс обработки заявок, который будет закрывать подходящие. 
-
-Доработаю этот процесс.
 
 ### .proto
 
@@ -119,65 +97,6 @@ message OrderMember {
    int32 quantity = 2;
    DecimalValue value = 3;
 } 
-```
-
-
-```proto
-// Активная заявка.
-message ActiveOrder {
-
-   // Id заявки.
-   string order_id = 1;
-   
-   // Тип.
-   OrderTypes type = 2;
-   
-   // Id продукта.
-   string product_id = 3;
-   
-   // Количество продукта.
-   int32 quantity = 4;
-   
-   // Цена.
-   DecimalValue value = 5;
-   
-   // Время жизни заявки.
-   google.protobuf.Timespan timelife = 6;
-   
-   // Если true, то заявку нельзя закрыть частично.
-   bool close_complete = 7;
-}
-```
-
-
-```proto
-// Неактивная заявка
-message InactiveOrder {
-
-   // Пользователи, которые участвовали в сделке.
-   repeated OrderMember members = 1;
-   
-   // Id заявки.
-   string order_id = 2;
-   
-   // Тип заявки.
-   OrderTypes type = 3;
-   
-   // Id продукта
-   string product_id = 4;
-   
-   // Общее количество товара.
-   int32 quantity = 5;
-   
-   // Общая сумма использованная в сделке.
-   DecimalValue value = 6;
-   
-   // Дата завершения сделки.
-   google.protobuf.Timespan timelife = 6;
-   
-   // true - заявку не закрыть частично.
-   bool close_complete = 7;
-}
 ```
 
 ```proto
@@ -218,118 +137,3 @@ message CreateOrderRequest {
   bool close_complete = 6;
 }
 ```  
-
-```proto
-// Сообщение для Facade, которое передает информацию о закрытой заявке.
-message OrderIsDone {
-   string user_id = 1;
-   string order_id = 2;
-   string user_id_to = 3; 
-   DecimalValue value = 4;
-   int32 quantity = 5;
-   // Дата завершения заявки
-   google.protobuf.Timespan date_completed = 6;
-   bool close_complete = 7;
-   OrderTypes type = 8;
-}
-```    
-
-```proto
-// Сообщение от Facade. Запрос на получение списка совершенных сделок.
-message GetCompletedOrdersRequest {
-   string user_id = 1;
-}
-```
-
-```proto
-// Сообщение для Facade. Ответ на запрос получения списка совершенных сделок.
-message GetCompletedOrdersResponse {
-   repeated InactiveOrder orders = 1;
-}
-```   
-
-```proto
-// Сообщение от Facade. Запрос на получение списка активных заявок.
-message GetActiveOrdersRequest {
-   string user_id = 1;
-}
-```
-
-```proto
-// Сообщение для Facade. Ответ на запрос получения списка активных заявок.
-message GetActiveOrdersRequest {
-   repeated ActiveOrder orders = 1;
-}
-```
-
-```proto
-// Сообщение от Facade. Запрос на получение количества активных заявок.
-message GetOrderNumberRequest {
-   string user_id = 1;
-}
-```
-
-```proto
-// Сообщение для Facade. Ответ на запрос получения количества активных заявок.
-message GetOrderNumberResponse {
-   int32 number = 1;
-}
-```
-
-```proto
-// Сообщение от Facade. Запрос на отмену активной заявки.
-message CancleOrderRequest {
-   // user_id используется для более быстрого поиска.
-   string user_id = 1;
-   string order_id = 2;
-}
-```   
-
-```proto
-// Сообщение от Facade. Запрос на получение стоимости портфеля.
-message GetBriefcaseCostRequest {
-   string user_id = 1;
-   repeated string product_id = 2;
-}
-```
-
-```proto
-// Для отправки в Facade в ответ на запрос стоимости.
-// Для данного сообщения следует найти более подходящее имя.
-message ProductPrice {
-   string product_id = 1;
-   // Рыночная стоимость продукта на основе заявок.
-   DecimalValue price = 2;
-}
-```
-
-
-```proto
-// Сообщение для Facade. Несет в себе информацию о рыночной стоимости продуктов.
-// Почему не отправляем сразу сумму? Потому что в будущем понадобится рыночная стоимость для каждого товара.
-message GetBriefcaseCostResponse {
-   repeated ProductPrice prices = 1;
-}
-```
-
-### для Apache Kafka   
-
-```proto
-// Микросервис подписан на топик события изменения количества товара в портфеле.
-message Briefcase_ProductQuantityDecreaseEvent  {
-   string user_id = 1;
-   string product_id = 2;
-   // Микросервис сверяет количество в сообщении с количеством в заявках пользователя в user_id.   
-   // Если количество в заявке больше, то заявка должна закрыться.
-   int32 quantity = 3;
-}
-```
-
-```proto
-// Микросервис подписан на топик события удаления количества товара в портфеле.
-message Briefcase_ProductRemovedEvent {
-   string user_id = 1;
-   // Микросервис среди заявок user_id ищет заявки с таким product_id и удаляет их.
-   string product_id = 2;
-} 
-```
