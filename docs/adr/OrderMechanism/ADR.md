@@ -56,9 +56,9 @@ message DecimalValue {
 // Типы заявок
 enum OrderType {
    // Тип заявок на продажу.
-   Sell_order = 1;
+   SELL_ORDER = 1;
    // Тип заявок на покупку.
-   Buy_order = 2;
+   BUY_ORDER = 2;
 }
 ```
 
