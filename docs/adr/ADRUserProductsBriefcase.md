@@ -40,11 +40,6 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 Создание Записи (string userId) - Создает новую запись в БД с userId. Если такая запись с таким userId уже есть,   
 то новая запись не создается. 
 
-Редактирование Записи(string userId, product product) -  
-Проверяет, существует ли запись в БД.  Если записи с таким UserID не существует, то  
-отправить ответ с описанием ошибки с UserId. Если все в порядке, то изменить запись и  
-отправить ответное сообщение UserId.
-
 Получение Списка Товаров(string userId) -  
 Проверяет, существует ли запись в БД.  Если записи с таким UserID не существует, то  
 отправить ответ с описанием ошибки с UserId. Если все в порядке, то отправить ответным сообщением  
@@ -54,6 +49,9 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 Проверяет, существуют ли записи в БД.  Если записей с такими UserID/ProductID не существует, то  
 отправить ответ с описанием ошибки с UserId. Если все в порядке, изменить запись, отправить ответным сообщением  
 UserId.
+
+Добавление Товара(user_id, product) -    
+Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то добавить довар.
 
 Удаление товара(string userId, string productId) -  
 Проверяет, существует ли запись в БД.  Если записи с таким UserID/ProductID не существует, то  
@@ -111,21 +109,11 @@ message ProductsList {
 }
 ```
 
-
-### для фасада через gRPC:
-
-С Фасада через gRPC приходит сообщение GetUserProductsRequest, содержащее в себе user_id, по которому будет проходить  
-поиск записи в БД, после чего берется список продуктов, сериализуетя в GetUserProductsReply и отправляется Фасаду.
-
-```proto
-service UserProductsService {
-    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply)
-}
-```
+### Получение списка продуктов пользователя
 
 ```proto
 // Сообщение, которое указывает, что Facade запросил список продуктов пользователя.
-message GetUserProductsRequest {
+message GotUserProductsEventRequest {
     // user_id это ID пользователя, чьи товары необходимо предоставить Facade.
     string user_id = 1;
 }
@@ -134,11 +122,12 @@ message GetUserProductsRequest {
 
 ```proto
 // Сообщение для ответа на запрос получения списка продуктов.
-message GetUserProductsResponse {
+message GotUserProductsEventResponse {
+    string user_id = 1;
     // Если в ходе выполнения возникли ошибки, то отправляется ошибка, если нет, то wrapper
-    oneof reply {
+    oneof response {
         // Представляет собой обертку для repeated product 
-    	ProductsList wrapper = 1;
+    	ProductsList list = 1;
     	Errors error = 2;
     }
 }
@@ -146,21 +135,26 @@ message GetUserProductsResponse {
 Возможные ошибки:  
 - Пользователь с таким UserID не был найден.
 
+### Добавление товара
+
 ```proto
 // Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет добавить товар. 
-message AddProductRequest {
+message AddedProductEventRequest {
+    // ID сообщения, чтобы избежать повторной обработки дубликата 
+    string message_id = 1;
     // ID пользователя, которому нужно добавить товар.
-    string user_id = 1;
+    string user_id = 2;
     // Продукт, который нужно добавить
-    Product product = 2;
+    Product product = 3;
 }  
 ```
 
+### Удаление товара
 
 ```proto
 // Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет удалить товар.   
 // Прежде чем удалить товар, необходимо убедиться, что товар не находится в продаже.
-message RemoveProductRequest {
+message RemovedProductEventRequest {
     // ID пользователя, которому нужно удалить товар.
     string user_id = 1;
     // ID товара, который необходимо удалить.
@@ -168,26 +162,12 @@ message RemoveProductRequest {
 }
 ``` 
 
-
-```proto
-message RemoveProductResponse {
-    string user_id = 1;
-    oneof result {
-    	Errors error = 2;
-    	bool success = 3;
-    }
-}
-```
-Возможные ошибки:  
-- Пользователь с таким UserID не был найден.
-- Продукт с таким ProductID не был найден.
-- Товар находится в продаже и не может быть удален.
-
+### Проверка необходимых данных для микросервиса заявок. 
 
 ```proto
 // Сообщение от Facade. Проверяет, имеется ли необходимое количество товара у пользователя.
 // Создание заявки на продажу.
-message CreateSellOrderRequest {
+message CreatedSellOrderEventRequest {
     // ID пользователя, по которому ведется поиск.
     string user_id = 1;
     // ID товара, по которому ведется поиск.
@@ -200,7 +180,7 @@ message CreateSellOrderRequest {
 
 ```proto
 // Сообщение для Facade. Ответ для Facade, который подтверждает, что у пользователя имеется необходимое количество продукта.
-message CreateSellOrderResponse {
+message CreatedSellOrderEventResponse {
     string user_id = 1;
     oneof result {
     	Errors error = 2;
@@ -213,7 +193,7 @@ message CreateSellOrderResponse {
 - Продукта с таким ProductID не существует в портфеле пользователя.  
 - Количество товара недостаточно.
 
-### Для кафки:
+### Создание новой записи в БД.
 
 ```proto
 // Микросервис подписан на топик события регистрации пользователя.
@@ -223,6 +203,7 @@ message UserRegisteredEvent {
 }
 ```
 
+###  Передача товара между пользователями
 
 ```proto
 // Микросервис подписан на топик события совершения сделки. 
@@ -243,13 +224,16 @@ message OrderCompletedEvent {
 ```proto
 // Для ответа на передачу товара
 message OrderCompletedEventResponse {
-   oneof {
+   oneof response {
         Errors error = 2;
     	bool success = 3;
    }
 }
 ```
 
+### Уведомление, что количество товара у пользователя изменилось.
+
+Это нужно, чтобы микросервис заявок мог удалить недействительные.
 
 ```proto   
 // Это сообщение отправляется, когда у пользователя отнимается некоторое количество товара после факта продажи. На это событие должен быть подписан Микросервис заявок. // Он ищет заявку в БД по Type = "sell_order" по user_id, а далее по product_id. Если в заявке указанное количество больше, чем quantity, то заявку необходимо  
@@ -264,8 +248,7 @@ message ProductSoldEvent {
 ```   
 
 ```proto   
-// Это сообщение отправляется, когда пользователь удаляет свой товар из портфеля активов. На это событие подписан Микросервис Заявок. Он ищет заявки с Type   
-// "sell_order", по user_id, по product_id. Далее закрывает все заявки, подходящие под эти условия. 
+// Это сообщение отправляется, когда пользователь удаляет свой товар из портфеля активов. На это событие подписан Микросервис Заявок. 
 message ProductRemovedEvent {
    string user_id = 1;
    string product_id = 2;
