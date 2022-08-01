@@ -95,9 +95,9 @@ message CreateOrderRequest {
   string user_id = 1;
   
   // Тип заявки
-  OrderTypes type = 7;
-  string product_id = 2;
-  DecimalValue price = 3;
-  int32 quantity = 4;   
+  OrderTypes type = 2;
+  string product_id = 3;
+  DecimalValue price = 4;
+  int32 quantity = 5;   
 }
 ```  
