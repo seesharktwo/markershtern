@@ -87,8 +87,7 @@ enum OrderTypes {
 }
 ```
 
-### Для gRPC c Facade
-
+### Kafka
 ```proto   
 // Сообщение приходит от Facade. На основе полей формируется заявка и сохраняется в БД.
 message CreateOrderRequest {
@@ -101,8 +100,3 @@ message CreateOrderRequest {
   int32 quantity = 5;   
 }
 ```  
-
-```proto 
-message CreateOrderResponse {
-   bool success = 1;
-}
