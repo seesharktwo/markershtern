@@ -90,24 +90,16 @@ enum OrderTypes {
 
 ### Kafka
 
-```proto
-message Header {
-   string key = 1;
-   string value = 2;
-}
-```
-
 ```proto   
 // Сообщение приходит от Facade. На основе полей формируется заявка и сохраняется в БД.
 message OrderCreatedEventRequest {
-  Header header = 1;
-  string user_id = 2;
+  string user_id = 1;
   
   // Тип заявки
-  OrderTypes type = 3;
-  string product_id = 4;
-  DecimalValue price = 5;
-  int32 quantity = 6;   
+  OrderTypes type = 2;
+  string product_id = 3;
+  DecimalValue price = 4;
+  int32 quantity = 5;   
 }
 ```  
 
@@ -127,9 +119,8 @@ message Order {
 // Сообщение для микросервиса транзакций.
 // На это событие подписан микросервис транзакций.
 message OrdersClosedEventRequest {
-   Header header = 1;
-   Order from = 2; 
-   Order to = 3; 
+   Order from = 1; 
+   Order to = 2; 
 }
 ```
 
@@ -139,9 +130,8 @@ message OrdersClosedEventRequest {
 // если success true, то заявки закрываются
 // если false, то заявки продолжают висеть.
 message OrdersClosedEventRequest {
-   Header header = 1;
-   Order from = 2; 
-   Order to = 3; 
-   bool success = 4;
+   Order from = 1; 
+   Order to = 2; 
+   bool success = 3;
 }
 ```
