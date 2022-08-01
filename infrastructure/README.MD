@@ -13,7 +13,7 @@ docker compose up -d
 docker compose --profile profile_name up -d
 
 Always starts up:
-- kafka
+- kafka, mongo1 (primary), mongo2, mongo3
 
 Profiles avail:
 - monitor: node_exporter + prometheus + grafana
@@ -23,6 +23,7 @@ Profiles avail:
 ```md
 - Kafka: 9092
 - Grafana: 3030
+- Mongodb: 27017 (primary), 27018, 27019
 ```
 
 ### Set memory limits for JVM via env vars

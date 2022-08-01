@@ -31,6 +31,44 @@ services:
     volumes:
       - kafka:/bitnami/kafka
 
+  mongo_setup:
+    image: mongo
+    restart: on-failure
+    volumes:
+      - ./scripts/mongo_setup.sh:/scripts/setup.sh
+    entrypoint: [ "/scripts/setup.sh" ]
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+
+  mongo1:
+    image: mongo
+    ports:
+      - 27017:27017
+    restart: on-failure
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+    volumes:
+      - mongo1:/data/db
+
+  mongo2:
+    image: mongo
+    ports:
+      - 27018:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+    volumes:
+      - mongo2:/data/db
+
+  mongo3:
+    image: mongo
+    ports:
+      - 27019:27017
+    restart: always
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
+    volumes:
+      - mongo3:/data/db
+
   node_exporter:
     image: bitnami/node-exporter
     restart: on-failure
@@ -56,4 +94,7 @@ services:
 
 volumes:
   kafka:
+  mongo1:
+  mongo2:
+  mongo3:
   prometheus_data:
