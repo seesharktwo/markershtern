@@ -116,8 +116,17 @@ message Order {
 
 ```proto  
 // Сообщение для микросервиса транзакций.
-message OrdersClosedRequest {
+// На это событие подписан микросервис транзакций.
+message OrdersClosedEventRequest {
    Order from = 1; 
    Order to = 2; 
+}
+```
+
+```proto
+// Сообщение от микросервиса транзакций.
+// На это подписан микросервис заявок.
+message OrdersClosedEventRequest {
+   bool success = 1;
 }
 ```
