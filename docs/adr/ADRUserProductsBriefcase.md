@@ -30,24 +30,12 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
     Line_2...
 ```
 
-Также у нас будет коллекция для сообщений, чтобы избежать повторной обработки дубликата.
 
-```
-[
-   {
-      "message_id" : "a2d85e36-dd8d-4bf0-a3a0-7349ecbcf32d"
-   },
-   {
-      "message_id" : "7833b11b-786b-483a-bdf2-1b6b5e9ddf41"
-   }
-]
-```
 Запись в БД будет создаваться, когда произошло событие регистрации пользователя.
 
 Микросервис подписан на:
 - событие регистрации пользователя,  
-- событие совершения сделки,
-- событие продажи товара.
+- событие совершения сделки.
 
 Создание Записи (string userId) - Создает новую запись в БД с userId. Если такая запись с таким userId уже есть,   
 то новая запись не создается. 
@@ -118,7 +106,7 @@ message DecimalValue {
 
 ```proto
 // Так как oneof не поддерживает repeated, то приходится использовать обертку.
-message ToWrapper {
+message ProductsList {
 	repeated Product products = 1;
 }
 ```
@@ -130,7 +118,7 @@ message ToWrapper {
 поиск записи в БД, после чего берется список продуктов, сериализуетя в GetUserProductsReply и отправляется Фасаду.
 
 ```proto
-service SenderProductsService {
+service UserProductsService {
     rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply)
 }
 ```
@@ -150,7 +138,7 @@ message GetUserProductsResponse {
     // Если в ходе выполнения возникли ошибки, то отправляется ошибка, если нет, то wrapper
     oneof reply {
         // Представляет собой обертку для repeated product 
-    	ToWrapper wrapper = 1;
+    	ProductsList wrapper = 1;
     	Errors error = 2;
     }
 }
@@ -196,6 +184,35 @@ message RemoveProductResponse {
 - Товар находится в продаже и не может быть удален.
 
 
+```proto
+// Сообщение от Facade. Проверяет, имеется ли необходимое количество товара у пользователя.
+// Создание заявки на продажу.
+message CreateSellOrderRequest {
+    // ID пользователя, по которому ведется поиск.
+    string user_id = 1;
+    // ID товара, по которому ведется поиск.
+    string product_id = 2;
+    // Проверяет, есть ли необходимое количество товара.
+    int32 quantity = 3;
+    }
+```
+
+
+```proto
+// Сообщение для Facade. Ответ для Facade, который подтверждает, что у пользователя имеется необходимое количество продукта.
+message CreateSellOrderResponse {
+    string user_id = 1;
+    oneof result {
+    	Errors error = 2;
+    	bool success = 3;
+        }
+    }
+```
+Возможные ошибки:
+- Пользователя с таким UserID не существует в БД.  
+- Продукта с таким ProductID не существует в портфеле пользователя.  
+- Количество товара недостаточно.
+
 ### Для кафки:
 
 ```proto
@@ -211,7 +228,7 @@ message UserRegisteredEvent {
 // Микросервис подписан на топик события совершения сделки. 
 message OrderCompletedEvent {  
  // Нужно, чтобы избежать повторной обработки дубликата.
- string message_id = 1;
+ string order_id = 1;
  // ID пользователя, у которого мы собираемся списать товар.
  string user_id_from = 2;
  // ID пользователя, которому мы хотим зачислить товар.
@@ -223,48 +240,33 @@ message OrderCompletedEvent {
 }
 ```  
 
-
 ```proto
-// Микросервис подписан на события продажи товара.
-message Order_ProductOrderSoldCreatedEvent {
-    // ID пользователя, по которому ведется поиск.
-    string user_id = 1;
-    // ID товара, по которому ведется поиск.
-    string product_id = 2;
-    // Проверяет, есть ли необходимое количество товара.
-    int32 quantity = 3;
-}
-```
-
-
-```proto
-message Briefcase_ProductOrderSoldCreatedEventResponse {
-    string user_id = 1;
-    oneof result {
-    	Errors error = 2;
+// Для ответа на передачу товара
+message OrderCompletedEventResponse {
+   oneof {
+        Errors error = 2;
     	bool success = 3;
-    }
+   }
 }
 ```
-Возможные ошибки:
-- Пользователя с таким UserID не существует в БД.  
-- Продукта с таким ProductID не существует в портфеле пользователя.  
-- Количество товара недостаточно.
+
 
 ```proto   
 // Это сообщение отправляется, когда у пользователя отнимается некоторое количество товара после факта продажи. На это событие должен быть подписан Микросервис заявок. // Он ищет заявку в БД по Type = "sell_order" по user_id, а далее по product_id. Если в заявке указанное количество больше, чем quantity, то заявку необходимо  
 //отменить, так как она недействительна.
-message Briefcase_ProductQuantityDecreaseEvent {   
-   string user_id = 1;
-   string product_id = 2;
-   int32 quantity = 3;
+message ProductSoldEvent {   
+   // Для защиты от дубликатов.
+   string order_id = 1   
+   string user_id = 2;
+   string product_id = 3;
+   int32 quantity = 4;
 }
 ```   
 
 ```proto   
 // Это сообщение отправляется, когда пользователь удаляет свой товар из портфеля активов. На это событие подписан Микросервис Заявок. Он ищет заявки с Type   
 // "sell_order", по user_id, по product_id. Далее закрывает все заявки, подходящие под эти условия. 
-message Briefcase_ProductRemovedEvent {
+message ProductRemovedEvent {
    string user_id = 1;
    string product_id = 2;
 }
