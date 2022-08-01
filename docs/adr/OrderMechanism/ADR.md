@@ -90,7 +90,7 @@ enum OrderTypes {
 ### Для gRPC c Facade
 
 ```proto   
-// Сообщение приходит от Facade. На основе полей формируется заявка.
+// Сообщение приходит от Facade. На основе полей формируется заявка и сохраняется в БД.
 message CreateOrderRequest {
   string user_id = 1;
   
@@ -101,3 +101,7 @@ message CreateOrderRequest {
   int32 quantity = 5;   
 }
 ```  
+
+```proto CreateOrderResponse {
+   bool success = 1;
+}
