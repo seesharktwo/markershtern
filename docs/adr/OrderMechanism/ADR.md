@@ -90,32 +90,6 @@ enum OrderTypes {
 }
 ```
 
-```proto
-// Участник сделки
-message OrderMember {
-   string user_id = 1;
-   int32 quantity = 2;
-   DecimalValue value = 3;
-} 
-```
-
-```proto
-enum Errors {
-	// Пользователь не найден.
-	USER_NOT_FOUND = 1;
-	// Пользователь с таким ID существует.
-	USER_ID_MATCHES_EXISTING = 2;
-	// Пользователь не имеет товара с таким ID
-	USER_NOT_HAVE_PRODUCT = 3;
-	// Пользователь не имеет необходимое количество товара.
-	USER_NOT_HAVE_QUANTITY_PRODUCT = 4;
-	// Продукт находится в продаже.
-	PRODUCT_ON_SALE = 5;
-	// У пользователя недостаточно денег.
-	USER_NOT_HAVE_MONEY = 6;
-}
-```  
-
 ### Для gRPC c Facade
 
 ```proto   
