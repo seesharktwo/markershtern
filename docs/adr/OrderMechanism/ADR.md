@@ -31,8 +31,6 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
             "product_id" : "b5a7c6d8-3533-4d45-97ba-500f202b9077",
             "quantity" : 3232,
             "price" : 123.00,
-            "timelife" : 2017-09-09,
-            "close_complete" : true,
          },
         ],
       "inactive" : [
@@ -56,7 +54,6 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
             "price" : 333.00,
 	    // Дата закрытия заявки
             "date_completed" : 2022-02-09,
-            "close_complete" : false,
          },
         ]  
     }
@@ -102,12 +99,5 @@ message CreateOrderRequest {
   string product_id = 2;
   DecimalValue price = 3;
   int32 quantity = 4;   
-  
-  // Время жизни заявки. Тут указана дата, до которой заявка действительна. 
-  google.protobuf.Timespan timelife = 5;
-  
-  // Флаг указывающий, что заявка должна быть закрыта полностью.
-  // true - полностью, false - можно дробить.
-  bool close_complete = 6;
 }
 ```  
