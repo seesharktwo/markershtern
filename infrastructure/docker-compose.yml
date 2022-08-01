@@ -29,7 +29,7 @@ services:
     ports:
       - "9092:9092"
     volumes:
-      - kafka:/bitnami/kafk
+      - kafka:/bitnami/kafka
     logging:
       driver: json-file
       options:
