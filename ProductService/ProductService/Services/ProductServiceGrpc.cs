@@ -3,7 +3,9 @@ using ProductService.Protos.Services;
 
 namespace ProductService.Services
 {
-    // Сервис реализующий контракт на получение списка с Bid and Ask
+    /// <summary>
+    /// implementation of proto contract
+    /// </summary>
     public class ProductServiceGrpc : Protos.Services.ProductService.ProductServiceBase
     {
         private readonly ProductContext _context;
@@ -16,7 +18,12 @@ namespace ProductService.Services
         }
 
 
-
+        /// <summary>
+        /// returns list of products with bid and ask
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
         public override async Task<GetProductsResponse> GetProducts(GetProductsRequest request, ServerCallContext context)
         {
             var responce = new GetProductsResponse();
