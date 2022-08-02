@@ -1,6 +1,7 @@
 using ProductService;
 using ProductService.Configs;
 using ProductService.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,9 @@ builder.Services.AddSingleton<ProductContext>();
 builder.Services.AddSingleton<ProductService.Services.ProductService>();
 builder.Services.AddHostedService<KafkaConsumerService>();
 
+// Подключение Serilog для логов
+builder.Host.UseSerilog((context, config) => config
+                        .WriteTo.Console());
 
 var app = builder.Build();
 

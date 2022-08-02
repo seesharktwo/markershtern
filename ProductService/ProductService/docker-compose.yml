@@ -30,7 +30,6 @@ services:
     volumes:
       - kafka:/bitnami/kafka
 
-
   mongo:
     image:
       mongo:4.2.8
@@ -43,3 +42,4 @@ volumes:
   mongodb:
   mongodb_config:
   kafka:
+  control-center:
