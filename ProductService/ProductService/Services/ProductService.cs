@@ -23,7 +23,7 @@ namespace ProductService.Services
         {
             var product = await _context.GetByNameAsync(sellOrderCreated.Name);
             decimal price = sellOrderCreated.Price;
-            if (product is null)
+            if (product is null) // когда нет такого товара в бд - необходимо его создать
             {
                 product = new Models.Product
                 {
@@ -48,7 +48,7 @@ namespace ProductService.Services
         public async Task ProcessingBuyOrder(BuyOrderCreated buyOrderCreated)
         {
             var product = await _context.GetByNameAsync(buyOrderCreated.Name);
-            if (product is null)
+            if (product is null) // когда нет такого товара в бд - необходимо его создать
             {
                 product = new Models.Product
                 {
@@ -75,25 +75,25 @@ namespace ProductService.Services
         public async Task ProcessingPriceChangedEvent(ProductPriceChanged productPriceChanged)
         {
             if (productPriceChanged.Name is null)
-                throw new ArgumentException("order's id is null");
+                throw new ArgumentException("product's name is null");
+
             var product = await _context.GetByNameAsync(productPriceChanged.Name);
-            if (!(product is null))
+
+            if (product is null)
+                throw new ArgumentException($"product \"{productPriceChanged.Name}\" is not found");
+            switch (productPriceChanged.Type)
             {
-                switch (productPriceChanged.Type)
-                {
-                    case PriceType.Ask:
-                        product.Ask = productPriceChanged.Price;
+                case PriceType.Ask:
+                    product.Ask = productPriceChanged.Price;
 
-                        break;
+                    break;
 
-                    case PriceType.Bid:
-                        product.Bid = productPriceChanged.Price;
+                case PriceType.Bid:
+                    product.Bid = productPriceChanged.Price;
 
-                        break;
-                }
-                await _context.UpdateAsync(product.Id, product);
-                
+                    break;
             }
+            await _context.UpdateAsync(product.Id, product);
         }
     }
 }

@@ -5,19 +5,20 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Additional configuration is required to successfully run gRPC on macOS.
-// For instructions on how to configure Kestrel and gRPC clients on macOS, visit https://go.microsoft.com/fwlink/?linkid=2099682
-
 // Add services to the container.
 builder.Services.AddGrpc();
+
 // Интеграция в DI конфигурации для сервисов
 builder.Services.Configure<ProductStoreDatabaseSettings>(
     builder.Configuration.GetSection("ProductStoreDatabase"));
 builder.Services.Configure<KafkaConsumerSettings>(
     builder.Configuration.GetSection("BootstrapServerKafka"));
+
 // Внедрение зависимости ProductContext
 builder.Services.AddSingleton<ProductContext>();
+// Аналогично с ProductService
 builder.Services.AddSingleton<ProductService.Services.ProductService>();
+// Добавление зависимости фонового сервиса KafkaConsumerService
 builder.Services.AddHostedService<KafkaConsumerService>();
 
 // Подключение Serilog для логов

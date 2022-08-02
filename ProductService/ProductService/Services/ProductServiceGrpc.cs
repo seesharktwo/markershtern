@@ -10,10 +10,8 @@ namespace ProductService.Services
     {
         private readonly ProductContext _context;
 
-        private readonly ILogger<ProductServiceGrpc> _logger;
-        public ProductServiceGrpc(ILogger<ProductServiceGrpc> logger, ProductContext context)
+        public ProductServiceGrpc( ProductContext context)
         {   
-            _logger = logger;
             _context = context;
         }
 
