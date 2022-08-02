@@ -93,8 +93,6 @@ BalanceValue
 	[]BalanceTransact 
 	{
 
-		ID транзакции 
-		
 		ID Глобальной транзакции 
 		
 		Значение 
@@ -120,8 +118,6 @@ OrderValue
 	[]OrderTransact 
 	{
 
-		ID транзакции 
-		
 		ID Глобальной транзакции 
 		
 		Значение 
@@ -147,7 +143,7 @@ OrderValue
 	
 	Дата
 	
-	IsComplite
+	IsCompleted
 	
 	IsError
 }
@@ -166,7 +162,7 @@ BalanceReplenished
 	
 }
 
-OrderClosing
+OrderClosed
 {
 
 	DecimalValue sum,
@@ -188,9 +184,7 @@ TransactionCanceled
 
 	string id_global_transact
 	
-	string id_transact
-	
-	string source
+	Source_Event_Transaction source
 	
 }
 
@@ -199,9 +193,7 @@ TransactionCompleted
 
 	string id_global_transact
 	
-	string id_transact
-	
-	string source
+	Source_Event_Transaction source
 	
 	string id_object
 	
@@ -221,18 +213,16 @@ BalanceChanged
 {
 
 	string id_global_transact,
-	
-	string id_transact,
-	
+
 	string id_order,
 	
 	string id_user,
 	
-	double sum,
+	DecimalValue sum,
 	
-	bool is_add,
+	Operation mode,
 	
-	bool is_reverse
+	TransactionType type
 	
 }
 
@@ -240,8 +230,6 @@ ProductChanged
 {
 
 	string id_global_transact,
-	
-	string id_transact,
 	
 	string id_product,
 	
@@ -251,12 +239,63 @@ ProductChanged
 	
 	int count,
 	
-	bool is_add,
+	Operation mode,
 	
-	bool is_reverse
+	TransactionType type
 	
 }
 ```
+
+## 
+
+```proto
+message DecimalValue
+{
+	// The whole units of the amount.
+	int64 units = 1;
+	// Number of nano (10^-9) units of the amount.
+	// The value must be between -999,999,999 and +999,999,999 inclusive.
+	// If `units` is positive, `nanos` must be positive or zero.
+	// If `units` is zero, `nanos` can be positive, zero, or negative.
+	// If `units` is negative, `nanos` must be negative or zero.
+	// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	int32 nanos = 2;
+}
+```
+```proto
+enum Operation {
+	// Операция добавления 
+	ADDITION = 1;
+	// Операция вычитания  
+	SUBTRACT = 2;
+}
+```
+```proto
+enum TransactionType {
+	// Операция проводки транзакции 
+	IMMEDIATE = 1;
+	// Операция отката транзакции 
+	ROLLBACK = 2;
+}
+```
+
+```proto
+enum Source_Event_Transaction {
+	// Операция проводки транзакции 
+	PRODUCT_ADDITION_IMMEDIATE = 1;
+	PRODUCT_SUBTRACT_IMMEDIATE = 2;
+	
+	BALANCE_ADDITION_IMMEDIATE = 3;
+	BALANCE_SUBTRACT_IMMEDIATE = 4;
+	
+	PRODUCT_ADDITION_ROLLBACK = 5;
+	PRODUCT_SUBTRACT_ROLLBACK = 6;
+	
+	BALANCE_ADDITION_ROLLBACK = 7;
+	BALANCE_SUBTRACT_ROLLBACK = 8;
+}
+```
+
 
 # Status
 
