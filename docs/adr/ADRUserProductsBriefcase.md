@@ -24,13 +24,16 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 
 
 ```
-    Line_1 {  
-    	UserId, Set Prodcuts [  
-    	Product_1 { ProductId, Name, AuthorId, Quantity },  
-    	Product_2 { ProductId, Name, AuthorId, Quantity }   
-    	]   
-    },  
-    Line_2...
+// В качестве индекса id пользователя.
+[ef48ad6c-be94-4ad6-acd6-f54952e06d26] 
+{
+   "products" : [ 
+   "product_id" : "113fc7b2-7ca7-4e6e-8692-fdfa2a0a582f",
+   "name" : "iron",
+   "author_id" : "376379ed-6d8a-4274-b951-e8a811439b91",
+   "quantity" : 257
+   ]
+}
 ```
 ---
 
