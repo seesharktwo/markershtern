@@ -16,6 +16,9 @@
 
         public static decimal ToDecimal( DecimalValue decimalValue)
         {
+            if (decimalValue is null)
+                return 0;
+               // throw new ArgumentException("decimal value is null");
             return decimalValue.Units + decimalValue.Nanos / NanoFactor;
         }
 

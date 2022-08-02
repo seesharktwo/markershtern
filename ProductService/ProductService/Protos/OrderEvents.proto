@@ -39,7 +39,7 @@ message ProductPriceChanged
 enum PriceType
 {
 	// лучшее предложение стоимости от покупателя
-	Bid = 0;
+	BID = 0;
 	// лучшее предложение стоимости от продавца
-	Ask = 1;
+	ASK = 1;
 }  
