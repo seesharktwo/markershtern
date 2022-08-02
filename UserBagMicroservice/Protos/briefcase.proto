@@ -37,44 +37,7 @@ message GetUserProductsRequest {
 
 message GetUserProductsResponse {
 	oneof result {
-		ToWrapper wrapper = 2;
-		Errors error = 3;
+		ToWrapper wrapper = 1;
+		Errors error = 2;
 	}
-}
-
-message UserRegisteredEvent {
-    string user_id = 1;
-}
-
-message OrderCompletedEvent {
- string message_id = 1;
- string user_id_from = 2;
- string user_id_to = 3;
- string product_id = 4;
- int32 quantity = 5;
-}
-
-message Order_ProductSoldEvent {
-    string user_id = 1;
-    string product_id = 2;
-    int32 quantity = 3;
-}
-
-message Briefcase_ProductSoldEventResponse {
-    string user_id = 1;
-    oneof result {
-    	Errors error = 2;
-    	bool success = 3;
-    }
-}
-
-message Briefcase_ProductQuantityDecreaseEvent {   
-   string user_id = 1;
-   string product_id = 2;
-   int32 quantity = 3;
-}
-
-message Briefcase_ProductRemovedEvent {
-   string user_id = 1;
-   string product_id = 2;
 }
