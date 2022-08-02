@@ -5,6 +5,7 @@
 # Decision
 ### Данный в БД хранятся следующим образом: 
 
+
     string id
     string login
     string hash
@@ -15,12 +16,14 @@
 > На данном этапе в базе данных храниться какое-то количество тестовых профилей.
 ### Proto: 
 ```proto
+
     message LoginRequest {
         string login = 1;
         string password = 2;
     }
 
     message LoginResponse {
+
         oneof result{
              string user_Id = 1;
              Error error = 2;
