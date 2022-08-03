@@ -83,6 +83,9 @@ sequenceDiagram
 И ее вид операции, чтобы избежать повторной проводки. 
 
 Примерная структура базы данных
+
+
+
 ```proto
 BalanceValue
 {
@@ -101,9 +104,7 @@ BalanceValue
 		
 		Id счета
 		
-		bool выполнен
-		
-		Bool отменен
+		string status 
 		
 	}
 }
@@ -282,17 +283,23 @@ enum TransactionType {
 ```proto
 enum Source_Event_Transaction {
 	// Операция проводки транзакции 
-	PRODUCT_ADDITION_IMMEDIATE = 1;
-	PRODUCT_SUBTRACT_IMMEDIATE = 2;
+	PRODUCT_ORDER_ADDITION_IMMEDIATE = 1;
+	PRODUCT_ORDER_SUBTRACT_IMMEDIATE = 2;
 	
 	BALANCE_ADDITION_IMMEDIATE = 3;
 	BALANCE_SUBTRACT_IMMEDIATE = 4;
 	
-	PRODUCT_ADDITION_ROLLBACK = 5;
-	PRODUCT_SUBTRACT_ROLLBACK = 6;
+	PRODUCT_ORDER_ADDITION_ROLLBACK = 5;
+	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 6;
 	
 	BALANCE_ADDITION_ROLLBACK = 7;
 	BALANCE_SUBTRACT_ROLLBACK = 8;
+	
+	PRODUCT_ORDER_ADDITION_ROLLBACK = 9;
+	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 10;
+	
+	PRODUCT_ORDER_ADDITION_IMMEDIATE = 11;
+	PRODUCT_ORDER_SUBTRACT_IMMEDIATE = 12;
 }
 ```
 
