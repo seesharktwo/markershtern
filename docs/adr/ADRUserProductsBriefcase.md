@@ -61,13 +61,13 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 отправить ответ с описанием ошибки с UserId. Если все в порядке, то отправить ответным сообщением  
 список продуктов с UserId.
 
-Передача товара(string userId_from, string userId_to, string productId, int32 quantity) -  
-Проверяет, существуют ли записи в БД.  Если записей с такими UserID/ProductID не существует, то  
-отправить ответ с описанием ошибки с UserId. Если все в порядке, изменить запись, отправить ответным сообщением  
-UserId. Микросервис транзакций гарантирует, что продукт спишется у одного и перейдет другому.
-
 Добавление Товара(user_id, product) -    
-Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то добавить довар.
+Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то добавить товар.
+Микросервис транзакций гарантирует корректное выполнение.
+
+Уменьшение товара(user_id, product_id) - 
+Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то отнять товар.
+Микросервис транзакций гарантирует корректное выполнение.
 
 Удаление товара(string userId, string productId) -  
 Проверяет, существует ли запись в БД.  Если записи с таким UserID/ProductID не существует, то  
@@ -129,7 +129,7 @@ message ProductsList {
 
 ```proto
 // Сообщение, которое указывает, что Facade запросил список продуктов пользователя.
-message GotUserProductsEvent {
+message GetUserProductsRequest {
     // user_id это ID пользователя, чьи товары необходимо предоставить Facade.
     string user_id = 1;
 }
@@ -138,7 +138,7 @@ message GotUserProductsEvent {
 
 ```proto
 // Сообщение для ответа на запрос получения списка продуктов.
-message GotUserProductsEvent {
+message GetUserProductsResponse {
     string user_id = 1;
     // Если в ходе выполнения возникли ошибки, то отправляется ошибка, если нет, то wrapper
     oneof response {
@@ -222,30 +222,73 @@ message UserRegisteredEvent {
 ###  Передача товара между пользователями
 
 ```proto
-// Микросервис подписан на топик события совершения сделки. 
-message PutOrderTransactionRequest {  
- // Нужно, чтобы избежать повторной обработки дубликата.
- string order_id = 1;
- // ID пользователя, у которого мы собираемся списать товар.
- string user_id_from = 2;
- // ID пользователя, которому мы хотим зачислить товар.
- string user_id_to = 3;
- // ID товара, который мы хотим добавить.
- string product_id = 4;
- // Количество товара для передачи.
- int32 quantity = 5;
-}
-```  
-
-```proto
-// Для ответа на передачу товара
-message PutOrderTransactionResponse {
-   oneof response {
-        Errors error = 2;
-    	bool success = 3;
-   }
+// Сообщение от микросервиса транзакций на списание или добавление товара.
+message ProductChanged {
+   string id_global_transact,
+   string id_product,
+   string id_user,
+   string id_order,
+   int count,
+   Operation mode,
+   TransactionType type
 }
 ```
+
+```proto
+enum TransactionType {
+   // Операция проводки транзакции 
+   IMMEDIATE = 1;
+   // Операция отката транзакции 
+   ROLLBACK = 2;
+}
+```
+
+```proto
+enum Operation {
+   // Операция добавления 
+   ADDITION = 1;
+   // Операция вычитания  
+   SUBTRACT = 2;
+}
+```
+
+```proto
+// Ответ для микросервиса транзакций для случаев с ошибкой операции.
+TransactionCanceled
+{
+	string id_global_transact
+	Source_Event_Transaction source
+}
+```
+
+```proto
+// Ответ для микросервиса транзакций для случаев, если операция прошла успешно.
+TransactionCompleted
+{
+	string id_global_transact
+	Source_Event_Transaction source
+	string id_object
+	DecimalValue quanity
+}
+```
+
+```proto
+enum Source_Event_Transaction {
+   // Операция проводки транзакции 
+   PRODUCT_ADDITION_IMMEDIATE = 1;
+   PRODUCT_SUBTRACT_IMMEDIATE = 2;
+   
+   BALANCE_ADDITION_IMMEDIATE = 3;
+   BALANCE_SUBTRACT_IMMEDIATE = 4;
+   
+   PRODUCT_ADDITION_ROLLBACK = 5;
+   PRODUCT_SUBTRACT_ROLLBACK = 6;
+   
+   BALANCE_ADDITION_ROLLBACK = 7;
+   BALANCE_SUBTRACT_ROLLBACK = 8;
+}
+```
+
 
 ### Уведомление, что количество товара у пользователя изменилось.
 
