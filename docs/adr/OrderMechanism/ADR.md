@@ -67,6 +67,13 @@ message DecimalValue {
 }
 ```
 
+```proto
+enum OrderType {
+   SELL_ORDER = 1;
+   BUY_ORDER = 2;
+}
+```
+
 ### Kafka
 
 ```proto   
@@ -75,7 +82,7 @@ message OrderCreatedEvent {
   string user_id = 1;
   
   // Тип заявки
-  OrderTypes type = 2;
+  OrderType type = 2;
   string product_id = 3;
   DecimalValue price = 4;
   int32 quantity = 5;   
@@ -87,26 +94,26 @@ message OrderCreatedEvent {
 // Сообщение для микросервиса транзакций.
 // На это событие подписан микросервис транзакций.
 message OrderCandidateOccurredEvent {
-   string order_id = 1;
+   repeated string order_id = 1;
    int32 quantity = 2;
    string product_id = 3;
    string user_id_buyer = 4;
    string user_id_seller = 5;
-   DecimalValue = 6;
+   DecimalValue price = 6;
 }
 ```
 
 ```proto
-// На это подписан микросервис транзакций
+// Ответ от микросервиса транзакций
 message OrderCandidateOccurredProcessFailed {
-   order_id = 1;
+   repeated order_id = 1;
 }
 ```
 
 ```proto
-// На это подписан микросервис транзакций
+// Ответ от микросервиса транзакций
 message OrderCandidateProcessSuccess {
-   order_id = 1;
+   repeated order_id = 1;
 }
 ```
 
