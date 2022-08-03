@@ -10,109 +10,141 @@
 
 одна транзакция на 1 пользователя. Они обрабатываются отдельно, даже если идет покупка и передача денег от одного к другому. 
 
-Состояние счета не может быть отрицательным. В таком случаи баланс считается не валидным. 
-
-Не валидные балансы прекращают обрабатывать любые транзакции, кроме обратных транзакций, пока счет не станет валидным. 
-
-
 ## база данных
 
 users{
 
 	string id
 	
-	double money
+	Decimal money
 	
 	listTransact {
 	
 		string GlobalTransactId
 		
-		string TransactId
+		Operation mode,
 		
 		data Date
-	
 	}
 	
-	isValid
 }
 
-## Grpc
+## Входящие события
 
-service BalanceService 
+message UserBalanceRequested
 {
-  rpc GetBalance(UserRequest) returns(BalanceResponce);
+	string id = 1;
 }
 
-message UserRequest
+BalanceChanged
 {
-	string Id = 1;
+
+	string id_global_transact,
+
+	string id_order,
+	
+	string id_user,
+	
+	DecimalValue sum,
+	
+	Operation mode,
+	
+	TransactionType type
+	
 }
 
-message BalanceResponce
-{
-	string userId = 1;
-
-	double balance = 2;
-}
-
-## События
-
-### Консюмер
-
-BalanceTransact {
-
-	string idGlobalTransact,
-
-	string idTransact,
-
-	string idOrder,
-
-	string idUser,
-
-	double sum,
-
-	bool isAdd,
-
-	bool isReverse
-
-}
-
-CreateUser {
+UserCreated {
 	
 	Тут будет событие когда создается пользователь в системе. Его пока нет.
 	
 }
 
-### Продюсер 
+## Исходящие события 
 
-AbortingTransaction {
 
-	string idGlobalTransact
+message UserBalanceResponced
+{
+	string user_id = 1;
 
-	string idTransact
-
-	string source
-
+	DecimalValue balance = 2;
 }
 
-CompletedTransaction {
+TransactionCanceled
+{
 
-	string idGlobalTransact
-
-	string idTransact
-
-	string source
-
-}
-
-NotValidStatus {
-
-	id
+	string id_global_transact
 	
-	string source
+	Source_Event_Transaction source
+	
 }
 
+TransactionCompleted
+{
 
+	string id_global_transact
+	
+	Source_Event_Transaction source
+	
+	string id_object
+	
+	DecimalValue quanity
+	
+}
+
+##
+
+```proto
+enum Operation {
+	// Операция добавления 
+	ADDITION = 1;
+	// Операция вычитания  
+	SUBTRACT = 2;
+}
+```
+```proto
+enum TransactionType {
+	// Операция проводки транзакции 
+	IMMEDIATE = 1;
+	// Операция отката транзакции 
+	ROLLBACK = 2;
+}
+```
+```proto
+message DecimalValue
+{
+	// The whole units of the amount.
+	int64 units = 1;
+	// Number of nano (10^-9) units of the amount.
+	// The value must be between -999,999,999 and +999,999,999 inclusive.
+	// If `units` is positive, `nanos` must be positive or zero.
+	// If `units` is zero, `nanos` can be positive, zero, or negative.
+	// If `units` is negative, `nanos` must be negative or zero.
+	// For example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.
+	int32 nanos = 2;
+}
+```
+```proto
+enum Source_Event_Transaction {
+	// Операция проводки транзакции 
+	PRODUCT_ORDER_ADDITION_IMMEDIATE = 1;
+	PRODUCT_ORDER_SUBTRACT_IMMEDIATE = 2;
+	
+	BALANCE_ADDITION_IMMEDIATE = 3;
+	BALANCE_SUBTRACT_IMMEDIATE = 4;
+	
+	PRODUCT_ORDER_ADDITION_ROLLBACK = 5;
+	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 6;
+	
+	BALANCE_ADDITION_ROLLBACK = 7;
+	BALANCE_SUBTRACT_ROLLBACK = 8;
+	
+	PRODUCT_ORDER_ADDITION_ROLLBACK = 9;
+	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 10;
+	
+	PRODUCT_ORDER_ADDITION_IMMEDIATE = 11;
+	PRODUCT_ORDER_SUBTRACT_IMMEDIATE = 12;
+}
+```
 
 # Status
 
