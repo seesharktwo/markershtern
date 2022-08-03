@@ -23,7 +23,7 @@ namespace ProductService.Services
 
         public KafkaConsumerService(IOptions<KafkaConsumerSettings> config, ProductService service, ILogger<KafkaConsumerService> logger)
         {
-            this._config = new ConsumerConfig
+            _config = new ConsumerConfig
             {
                 BootstrapServers = config.Value.BootstrapServers,
                 GroupId = config.Value.GroupId,
