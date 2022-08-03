@@ -4,7 +4,7 @@
   
   
 ### Решение:  
-  [Доска взаимодействий](https://webwhiteboard.com/board/w63UPU7fdY4e9Da6WzKqxMCG1LI7823I/)  
+  [Доска взаимодействий](https://miro.com/app/board/uXjVOiQGoYc=/?share_link_id=112559324980)  
   
   Описание логики взаимодействий:  
 Все сообщения, в том числе от фасада и к фасаду, будут идти через Kafka.  
