@@ -221,16 +221,18 @@ message UserRegisteredEvent {
 
 ###  Передача товара между пользователями
 
+Микросервис транзакций гарантирует, что товар спишется у одного пользователя и зачислиться другому.
+
 ```proto
 // Сообщение от микросервиса транзакций на списание или добавление товара.
 message ProductChanged {
-   string id_global_transact,
-   string id_product,
-   string id_user,
-   string id_order,
-   int count,
-   Operation mode,
-   TransactionType type
+   string id_global_transact = 1;
+   string id_product = 2;
+   string id_user = 3;
+   string id_order = 4;
+   int count = 5;
+   Operation mode = 6;
+   TransactionType type = 7;
 }
 ```
 
@@ -254,21 +256,19 @@ enum Operation {
 
 ```proto
 // Ответ для микросервиса транзакций для случаев с ошибкой операции.
-TransactionCanceled
-{
-	string id_global_transact
-	Source_Event_Transaction source
+message TransactionCanceled {
+	string id_global_transact = 1;
+	Source_Event_Transaction source = 2;
 }
 ```
 
 ```proto
 // Ответ для микросервиса транзакций для случаев, если операция прошла успешно.
-TransactionCompleted
-{
-	string id_global_transact
-	Source_Event_Transaction source
-	string id_object
-	DecimalValue quanity
+message TransactionCompleted {
+	string id_global_transact = 1;
+	Source_Event_Transaction source = 2;
+	string id_object = 3;
+	DecimalValue quanity = 4;
 }
 ```
 
