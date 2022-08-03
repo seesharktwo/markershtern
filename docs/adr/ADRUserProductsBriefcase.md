@@ -64,7 +64,7 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 Передача товара(string userId_from, string userId_to, string productId, int32 quantity) -  
 Проверяет, существуют ли записи в БД.  Если записей с такими UserID/ProductID не существует, то  
 отправить ответ с описанием ошибки с UserId. Если все в порядке, изменить запись, отправить ответным сообщением  
-UserId.
+UserId. Микросервис транзакций гарантирует, что продукт спишется у одного и перейдет другому.
 
 Добавление Товара(user_id, product) -    
 Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то добавить довар.
@@ -129,7 +129,7 @@ message ProductsList {
 
 ```proto
 // Сообщение, которое указывает, что Facade запросил список продуктов пользователя.
-message GotUserProductsEventRequest {
+message GotUserProductsEvent {
     // user_id это ID пользователя, чьи товары необходимо предоставить Facade.
     string user_id = 1;
 }
@@ -138,7 +138,7 @@ message GotUserProductsEventRequest {
 
 ```proto
 // Сообщение для ответа на запрос получения списка продуктов.
-message GotUserProductsEventResponse {
+message GotUserProductsEvent {
     string user_id = 1;
     // Если в ходе выполнения возникли ошибки, то отправляется ошибка, если нет, то wrapper
     oneof response {
@@ -155,7 +155,7 @@ message GotUserProductsEventResponse {
 
 ```proto
 // Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет добавить товар. 
-message AddedProductEventRequest {
+message AddedProductEvent {
     // ID сообщения, чтобы избежать повторной обработки дубликата 
     string message_id = 1;
     // ID пользователя, которому нужно добавить товар.
@@ -170,7 +170,7 @@ message AddedProductEventRequest {
 ```proto
 // Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет удалить товар.   
 // Прежде чем удалить товар, необходимо убедиться, что товар не находится в продаже.
-message RemovedProductEventRequest {
+message RemovedProductEvent {
     // ID пользователя, которому нужно удалить товар.
     string user_id = 1;
     // ID товара, который необходимо удалить.
@@ -183,7 +183,7 @@ message RemovedProductEventRequest {
 ```proto
 // Сообщение от Facade. Проверяет, имеется ли необходимое количество товара у пользователя.
 // Создание заявки на продажу.
-message CreatedSellOrderEventRequest {
+message CheckOrderCreateRequest {
     // ID пользователя, по которому ведется поиск.
     string user_id = 1;
     // ID товара, по которому ведется поиск.
@@ -196,7 +196,7 @@ message CreatedSellOrderEventRequest {
 
 ```proto
 // Сообщение для Facade. Ответ для Facade, который подтверждает, что у пользователя имеется необходимое количество продукта.
-message CreatedSellOrderEventResponse {
+message CheckOrderCreateResponse {
     string user_id = 1;
     oneof result {
     	Errors error = 2;
@@ -223,7 +223,7 @@ message UserRegisteredEvent {
 
 ```proto
 // Микросервис подписан на топик события совершения сделки. 
-message OrderCompletedEvent {  
+message PutOrderTransactionRequest {  
  // Нужно, чтобы избежать повторной обработки дубликата.
  string order_id = 1;
  // ID пользователя, у которого мы собираемся списать товар.
@@ -239,7 +239,7 @@ message OrderCompletedEvent {
 
 ```proto
 // Для ответа на передачу товара
-message OrderCompletedEventResponse {
+message PutOrderTransactionResponse {
    oneof response {
         Errors error = 2;
     	bool success = 3;
