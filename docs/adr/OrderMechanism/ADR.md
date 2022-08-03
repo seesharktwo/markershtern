@@ -67,16 +67,6 @@ message DecimalValue {
 }
 ```
 
-```proto
-// Типы заявок
-enum OrderType {
-   // Тип заявок на продажу.
-   SELL_ORDER = 1;
-   // Тип заявок на покупку.
-   BUY_ORDER = 2;
-}
-```
-
 ### Kafka
 
 ```proto   
@@ -91,17 +81,6 @@ message OrderCreatedEvent {
   int32 quantity = 5;   
 }
 ```  
-
-```proto
-message Order {
-   string order_id = 1;
-   string user_id = 2;
-   OrdersTypes type = 3;
-   string product_id = 4;
-   int32 quantity = 5;
-   DecimalValue price = 6;
-}
-```
 
 
 ```proto  
