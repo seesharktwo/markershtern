@@ -96,8 +96,6 @@ enum Errors {
 	USER_NOT_HAVE_PRODUCT = 2;
 	// Пользователь не имеет необходимое количества продукта. 
 	USER_NOT_HAVE_QUANTITY_PRODUCT = 3;
-	// Товар не может быть удален, так как находится на торговле.
-	PRODUCT_ON_SALE = 4;
 }
 ```  
 
