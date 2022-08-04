@@ -107,6 +107,7 @@ namespace ProductService.Services
                 _logger.LogError(ex.Message);
             }
          }
+      
         /// <summary>
         /// task listens SellOrderCreated topic and sends to productService
         /// </summary>
@@ -165,6 +166,7 @@ namespace ProductService.Services
                 _logger.LogError(ex.Message);
             }
         }
+       
         /// <summary>
         /// task listens ProductPriceChanged topic and sends to productService
         /// </summary>
