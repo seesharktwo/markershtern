@@ -94,26 +94,29 @@ message OrderCreatedEvent {
 // Сообщение для микросервиса транзакций.
 // На это событие подписан микросервис транзакций.
 message OrderCandidateOccurredEvent {
-   repeated string order_id = 1;
-   int32 quantity = 2;
-   string product_id = 3;
-   string user_id_buyer = 4;
-   string user_id_seller = 5;
-   DecimalValue price = 6;
+   string order_id = 1;
+   string order_id_seller = 2;
+   int32 quantity = 3;
+   string product_id = 4;
+   string user_id_buyer = 5;
+   string user_id_seller = 6;
+   DecimalValue price = 7;
 }
 ```
 
 ```proto
 // Ответ от микросервиса транзакций
 message OrderCandidateOccurredProcessFailed {
-   repeated order_id = 1;
+   string order_id = 1;
+   string order_id_seller = 2;
 }
 ```
 
 ```proto
 // Ответ от микросервиса транзакций
 message OrderCandidateProcessSuccess {
-   repeated order_id = 1;
+   string order_id = 1;
+   string order_id_seller = 2;
 }
 ```
 
