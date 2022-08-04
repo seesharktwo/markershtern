@@ -1,2 +1,0 @@
-obj\Debug\net5.0\Protos/UserProducts.cs \
-obj\Debug\net5.0\Protos/UserProductsGrpc.cs: Protos/userProducts.proto
