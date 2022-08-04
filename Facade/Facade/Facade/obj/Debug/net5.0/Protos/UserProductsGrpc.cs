@@ -7,7 +7,7 @@
 
 using grpc = global::Grpc.Core;
 
-namespace Facade {
+namespace Facade2 {
   public static partial class SenderProductsService
   {
     static readonly string __ServiceName = "userProducts.SenderProductsService";
@@ -46,12 +46,12 @@ namespace Facade {
     }
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Facade.GetUserProductsRequest> __Marshaller_userProducts_GetUserProductsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.GetUserProductsRequest.Parser));
+    static readonly grpc::Marshaller<global::Facade2.GetUserProductsRequest> __Marshaller_userProducts_GetUserProductsRequest = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade2.GetUserProductsRequest.Parser));
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Marshaller<global::Facade.GetUserProductsReply> __Marshaller_userProducts_GetUserProductsReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade.GetUserProductsReply.Parser));
+    static readonly grpc::Marshaller<global::Facade2.GetUserProductsReply> __Marshaller_userProducts_GetUserProductsReply = grpc::Marshallers.Create(__Helper_SerializeMessage, context => __Helper_DeserializeMessage(context, global::Facade2.GetUserProductsReply.Parser));
 
     [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-    static readonly grpc::Method<global::Facade.GetUserProductsRequest, global::Facade.GetUserProductsReply> __Method_GetUserProducts = new grpc::Method<global::Facade.GetUserProductsRequest, global::Facade.GetUserProductsReply>(
+    static readonly grpc::Method<global::Facade2.GetUserProductsRequest, global::Facade2.GetUserProductsReply> __Method_GetUserProducts = new grpc::Method<global::Facade2.GetUserProductsRequest, global::Facade2.GetUserProductsReply>(
         grpc::MethodType.Unary,
         __ServiceName,
         "GetUserProducts",
@@ -61,7 +61,7 @@ namespace Facade {
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
     {
-      get { return global::Facade.UserProductsReflection.Descriptor.Services[0]; }
+      get { return global::Facade2.UserProductsReflection.Descriptor.Services[0]; }
     }
 
     /// <summary>Client for SenderProductsService</summary>
@@ -92,22 +92,22 @@ namespace Facade {
       }
 
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Facade.GetUserProductsReply GetUserProducts(global::Facade.GetUserProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Facade2.GetUserProductsReply GetUserProducts(global::Facade2.GetUserProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return GetUserProducts(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual global::Facade.GetUserProductsReply GetUserProducts(global::Facade.GetUserProductsRequest request, grpc::CallOptions options)
+      public virtual global::Facade2.GetUserProductsReply GetUserProducts(global::Facade2.GetUserProductsRequest request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_GetUserProducts, null, options, request);
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Facade.GetUserProductsReply> GetUserProductsAsync(global::Facade.GetUserProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Facade2.GetUserProductsReply> GetUserProductsAsync(global::Facade2.GetUserProductsRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return GetUserProductsAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
       [global::System.CodeDom.Compiler.GeneratedCode("grpc_csharp_plugin", null)]
-      public virtual grpc::AsyncUnaryCall<global::Facade.GetUserProductsReply> GetUserProductsAsync(global::Facade.GetUserProductsRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Facade2.GetUserProductsReply> GetUserProductsAsync(global::Facade2.GetUserProductsRequest request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_GetUserProducts, null, options, request);
       }

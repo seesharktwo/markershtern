@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Facade";
+option csharp_namespace = "Facade2";
 
 package userProducts;
 

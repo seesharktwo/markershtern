@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Facade2;
 
 namespace Facade.Services
 {
@@ -17,11 +18,11 @@ namespace Facade.Services
             _connectionString = GetConnectionString();
         }
 
-        public async Task<(bool isComplite, List<Product> products, Exception exception)>
+        public async Task<(bool isComplite, List<Facade2.Product> products, Exception exception)>
             GetProductsAsync(string userId)
         {
             Exception exception = null;
-            List<Product> products = new List<Product>();
+            List<Facade2.Product> products = new List<Facade2.Product>();
 
             try
             {
@@ -36,7 +37,7 @@ namespace Facade.Services
             return (false, products, exception);
         }
         
-        private async Task<List<Product>> LoadDataAsync(string userId)
+        private async Task<List<Facade2.Product>> LoadDataAsync(string userId)
         {
 
             var request = new GetUserProductsRequest { UserId = userId };

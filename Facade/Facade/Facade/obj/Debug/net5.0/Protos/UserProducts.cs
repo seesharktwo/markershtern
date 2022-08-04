@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace Facade {
+namespace Facade2 {
 
   /// <summary>Holder for reflection information generated from Protos/userProducts.proto</summary>
   public static partial class UserProductsReflection {
@@ -34,15 +34,15 @@ namespace Facade {
             "CgVjb3VudBgGIAEoBSIsCgxEZWNpbWFsVmFsdWUSDQoFdW5pdHMYASABKAMS",
             "DQoFbmFub3MYAiABKA8ydAoVU2VuZGVyUHJvZHVjdHNTZXJ2aWNlElsKD0dl",
             "dFVzZXJQcm9kdWN0cxIkLnVzZXJQcm9kdWN0cy5HZXRVc2VyUHJvZHVjdHNS",
-            "ZXF1ZXN0GiIudXNlclByb2R1Y3RzLkdldFVzZXJQcm9kdWN0c1JlcGx5Qgmq",
-            "AgZGYWNhZGViBnByb3RvMw=="));
+            "ZXF1ZXN0GiIudXNlclByb2R1Y3RzLkdldFVzZXJQcm9kdWN0c1JlcGx5Qgqq",
+            "AgdGYWNhZGUyYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.GetUserProductsRequest), global::Facade.GetUserProductsRequest.Parser, new[]{ "UserId" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.GetUserProductsReply), global::Facade.GetUserProductsReply.Parser, new[]{ "UserId", "Products", "Errors" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.Product), global::Facade.Product.Parser, new[]{ "ProductId", "Name", "AuthorMarker", "Price", "Description", "Count" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Facade.DecimalValue), global::Facade.DecimalValue.Parser, new[]{ "Units", "Nanos" }, null, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade2.GetUserProductsRequest), global::Facade2.GetUserProductsRequest.Parser, new[]{ "UserId" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade2.GetUserProductsReply), global::Facade2.GetUserProductsReply.Parser, new[]{ "UserId", "Products", "Errors" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade2.Product), global::Facade2.Product.Parser, new[]{ "ProductId", "Name", "AuthorMarker", "Price", "Description", "Count" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::Facade2.DecimalValue), global::Facade2.DecimalValue.Parser, new[]{ "Units", "Nanos" }, null, null, null, null)
           }));
     }
     #endregion
@@ -63,7 +63,7 @@ namespace Facade {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Facade.UserProductsReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Facade2.UserProductsReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -252,7 +252,7 @@ namespace Facade {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Facade.UserProductsReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Facade2.UserProductsReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -298,12 +298,12 @@ namespace Facade {
 
     /// <summary>Field number for the "products" field.</summary>
     public const int ProductsFieldNumber = 2;
-    private static readonly pb::FieldCodec<global::Facade.Product> _repeated_products_codec
-        = pb::FieldCodec.ForMessage(18, global::Facade.Product.Parser);
-    private readonly pbc::RepeatedField<global::Facade.Product> products_ = new pbc::RepeatedField<global::Facade.Product>();
+    private static readonly pb::FieldCodec<global::Facade2.Product> _repeated_products_codec
+        = pb::FieldCodec.ForMessage(18, global::Facade2.Product.Parser);
+    private readonly pbc::RepeatedField<global::Facade2.Product> products_ = new pbc::RepeatedField<global::Facade2.Product>();
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public pbc::RepeatedField<global::Facade.Product> Products {
+    public pbc::RepeatedField<global::Facade2.Product> Products {
       get { return products_; }
     }
 
@@ -493,7 +493,7 @@ namespace Facade {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Facade.UserProductsReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Facade2.UserProductsReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -566,10 +566,10 @@ namespace Facade {
 
     /// <summary>Field number for the "price" field.</summary>
     public const int PriceFieldNumber = 4;
-    private global::Facade.DecimalValue price_;
+    private global::Facade2.DecimalValue price_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public global::Facade.DecimalValue Price {
+    public global::Facade2.DecimalValue Price {
       get { return price_; }
       set {
         price_ = value;
@@ -761,7 +761,7 @@ namespace Facade {
       }
       if (other.price_ != null) {
         if (price_ == null) {
-          Price = new global::Facade.DecimalValue();
+          Price = new global::Facade2.DecimalValue();
         }
         Price.MergeFrom(other.Price);
       }
@@ -800,7 +800,7 @@ namespace Facade {
           }
           case 34: {
             if (price_ == null) {
-              Price = new global::Facade.DecimalValue();
+              Price = new global::Facade2.DecimalValue();
             }
             input.ReadMessage(Price);
             break;
@@ -842,7 +842,7 @@ namespace Facade {
           }
           case 34: {
             if (price_ == null) {
-              Price = new global::Facade.DecimalValue();
+              Price = new global::Facade2.DecimalValue();
             }
             input.ReadMessage(Price);
             break;
@@ -876,7 +876,7 @@ namespace Facade {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Facade.UserProductsReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Facade2.UserProductsReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
