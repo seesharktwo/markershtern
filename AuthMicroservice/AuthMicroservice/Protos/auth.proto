@@ -1,0 +1,19 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "AuthMicroservice.Protos.Grpc";
+
+// implementation service
+service Authorization{
+     rpc Login(LoginRequest) returns(LoginResponse);
+}
+
+// The request message
+message LoginRequest {
+    string login = 1;
+    string password = 2;
+}
+
+// The responce message
+message LoginResponse {
+    string user_Id = 1;
+}    
