@@ -28,13 +28,22 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 [ef48ad6c-be94-4ad6-acd6-f54952e06d26] 
 {
    "products" : [ 
-   "product_id" : "113fc7b2-7ca7-4e6e-8692-fdfa2a0a582f",
-   "name" : "iron",
-   "author_id" : "376379ed-6d8a-4274-b951-e8a811439b91",
+   "product_link" : "",
    "quantity" : 257
    ]
 }
 ```
+
+Коллекция продуктов
+```
+// Индекс, он же id продукта.
+[113fc7b2-7ca7-4e6e-8692-fdfa2a0a582f]
+{
+   "name" : "iron",
+   "author_id" : "376379ed-6d8a-4274-b951-e8a811439b91",
+}
+```
+
 ---
 
 ### Топики Kafka
@@ -126,7 +135,13 @@ message ProductsList {
 ### Получение списка продуктов пользователя
 
 ```proto
-// Сообщение, которое указывает, что Facade запросил список продуктов пользователя.
+service UserBriefcase {
+   rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse)
+}
+```
+
+```proto
+// Сообщение от Facade через gRPC. Запрос списка товаров.
 message GetUserProductsRequest {
     // user_id это ID пользователя, чьи товары необходимо предоставить Facade.
     string user_id = 1;
@@ -137,7 +152,6 @@ message GetUserProductsRequest {
 ```proto
 // Сообщение для ответа на запрос получения списка продуктов.
 message GetUserProductsResponse {
-    string user_id = 1;
     // Если в ходе выполнения возникли ошибки, то отправляется ошибка, если нет, то wrapper
     oneof response {
         // Представляет собой обертку для repeated product 
@@ -152,8 +166,8 @@ message GetUserProductsResponse {
 ### Добавление товара
 
 ```proto
-// Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет добавить товар. 
-message AddedProductEvent {
+// Микросервис получает это сообщение от Facade через gRPC, сигнализирующее о том, что пользователь хочет добавить товар. 
+message ProductAdded {
     // ID сообщения, чтобы избежать повторной обработки дубликата 
     string message_id = 1;
     // ID пользователя, которому нужно добавить товар.
@@ -163,12 +177,18 @@ message AddedProductEvent {
 }  
 ```
 
+```proto
+message ProductAddedSuccess {
+   bool success = 1;
+}
+```
+
 ### Удаление товара
 
 ```proto
 // Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет удалить товар.   
 // Прежде чем удалить товар, необходимо убедиться, что товар не находится в продаже.
-message RemovedProductEvent {
+message ProductRemoved {
     // ID пользователя, которому нужно удалить товар.
     string user_id = 1;
     // ID товара, который необходимо удалить.
@@ -176,11 +196,24 @@ message RemovedProductEvent {
 }
 ``` 
 
+```proto
+message ProductRemovedSuccess {
+   bool success = 1;
+}
+```
+
 ### Проверка необходимых данных для микросервиса заявок. 
 
 ```proto
-// Сообщение от Facade. Проверяет, имеется ли необходимое количество товара у пользователя.
-// Создание заявки на продажу.
+service UserBriefcase {
+   rpc CheckCorrectnessOrder (CheckOrderCreateRequest) returns (CheckOrderCreateResponse)
+}
+```
+
+
+```proto
+// Сообщение от Facade через gRPC. Проверяет, имеется ли необходимое количество товара у пользователя 
+// для создания заявки.
 message CheckOrderCreateRequest {
     // ID пользователя, по которому ведется поиск.
     string user_id = 1;
@@ -195,10 +228,9 @@ message CheckOrderCreateRequest {
 ```proto
 // Сообщение для Facade. Ответ для Facade, который подтверждает, что у пользователя имеется необходимое количество продукта.
 message CheckOrderCreateResponse {
-    string user_id = 1;
     oneof result {
-    	Errors error = 2;
-    	bool success = 3;
+    	Errors error = 1;
+    	bool success = 2;
         }
     }
 ```
@@ -210,10 +242,23 @@ message CheckOrderCreateResponse {
 ### Создание новой записи в БД.
 
 ```proto
+service UserBriefcase {
+   rpc RegisterUser (UserRegisteredEvent) returns (UserRegisteredSuccess)
+}
+```
+
+
+```proto
 // Микросервис подписан на топик события регистрации пользователя.
 message UserRegisteredEvent {
     // Микросервис создает новый документ в своей БД используя это поле.
     string user_id = 1;
+}
+```
+
+```proto
+message UserRegisteredSuccess {
+   bool success = 1;
 }
 ```
 
@@ -272,12 +317,18 @@ message TransactionCompleted {
 
 ```proto
 enum Source_Event_Transaction {
-   // Операция проводки транзакции 
-   PRODUCT_ADDITION_IMMEDIATE = 1;
-   PRODUCT_SUBTRACT_IMMEDIATE = 2;
+   // Операция проведения транзакции 
+   PRODUCT_ORDER_ADDITION_ACTION = 1;
+   PRODUCT_ORDER_SUBTRACT_ACTION = 2;
    
-   BALANCE_ADDITION_IMMEDIATE = 3;
-   BALANCE_SUBTRACT_IMMEDIATE = 4;
+   BALANCE_ADDITION_ACTION = 3;
+   BALANCE_SUBTRACT_ACTION = 4;
+   
+   PRODUCT_BRIEFCASE_ADDITION_ACTION = 5;
+   PRODUCT_BRIEFCASE_SUBTRACT_ACTION = 5;
+   
+   PRODUCT_BRIEFCASE_ADDITION_ROLLBACK = 5;
+   PRODUCT_BRIEFCASE_SUBTRACT_ROLLBACK = 5;
    
    PRODUCT_ADDITION_ROLLBACK = 5;
    PRODUCT_SUBTRACT_ROLLBACK = 6;
