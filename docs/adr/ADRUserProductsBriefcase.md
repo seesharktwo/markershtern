@@ -78,10 +78,9 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то отнять товар.
 Микросервис транзакций гарантирует корректное выполнение.
 
-Удаление товара(string userId, string productId) -  
+Удаление товара(string userId, string productId, string authorId) -  
 Проверяет, существует ли запись в БД.  Если записи с таким UserID/ProductID не существует, то  
-отправить ответ с описанием ошибки с UserId. Если все в порядке, удалить товар, отправить ответным сообщением  
-UserId.
+отправить success false. Необходимо сравнить authorId и userId, если они равны, то удалить товар возможно.
 
 
 ---
@@ -206,6 +205,8 @@ message ProductRemoved {
     string user_id = 1;
     // ID товара, который необходимо удалить.
     string product_id = 2;
+    // Пользователь может удалить только тот товар, который он создал сам.
+    string author_id = 3;
 }
 ``` 
 
