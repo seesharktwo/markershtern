@@ -166,6 +166,13 @@ message GetUserProductsResponse {
 ### Добавление товара
 
 ```proto
+service UserBriefcase {
+   rpc AddProduct (ProductAdded) returns (ProductAddedSuccess)
+}
+```
+
+
+```proto
 // Микросервис получает это сообщение от Facade через gRPC, сигнализирующее о том, что пользователь хочет добавить товар. 
 message ProductAdded {
     // ID сообщения, чтобы избежать повторной обработки дубликата 
@@ -184,6 +191,12 @@ message ProductAddedSuccess {
 ```
 
 ### Удаление товара
+
+```proto
+service UserBriefcase {
+   RemoveProduct (ProductRemoved) returns (ProductRemovedSuccess) 
+}
+```
 
 ```proto
 // Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет удалить товар.   
