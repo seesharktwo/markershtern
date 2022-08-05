@@ -46,22 +46,6 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 
 ---
 
-### Топики Kafka
-
-Микросервис подписан на:
-- событие регистрации пользователя,  
-- событие совершения сделки.
-- событие удаления товара.
-- событие добавления товара.
-- проверку данных для формирования заявок.
-- получение списка товаров. 
-
-Микросервис отправляет сообщения в:
-- топик ответа на совершение сделки.
-- топик ответа на проверку данных для формированию заявок.
-
----
-
 Создание Записи (string userId) - Создает новую запись в БД с userId. Если такая запись с таким userId уже есть,   
 то новая запись не создается. 
 
@@ -166,41 +150,43 @@ message GetUserProductsResponse {
 
 ```proto
 service UserBriefcase {
-   rpc AddProduct (ProductAdded) returns (ProductAddedSuccess)
+   rpc AddProduct (AddProductRequest) returns (AddProductResponse)
 }
 ```
 
-
 ```proto
 // Микросервис получает это сообщение от Facade через gRPC, сигнализирующее о том, что пользователь хочет добавить товар. 
-message ProductAdded {
-    // ID сообщения, чтобы избежать повторной обработки дубликата 
-    string message_id = 1;
+message AddProductRequest {
     // ID пользователя, которому нужно добавить товар.
-    string user_id = 2;
+    string user_id = 1;
     // Продукт, который нужно добавить
-    Product product = 3;
+    Product product = 2;
 }  
 ```
 
 ```proto
-message ProductAddedSuccess {
-   bool success = 1;
+message AddProductResponse {
+   oneof result {
+      Errors error = 1;
+      bool success = 2;
+   }
 }
 ```
+Возможные ошики:   
+\- Данный продукт уже существует.
 
 ### Удаление товара
 
 ```proto
 service UserBriefcase {
-   RemoveProduct (ProductRemoved) returns (ProductRemovedSuccess) 
+   RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse) 
 }
 ```
 
 ```proto
 // Микросервис получает это сообщение от Facade, сигнализирующее о том, что пользователь хочет удалить товар.   
 // Прежде чем удалить товар, необходимо убедиться, что товар не находится в продаже.
-message ProductRemoved {
+message RemoveProductRequest {
     // ID пользователя, которому нужно удалить товар.
     string user_id = 1;
     // ID товара, который необходимо удалить.
@@ -211,8 +197,11 @@ message ProductRemoved {
 ``` 
 
 ```proto
-message ProductRemovedSuccess {
-   bool success = 1;
+message RemoveProductResponse {
+   oneof result {
+      Errors error = 1;
+      bool success = 2;
+   }
 }
 ```
 
@@ -223,7 +212,6 @@ service UserBriefcase {
    rpc CheckCorrectnessOrder (CheckOrderCreateRequest) returns (CheckOrderCreateResponse)
 }
 ```
-
 
 ```proto
 // Сообщение от Facade через gRPC. Проверяет, имеется ли необходимое количество товара у пользователя 
