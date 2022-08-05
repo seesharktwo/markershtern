@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+import "decimalValue.proto";
+
+option csharp_namespace = "ProductService.Protos.Services";
+
+// implementation service
+service ProductService {
+  rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
+}
+
+// The request message
+message GetProductsRequest
+{
+
+}
+// The responce message containing products
+message GetProductsResponse
+{	
+	// The responce message containing product's Id and product's Name
+	message Product
+	{
+		string id = 1;
+
+		string name = 2;
+
+		customTypes.DecimalValue bid = 3;
+
+		customTypes.DecimalValue ask = 4;
+	}
+	repeated Product products = 1;
+}
+
+
