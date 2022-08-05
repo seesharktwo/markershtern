@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.2.32602.215
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductService", "ProductService.csproj", "{8E4CF97C-4F22-462C-BEC5-988E989EA1F9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducerService", "..\ProducerService\ProducerService.csproj", "{A92DB5AC-A544-4592-8473-80A320DC6268}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +15,6 @@ Global
 		{8E4CF97C-4F22-462C-BEC5-988E989EA1F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E4CF97C-4F22-462C-BEC5-988E989EA1F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E4CF97C-4F22-462C-BEC5-988E989EA1F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A92DB5AC-A544-4592-8473-80A320DC6268}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A92DB5AC-A544-4592-8473-80A320DC6268}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A92DB5AC-A544-4592-8473-80A320DC6268}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A92DB5AC-A544-4592-8473-80A320DC6268}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
