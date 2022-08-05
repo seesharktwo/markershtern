@@ -11,7 +11,7 @@
 одна транзакция на 1 пользователя. Они обрабатываются отдельно, даже если идет покупка и передача денег от одного к другому. 
 
 ## база данных
-
+```proto
 users{
 
 	string id
@@ -28,9 +28,18 @@ users{
 	}
 	
 }
+```
 
+
+## Grpc
+```proto
+service BalanceService 
+{
+  rpc GetBalance(UserBalanceRequested) returns(UserBalanceResponced);
+}
+```
 ## Входящие события
-
+```proto
 message UserBalanceRequested
 {
 	string id = 1;
@@ -47,9 +56,9 @@ BalanceChanged
 	
 	DecimalValue sum,
 	
-	Operation mode,
+	Operation MODE,
 	
-	TransactionType type
+	TransactionType TYPE
 	
 }
 
@@ -58,10 +67,10 @@ UserCreated {
 	Тут будет событие когда создается пользователь в системе. Его пока нет.
 	
 }
-
+```
 ## Исходящие события 
 
-
+```proto
 message UserBalanceResponced
 {
 	string user_id = 1;
@@ -74,7 +83,7 @@ TransactionCanceled
 
 	string id_global_transact
 	
-	Source_Event_Transaction source
+	SourceEventTransaction SOURCE
 	
 }
 
@@ -83,14 +92,14 @@ TransactionCompleted
 
 	string id_global_transact
 	
-	Source_Event_Transaction source
+	SourceEventTransaction SOURCE
 	
 	string id_object
 	
 	DecimalValue quanity
 	
 }
-
+```
 ##
 
 ```proto
@@ -124,7 +133,7 @@ message DecimalValue
 }
 ```
 ```proto
-enum Source_Event_Transaction {
+enum SourceEventTransaction {
 	// Операция проводки транзакции 
 	PRODUCT_ORDER_ADDITION_IMMEDIATE = 1;
 	PRODUCT_ORDER_SUBTRACT_IMMEDIATE = 2;
@@ -141,9 +150,10 @@ enum Source_Event_Transaction {
 	PRODUCT_ORDER_ADDITION_ROLLBACK = 9;
 	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 10;
 	
-	PRODUCT_ORDER_ADDITION_IMMEDIATE = 11;
-	PRODUCT_ORDER_SUBTRACT_IMMEDIATE = 12;
+	PRODUCT_BRIEFCASE_ADDITION_IMMEDIATE = 11;
+	PRODUCT_BRIEFCASE_SUBTRACT_IMMEDIATE = 12;
 }
+```
 ```
 
 # Status
