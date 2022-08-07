@@ -74,11 +74,16 @@ enum OrderType {
 }
 ```
 
-### Kafka
+### Создание заявки.
+
+```proto
+message CreateOrderRequest
+```
+
 
 ```proto   
 // Сообщение приходит от Facade. На основе полей формируется заявка и сохраняется в БД.
-message OrderCreatedEvent {
+message OrderCreatedRequest {
   string user_id = 1;
   
   // Тип заявки
