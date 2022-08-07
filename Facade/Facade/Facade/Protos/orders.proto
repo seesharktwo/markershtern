@@ -1,0 +1,30 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Orders";
+
+import "decimalValue.proto";
+
+// Сервис будет находиться на микросервисе заявок, сейчас пока adr в разработке так что это не конечный вариант
+service OrderService{
+	rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponce);
+}
+
+// Сообщение приходит от Facade. На основе полей формируется заявка и сохраняется в БД.
+message CreateOrderRequest {
+  string user_id = 1;
+  
+  // Тип заявки
+  OrderType type = 2;
+  string product_id = 3;
+  customTypes.DecimalValue price = 4;
+  int32 quantity = 5;   
+}
+
+message CreateOrderResponce{
+
+}
+
+enum OrderType {
+   SELL_ORDER = 0;
+   BUY_ORDER = 1;
+}
