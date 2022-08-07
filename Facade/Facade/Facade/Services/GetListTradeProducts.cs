@@ -1,10 +1,12 @@
-﻿using Grpc.Net.Client;
+﻿
+using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using static Facade.GetProductsResponse.Types;
 
 namespace Facade.Services
 {
