@@ -1,5 +1,4 @@
 ﻿using Confluent.Kafka;
-using Facade.Configs;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using Orders;
