@@ -18,7 +18,10 @@ users{
 	
 	Decimal money
 	
-	listTransact {
+	string LastTransactId
+}
+
+userTransacts {
 	
 		string GlobalTransactId
 		
@@ -26,8 +29,6 @@ users{
 		
 		data Date
 	}
-	
-}
 ```
 
 
@@ -35,17 +36,26 @@ users{
 ```proto
 service BalanceService 
 {
-  rpc GetBalance(UserBalanceRequested) returns(UserBalanceResponced);
+  rpc GetBalance(GetBalanceRequest) returns(GetBalanceResponse);
 }
-```
-## Входящие события
-```proto
-message UserBalanceRequested
+
+message GetBalanceRequest
 {
 	string id = 1;
 }
 
-BalanceChanged
+message GetBalanceResponse
+{
+	string user_id = 1;
+
+	DecimalValue balance = 2;
+}
+
+```
+## Входящие события
+```proto
+
+TransactionCommitted
 {
 
 	string id_global_transact,
@@ -71,12 +81,7 @@ UserCreated {
 ## Исходящие события 
 
 ```proto
-message UserBalanceResponced
-{
-	string user_id = 1;
 
-	DecimalValue balance = 2;
-}
 
 TransactionCanceled
 {
