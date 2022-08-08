@@ -55,7 +55,7 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 список продуктов с UserId.
 
 Добавление Товара(user_id, product) -    
-Проверяет, существует ли запись в БД с таким UserID. Происходит поиск в БД по user_id, если запись с таким user_id существует, то добавить товар в коллекцию с товарами, а также в коллекцию с портфелями пользователей в количестве product.quantity. 
+Проверяет, существует ли запись в БД с таким UserID. Происходит поиск в БД по user_id, если запись с таким user_id существует, то добавить товар в коллекцию с товарами, а также в коллекцию с портфелями пользователей в количестве product.quantity. Если запись с таким product.name уже существует в общей коллекции с товарами, то добавить product.quantity в коллекцию пользователю в портфель.
 Микросервис транзакций гарантирует корректное выполнение.
 
 Уменьшение товара(user_id, product_id, quantity) - 
@@ -64,7 +64,7 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 
 Удаление товара(string userId, string productId, string authorId) -  
 Проверяет, существует ли запись в БД.  Если записи с таким UserID/ProductID не существует, то  
-отправить success false. Необходимо сравнить authorId и userId, если они равны, то удалить товар возможно.
+отправить error. Необходимо сравнить authorId и userId, если они равны, то удалить товар возможно. Пользователь может удалить товар только в своем портфеле, но не из коллекции всех товаров.
 
 
 ---
@@ -89,6 +89,12 @@ enum Errors {
 	USER_NOT_HAVE_QUANTITY_PRODUCT = 3;
 }
 ```  
+
+```proto
+message SuccessResponse {
+   
+}
+```
 
 Так как Protocol Buffers не поддерживает напрямую тип Guid, то ID различных
 объектов представлены как тип string, который в будущем будем расшифровываться 
@@ -167,7 +173,7 @@ message AddProductRequest {
 message AddProductResponse {
    oneof result {
       Errors error = 1;
-      google.protobuf.Empty success = 2;
+      SuccessResponse success = 2;
    }
 }
 ```
@@ -199,7 +205,7 @@ message RemoveProductRequest {
 message RemoveProductResponse {
    oneof result {
       Errors error = 1;
-      google.protobuf.Empty success = 2;
+      SuccessResponse success = 2;
    }
 }
 ```
@@ -231,7 +237,7 @@ message ValidateOrderRequest {
 message ValidateOrderResponse {
     oneof result {
     	Errors error = 1;
-    	google.protobuf.Empty success = 2;
+    	SuccessResponse success = 2;
         }
     }
 ```
@@ -252,7 +258,7 @@ message UserRegisteredEvent {
 
 ```proto
 message UserRegisteredSuccess {
-   bool result = 1;
+   SuccessResponse result = 1;
 }
 ```
 
@@ -303,7 +309,7 @@ message TransactionCanceled {
 // Ответ для микросервиса транзакций для случаев, если операция прошла успешно.
 message TransactionCompleted {
 	string id_global_transact = 1;
-	Source_Event_Transaction source = 2;
+	SourceEventTransaction source = 2;
 	string id_object = 3;
 	DecimalValue quanity = 4;
 }
