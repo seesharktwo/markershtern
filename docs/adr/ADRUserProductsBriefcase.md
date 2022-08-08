@@ -28,7 +28,7 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 [ef48ad6c-be94-4ad6-acd6-f54952e06d26] 
 {
    "products" : [ 
-   "product_link" : "",
+   "product_id" : "",
    "quantity" : 257
    ]
 }
@@ -55,11 +55,11 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 список продуктов с UserId.
 
 Добавление Товара(user_id, product) -    
-Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то добавить товар.
+Проверяет, существует ли запись в БД с таким UserID. Происходит поиск в БД по user_id, если запись с таким user_id существует, то добавить товар в коллекцию с товарами, а также в коллекцию с портфелями пользователей в количестве product.quantity. 
 Микросервис транзакций гарантирует корректное выполнение.
 
-Уменьшение товара(user_id, product_id) - 
-Проверяет, существует ли запись в БД с таким UserID. Если запись существует, то отнять товар.
+Уменьшение товара(user_id, product_id, quantity) - 
+Проверяет, существует ли запись в БД с таким UserID. Происходит поиск в БД по user_id, product_id, от quantity в БД отнимается quantity из параметра. Если оба quantity равны, то товар полностью удаляется из порфтеля пользователя. 
 Микросервис транзакций гарантирует корректное выполнение.
 
 Удаление товара(string userId, string productId, string authorId) -  
@@ -73,10 +73,9 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 
 ```proto
 message Product {
-	string product_id = 1;
-	string name = 2;
-	string author_id = 3;
-	int32 quantity = 4;
+	string name = 1;
+	string author_id = 2;
+	int32 quantity = 3;
 } 
 ```
 
@@ -168,7 +167,7 @@ message AddProductRequest {
 message AddProductResponse {
    oneof result {
       Errors error = 1;
-      bool success = 2;
+      google.protobuf.Empty success = 2;
    }
 }
 ```
@@ -200,23 +199,23 @@ message RemoveProductRequest {
 message RemoveProductResponse {
    oneof result {
       Errors error = 1;
-      bool success = 2;
+      google.protobuf.Empty success = 2;
    }
 }
 ```
 
-### Проверка необходимых данных для микросервиса заявок. 
+### Проверка необходимых данных для микросервиса заявок.  | gRPC
 
 ```proto
 service UserBriefcase {
-   rpc CheckCorrectnessOrder (CheckOrderCreateRequest) returns (CheckOrderCreateResponse)
+   rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse)
 }
 ```
 
 ```proto
 // Сообщение от Facade через gRPC. Проверяет, имеется ли необходимое количество товара у пользователя 
 // для создания заявки.
-message CheckOrderCreateRequest {
+message ValidateOrderRequest {
     // ID пользователя, по которому ведется поиск.
     string user_id = 1;
     // ID товара, по которому ведется поиск.
@@ -229,10 +228,10 @@ message CheckOrderCreateRequest {
 
 ```proto
 // Сообщение для Facade. Ответ для Facade, который подтверждает, что у пользователя имеется необходимое количество продукта.
-message CheckOrderCreateResponse {
+message ValidateOrderResponse {
     oneof result {
     	Errors error = 1;
-    	bool success = 2;
+    	google.protobuf.Empty success = 2;
         }
     }
 ```
@@ -241,14 +240,7 @@ message CheckOrderCreateResponse {
 - Продукта с таким ProductID не существует в портфеле пользователя.  
 - Количество товара недостаточно.
 
-### Создание новой записи в БД.
-
-```proto
-service UserBriefcase {
-   rpc RegisterUser (UserRegisteredEvent) returns (UserRegisteredSuccess)
-}
-```
-
+### Создание новой записи в БД. | Kafka
 
 ```proto
 // Микросервис подписан на топик события регистрации пользователя.
@@ -260,11 +252,11 @@ message UserRegisteredEvent {
 
 ```proto
 message UserRegisteredSuccess {
-   bool success = 1;
+   bool result = 1;
 }
 ```
 
-###  Передача товара между пользователями
+###  Передача товара между пользователями. | Kafka
 
 Микросервис транзакций гарантирует, что товар спишется у одного пользователя и зачислиться другому.
 
@@ -303,7 +295,7 @@ enum Operation {
 // Ответ для микросервиса транзакций для случаев с ошибкой операции.
 message TransactionCanceled {
 	string id_global_transact = 1;
-	Source_Event_Transaction source = 2;
+	SourceEventTransaction source = 2;
 }
 ```
 
@@ -318,7 +310,7 @@ message TransactionCompleted {
 ```
 
 ```proto
-enum Source_Event_Transaction {
+enum SourceEventTransaction {
    // Операция проведения транзакции 
    PRODUCT_ORDER_ADDITION_ACTION = 1;
    PRODUCT_ORDER_SUBTRACT_ACTION = 2;
@@ -341,7 +333,7 @@ enum Source_Event_Transaction {
 ```
 
 
-### Уведомление, что количество товара у пользователя изменилось.
+### Уведомление, что количество товара у пользователя изменилось. | Kafka
 
 Это нужно, чтобы микросервис заявок мог удалить недействительные.
 
