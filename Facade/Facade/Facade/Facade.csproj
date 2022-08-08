@@ -5,11 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Protos\auth.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\auth.proto" GrpcServices="Client" />
     <Protobuf Include="Protos\event.proto" GrpcServices="Server" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\greet.proto" GrpcServices="Client" ProtoRoot="Protos\" />
-    <Protobuf Include="Protos\userProducts.proto" GrpcServices="Client" ProtoRoot="Protos\" />
+    <Protobuf Include="Protos\briefcase.proto" GrpcServices="Client" ProtoRoot="Protos\" />
     <Protobuf Include="Protos\orders.proto" GrpcServices="Client" ProtoRoot="Protos\" />
-    <Protobuf Include="Protos\decimalValue.proto" GrpcServices="Server" ProtoRoot="Protos\"/>
+    <Protobuf Include="Protos\decimalValue.proto" GrpcServices="Server" ProtoRoot="Protos\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,59 +1,49 @@
 ﻿using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Facade2;
 
 namespace Facade.Services
 {
-    public class GetListUserProducts
+    public class GetUserID
     {
         readonly string _connectionString;
-        public GetListUserProducts()
+
+        public GetUserID()
         {
             _connectionString = GetConnectionString();
         }
 
-        public async Task<(bool isComplite, List<Facade2.Product> products, Exception exception)>
-            GetProductsAsync(string userId)
+        public async Task<(bool isComplite, string userId, Exception exception)>
+            GetUserId(string login, string password)
         {
             Exception exception = null;
-            List<Facade2.Product> products = new List<Facade2.Product>();
+            string userId = null;
 
             try
             {
-                products = await LoadDataAsync(userId);
-                return (true, products, exception);
+                userId = await LoadDataAsync(login, password);
+                return (true, userId, exception);
             }
             catch (Exception e)
             {
                 exception = e;
             }
 
-            return (false, products, exception);
+            return (false, userId, exception);
         }
-        
-        private async Task<List<Facade2.Product>> LoadDataAsync(string userId)
-        {
 
-            var request = new GetUserProductsRequest { UserId = userId };
+        private async Task<string> LoadDataAsync(string login, string password)
+        {
+            var request = new LoginRequest{ Login = login, Password = password };
 
             using (var channel = GrpcChannel.ForAddress(_connectionString))
             {
-                var client = new SenderProductsService.SenderProductsServiceClient(channel);
-                var reply = await client.GetUserProductsAsync(request);
-                
-                if(reply.Errors.Count != 0)
-                {
-                    throw new Exception(reply.Errors.First());
-                }
-                else
-                {
-                    return reply.Products.ToList();
-                }
+                var client = new Authorization.AuthorizationClient(channel);
+                var reply = await client.LoginAsync(request);
+
+                return reply.UserId;
             }
         }
 
@@ -72,6 +62,7 @@ namespace Facade.Services
             {
                 //To DO log
             }
+
             return result;
         }
     }
