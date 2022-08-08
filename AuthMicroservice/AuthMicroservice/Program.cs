@@ -4,13 +4,13 @@ using AuthMicroservice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Регистрация в DI Grpc
+// Registering gRPC in DI
 builder.Services.AddGrpc();
 
-// Регистрация в DI конфигурации, к которой привязан MongoDBSettings
+// Registering with DI a configuration instance to which the MongoDBSettings section of the appsettings.json file is bound.
 builder.Services.Configure<MongoDBSettings>(builder.Configuration.GetSection("MongoDBSettings"));
 
-// Регистрация в DI UsersContext
+// Registering the UsersContext class in DI to support constructor injection in consuming classes.
 builder.Services.AddSingleton<UsersContext>();
 
 var app = builder.Build();
