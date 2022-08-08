@@ -350,7 +350,7 @@ enum Source_Event_Transaction {
 //отменить, так как она недействительна.
 message ProductSoldEvent {   
    // Для защиты от дубликатов.
-   string order_id = 1   
+   string order_id = 1;   
    string user_id = 2;
    string product_id = 3;
    int32 quantity = 4;
