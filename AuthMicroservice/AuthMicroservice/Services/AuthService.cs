@@ -6,9 +6,9 @@ namespace AuthMicroservice.Services
     public class AuthService : Authorization.AuthorizationBase
     {
         private readonly ILogger<AuthService> _logger;
-        private readonly UserContext _context;
+        private readonly UsersContext _context;
 
-        public AuthService(ILogger<AuthService> logger, UserContext context)
+        public AuthService(ILogger<AuthService> logger, UsersContext context)
         {
             _logger = logger;
             _context = context;
@@ -34,7 +34,7 @@ namespace AuthMicroservice.Services
 
             if (!BCrypt.Net.BCrypt.Verify(request.Password + user.Salt, user.Hash))
             {
-                throw new RpcException(new Status(StatusCode.NotFound, "Wrong password"));
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Wrong password"));
             }
 
             response.UserId = user.Id;
