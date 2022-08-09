@@ -59,7 +59,7 @@ flowchart TD
    "order_id_second" : "caca7473-03c5-41bc-8228-fe4d833ae0af",
    "user_id_second" : "67f9341f-b328-4d22-b735-3e52951b907c",
    "product_id" : "f0f55ea8-8656-4dfe-bf4f-0fa36fc5ccc7",
-   "quanityty" : 234,
+   "quanity" : 234,
    "price" : 2323
 }
 ```
