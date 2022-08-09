@@ -18,11 +18,11 @@ namespace Facade.Services
             _connectionString = GetConnectionString();
         }
 
-        public async Task<(bool isComplite, CreateOrderResponce responce, Exception exception)>
+        public async Task<(bool isComplite, CreateOrderResponse responce, Exception exception)>
             CreateOrderAsync(CreateOrderRequest request)
         {
             Exception exception = null;
-            CreateOrderResponce responce = null;
+            CreateOrderResponse responce = null;
             try
             {
                 responce = await LoadDataAsync(request);
@@ -36,11 +36,11 @@ namespace Facade.Services
             return (false, responce, exception);
         }
 
-        public async Task<CreateOrderResponce> LoadDataAsync(CreateOrderRequest request)
+        public async Task<CreateOrderResponse> LoadDataAsync(CreateOrderRequest request)
         {
             using (var channel = GrpcChannel.ForAddress(_connectionString))
             {
-                var client = new Orders.OrderService.OrderServiceClient(channel);
+                var client = new Orders.Orders.OrdersClient(channel);
                 var reply = await client.CreateOrderAsync(request);
                 return reply;
             }
