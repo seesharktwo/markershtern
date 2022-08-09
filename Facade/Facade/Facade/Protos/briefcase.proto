@@ -6,18 +6,60 @@ package userProducts;
 
 import "decimalValue.proto";
 
-service SenderProductsService {
-    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsReply);
+service UserBriefcase  {
+    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
+    rpc AddProduct (AddProductRequest) returns (AddProductResponse);
+    rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
+    rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse);
 }
 
 message GetUserProductsRequest {
     string user_id = 1;
 } 
 
-message GetUserProductsReply {
+message GetUserProductsResponse {
+    oneof response {
+    	ProductsList list = 1;
+    	Error error = 2;
+    }
+}
+
+message AddProductRequest {
     string user_id = 1;
-    repeated Product products = 2;
-    repeated string errors = 3; 
+    Product product = 2;
+}  
+
+message AddProductResponse {
+   oneof result {
+      Error error = 1;
+      SuccessResponse success = 2;
+   }
+}
+
+message RemoveProductRequest {
+    string user_id = 1;
+    string product_id = 2;
+    string author_id = 3;
+}
+
+message RemoveProductResponse {
+   oneof result {
+      Error error = 1;
+      SuccessResponse success = 2;
+   }
+}
+
+message ValidateOrderRequest {
+    string user_id = 1;
+    string product_id = 2;
+    int32 quantity = 3;
+}
+
+message ValidateOrderResponse {
+    oneof result {
+    	Error error = 1;
+    	SuccessResponse success = 2;
+    }
 }
 
 message Product { 
@@ -29,5 +71,16 @@ message Product {
     int32 count = 6; 
 }
 
+enum Error {
+	USER_NOT_FOUND = 0;
+	USER_NOT_HAVE_PRODUCT = 1;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
+}
 
+message SuccessResponse {
+   
+}
 
+message ProductsList {
+	repeated Product products = 1;
+}

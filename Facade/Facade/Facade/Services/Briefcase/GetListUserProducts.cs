@@ -7,7 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Facade2;
 
-namespace Facade.Services
+namespace Facade.Services.Briefcase
 {
     public class GetListUserProducts
     {
@@ -17,11 +17,11 @@ namespace Facade.Services
             _connectionString = GetConnectionString();
         }
 
-        public async Task<(bool isComplite, List<Facade2.Product> products, Exception exception)>
+        public async Task<(bool isComplite, List<Product> products, Exception exception)>
             GetProductsAsync(string userId)
         {
             Exception exception = null;
-            List<Facade2.Product> products = new List<Facade2.Product>();
+            List<Product> products = new List<Product>();
 
             try
             {
@@ -35,27 +35,25 @@ namespace Facade.Services
 
             return (false, products, exception);
         }
-        
-        private async Task<List<Facade2.Product>> LoadDataAsync(string userId)
-        {
 
+        private async Task<List<Product>> LoadDataAsync(string userId)
+        {
             var request = new GetUserProductsRequest { UserId = userId };
 
             using (var channel = GrpcChannel.ForAddress(_connectionString))
             {
-                var client = new SenderProductsService.SenderProductsServiceClient(channel);
+                var client = new UserBriefcase.UserBriefcaseClient(channel);
                 var reply = await client.GetUserProductsAsync(request);
-                
-                if(reply.Errors.Count != 0)
+
+                if (reply.ResponseCase.Equals(GetUserProductsResponse.ResponseOneofCase.Error))
                 {
-                    throw new Exception(reply.Errors.First());
+                    throw new Exception(reply.Error.ToString());
                 }
-                else
-                {
-                    return reply.Products.ToList();
-                }
+
+                return reply.List.Products.ToList();
             }
         }
+
 
         private string GetConnectionString()
         {
