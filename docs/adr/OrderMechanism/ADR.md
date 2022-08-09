@@ -110,7 +110,7 @@ message SuccessResponse {
 
 ```proto
 service OrderProcessing {
-   rpc CreateOrder (CreateOrderRequest) return (CreateOrderResponse)
+   rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse)
 }
 ```
 
