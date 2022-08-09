@@ -114,7 +114,7 @@ message CreateOrderRequest {
 ```  
 
 ```proto
-message OrderCreateResponse {
+message CreateOrderResponse {
    oneof result {
       Error error = 1;
       SuccessResponse = 2;
