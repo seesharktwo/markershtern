@@ -75,6 +75,24 @@ enum OrderType {
 }
 ```
 
+```proto
+enum Error {
+   // Пользователь с таким Id не был найден. 
+	USER_NOT_FOUND = 1;
+	// Пользователь не имеет продукт с таким Id.  
+	USER_NOT_HAVE_PRODUCT = 2;
+	// Пользователь не имеет необходимое количества продукта. 
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 3;
+}
+```
+
+```proto
+message SuccessResponse {
+
+}
+```
+
+
 ### Создание заявки. | gRPC
 
 ```proto
@@ -97,7 +115,10 @@ message CreateOrderRequest {
 
 ```proto
 message OrderCreateResponse {
-   bool result = 1;
+   oneof result {
+      Error error = 1;
+      SuccessResponse = 2;
+   }
 }
 ```
 
