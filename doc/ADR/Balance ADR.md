@@ -55,7 +55,7 @@ message GetBalanceResponse
 ## Входящие события
 ```proto
 
-TransactionCommitted
+TransactionBalanceCommitted
 {
 
 	string id_global_transact,
