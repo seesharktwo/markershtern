@@ -109,7 +109,7 @@ message SuccessResponse {
 ### Создание заявки. | gRPC
 
 ```proto
-service Orders {
+service OrderProcessing {
    rpc CreateOrder (CreateOrderRequest) return (CreateOrderResponse)
 }
 ```
