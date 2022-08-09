@@ -40,7 +40,7 @@ services:
     restart: on-failure
     volumes:
       - ./scripts/mongo_setup.sh:/scripts/setup.sh
-    entrypoint: [ "/scripts/setup.sh" ]
+    entrypoint: [ "/bin/bash", "/scripts/setup.sh" ]
     depends_on:
       - mongo1
       - mongo2
@@ -108,6 +108,8 @@ services:
       driver: json-file
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+    volumes:
+      - grafana:/var/lib/grafana
 
   promtail:
     image: grafana/promtail
@@ -142,3 +144,4 @@ volumes:
   mongo2:
   mongo3:
   prometheus_data:
+  grafana:
