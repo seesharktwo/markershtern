@@ -17,7 +17,7 @@ Always starts up:
 
 Profiles avail:
 - monitor: node_exporter + prometheus + grafana
-- logging: loki + promtail
+- logging: loki + promtail + grafana
 ```
 
 ### Connection ports
