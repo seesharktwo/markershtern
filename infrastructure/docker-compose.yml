@@ -35,6 +35,15 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
+
+  kowl:
+    image: rsmnarts/kowl
+    restart: on-failure
+    ports:
+      - 8080:8080
+    environment:
+      KAFKA_BROKERS: kafka:9092
+
   mongo_setup:
     image: mongo
     restart: on-failure
