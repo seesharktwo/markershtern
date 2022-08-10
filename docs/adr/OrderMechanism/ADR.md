@@ -40,11 +40,7 @@ flowchart TD
 [6bf280fe-fa36-4fde-a69e-434cc76d45ae] 
 {
    "in_transaction" : false,
-   "order_id" : "91d6bbdf-6388-4da9-9991-9c92e8b751f7",
-   "type" : 1,
-   "product_id" : "b5a7c6d8-3533-4d45-97ba-500f202b9077",
-   "quantity" : 3232,
-   "price" : 123.00,
+   "order_id" : "6ff5a871-1008-414d-9803-5a8f7fb8ac31",
 }
 ```
 
@@ -55,12 +51,21 @@ flowchart TD
 [b0f2e904-962f-493c-9b2e-87fd270e2e11]
 {
    "order_id" : "674b4ea1-133a-4569-887a-cbc0529b2340",
-   "type" : 1,
    "order_id_second" : "caca7473-03c5-41bc-8228-fe4d833ae0af",
    "user_id_second" : "67f9341f-b328-4d22-b735-3e52951b907c",
-   "product_id" : "f0f55ea8-8656-4dfe-bf4f-0fa36fc5ccc7",
-   "quanity" : 234,
-   "price" : 2323
+}
+```
+
+Коллекция, которая в основном служит для генерация order_id:
+
+```
+order_id
+[fb3a2347-d50a-4ca7-8348-97230710302d]
+{
+   "type" : 1,
+   "product_id" : "6ff5a871-1008-414d-9803-5a8f7fb8ac31",
+   "quantity" : 2343,
+   "price" : 900
 }
 ```
 
