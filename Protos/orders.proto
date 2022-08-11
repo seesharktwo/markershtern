@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Orders";
+
+import "decimalValue.proto";
+
+package orders;
+
+service Orders {
+   rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+}
+
+// Сообщение приходит от Facade. На основе полей формируется заявка.
+message CreateOrderRequest {
+  string user_id = 1;
+  OrderType type = 2;
+  string product_id = 3;
+  customTypes.DecimalValue price = 4;
+  int32 quantity = 5;   
+}
+
+message CreateOrderResponse {
+   bool result = 1;
+}
+
+enum OrderType {
+   SELL_ORDER = 0;
+   BUY_ORDER = 1;
+}

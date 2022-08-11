@@ -2,8 +2,7 @@
 
 package customTypes;
 
-option csharp_namespace = "Facade.Protos.CustomTypes";
-
+option csharp_namespace = "CustomTypes";
 
 message DecimalValue
 {
