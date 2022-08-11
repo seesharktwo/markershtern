@@ -145,7 +145,7 @@ message CreateOrderRequest {
 message CreateOrderResponse {
    oneof result {
       Error error = 1;
-      SuccessResponse = 2;
+      SuccessResponse success = 2;
    }
 }
 ```
