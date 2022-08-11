@@ -1,0 +1,160 @@
+---
+- hosts: ubuntu
+  remote_user: root
+  gather_facts: false
+  vars:
+    users: "{{ lookup('file', 'users_to_ssh.json') | from_json }}"
+    src_path: "/usr/src/markershtern"
+  tasks:
+    - name: Update apt cache and upgrade
+      ansible.builtin.apt:
+        update_cache: yes
+        upgrade: yes
+
+    - name: Add OpenSSH allow rule to firewall
+      community.general.ufw:
+        rule: allow
+        name: OpenSSH
+
+    - name: Enable firewall
+      community.general.ufw:
+        state: enabled
+        policy: deny
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: docker-ce
+        state: latest
+        update_cache: true
+
+    - name: Install docker-compose
+      apt:
+        name: docker-compose-plugin
+
+    - name: Clone repo and set server branch
+      ansible.builtin.git:
+        repo: https://github.com/seesharktwo/markershtern.git
+        dest: "{{ src_path }}"
+        version: server_env
+        force: true
+
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: ../docker-compose.yaml
+        dest: "{{ src_path }}/infrastructure/docker-compose.yaml"
+        
+    - name: Stop docker stack
+      ansible.builtin.command:
+        cmd: >
+           docker compose
+           -f "{{ src_path }}"/infrastructure/docker-compose.yaml
+           --profile webui --profile basic --profile donotstart
+           down -v
+
+
+    - name: Run docker server stack
+      block:
+        - name: Render promtail config
+          ansible.builtin.template:
+            src: ../config/promtail.yaml
+            dest: "{{ src_path }}/infrastructure/config/promtail.yaml"
+          
+        - name: Run docker-compose server
+          ansible.builtin.command:
+            cmd: >
+              docker compose
+              -f "{{ src_path }}"/infrastructure/docker-compose.yaml
+              --profile basic
+              up -d
+
+        - name: Run mongodb
+          ansible.builtin.command:
+            cmd: >
+              docker compose
+              -f "{{ src_path }}"/infrastructure/docker-compose.yaml
+              up -d mongo
+          when: inventory_hostname in groups['mongo']
+
+        - name: Run mongodb setup
+          block: 
+            - name: Render mongodb repl init script
+              ansible.builtin.template:
+                src: ../scripts/mongo_setup.sh
+                dest: "{{ src_path }}/infrastructure/scripts/mongo_setup.sh"
+            
+            - name: Run docker-compose mongodb setup
+              ansible.builtin.command:
+                cmd: >
+                  docker compose
+                  -f "{{ src_path }}"/infrastructure/docker-compose.yaml
+                  up -d mongo_setup
+          when: inventory_hostname == groups['ubuntu'][0]
+
+    - name: Run docker webui
+      block:
+        - name: Render prometheus config
+          ansible.builtin.template:
+            src: ../config/prometheus.yaml
+            dest: "{{ src_path }}/infrastructure/config/prometheus.yaml"
+          
+        - name: Run docker-compose webui
+          ansible.builtin.command:
+            cmd: >
+              docker compose
+              -f "{{ src_path }}"/infrastructure/docker-compose.yaml
+              --profile webui
+              up -d
+      when: inventory_hostname in groups['webui']
+
+    - name: Init kraft & kafka services
+      block:
+        - name: Fill kraft quorum list
+          set_fact:
+            kraft_controllers_quorum: "{{ kraft_controllers_quorum }}{{ (index + 1) | string }}@{% if item == inventory_hostname %}kafka{% else %}{{ item }}{% endif %}:9093, "
+          loop: "{{ groups['kafka'] }}"
+          loop_control:
+            index_var: index
+
+        - name: Run kafka & kraft
+          ansible.builtin.command:
+            cmd: >
+              docker compose
+              -f {{ src_path }}/infrastructure/docker-compose.yaml
+              up -d kafka
+          environment:
+            KAFKA_BROKER_ID: "{{ groups['kafka'].index(inventory_hostname) + 1 }}"
+            KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "{{ kraft_controllers_quorum[:-2] }}"
+
+      vars:
+        kraft_controllers_quorum: ""
+      when: inventory_hostname in groups['kafka']
+      
+    - name: Create admin users
+      ansible.builtin.user:
+        state: present
+        groups: [sudo, docker]
+        append: true
+        name: "{{ item.name }}"
+        shell: /bin/bash
+      loop: "{{ users }}"
+
+    - name: Copy ssh keys to remote
+      ansible.posix.authorized_key:
+        user: "{{ item.name }}"
+        state: present
+        key: "{{ lookup('file', item.pub_key) }}"
+      loop: "{{ users }}"
+
+
+
+      
