@@ -13,7 +13,7 @@ docker compose up -d
 docker compose --profile profile_name [--profile another_profile] up -d
 
 Always starts up:
-- kafka, mongo1 (primary), mongo2, mongo3
+- kafka, kowl, mongo1 (primary), mongo2, mongo3
 
 Profiles avail:
 - monitor: node_exporter + prometheus + grafana
@@ -23,6 +23,7 @@ Profiles avail:
 ### Connection ports
 ```md
 - Kafka: 9092
+- Kowl: 8080
 - Grafana: 3030
 - Mongodb: 27017 (primary), 27018, 27019
 ```
