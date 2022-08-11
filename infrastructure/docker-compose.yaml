@@ -98,7 +98,7 @@ services:
     profiles:
       - monitor
     volumes:
-      - ./config/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml 
+      - ./config/prometheus.yaml:/opt/bitnami/prometheus/conf/prometheus.yml 
       - prometheus_data:/opt/bitnami/prometheus/data
     logging:
       driver: json-file
