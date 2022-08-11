@@ -90,28 +90,6 @@ namespace Facade.Services
             return (false, _exception);
         }
 
-        public async Task<(bool isComplite, Exception exception)>
-           ValidateOrder(ValidateOrderRequest request)
-        {
-            try
-            {
-                var reply = await _client.ValidateOrderAsync(request);
-
-                if (reply.ResultCase.Equals(ValidateOrderResponse.ResultOneofCase.Error))
-                {
-                    throw new Exception(reply.Error.ToString());
-                }
-
-                return (true, null);
-            }
-            catch (Exception e)
-            {
-                _exception = e;
-            }
-
-            return (false, _exception);
-        }
-
         private UserBriefcase.UserBriefcaseClient GetClient()
         {
             string connectionString = GetConnectionString();
