@@ -195,7 +195,7 @@ message ValidateUserBalance {
 
 ```proto
 // Сообщение для микросевиса заявок.
-message ValidateUserBalance {
+message ValidateUserBalanceResult {
    // Чтобы избежать повторной обработки дубликата.
    string message_id = 1;
    string user_id = 2;
