@@ -18,7 +18,7 @@ message GetUserProductsRequest {
 } 
 
 message GetUserProductsResponse {
-    oneof response {
+    oneof result {
     	ProductsList list = 1;
     	Error error = 2;
     }

@@ -5,6 +5,16 @@ VisualStudioVersion = 17.2.32505.173
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Facade", "Facade\Facade.csproj", "{0B1B9B19-0E84-4CD3-800D-1E4A7D045D5F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Элементы решения", "Элементы решения", "{71DA7F98-4F8C-445D-A434-6CAAFCDE2AB0}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\Protos\auth.proto = ..\..\Protos\auth.proto
+		..\..\Protos\briefcase.proto = ..\..\Protos\briefcase.proto
+		..\..\Protos\decimalValue.proto = ..\..\Protos\decimalValue.proto
+		..\..\Protos\event.proto = ..\..\Protos\event.proto
+		..\..\Protos\greet.proto = ..\..\Protos\greet.proto
+		..\..\Protos\orders.proto = ..\..\Protos\orders.proto
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
