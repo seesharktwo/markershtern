@@ -121,7 +121,6 @@ message SuccessResponse {
 }
 ```
 
-
 ### Создание заявки. | gRPC
 
 ```proto
@@ -151,6 +150,61 @@ message CreateOrderResponse {
 }
 ```
 
+---
+
+### Проверка данных для составления заявки. | Apache Kafka
+
+
+```proto
+// Сообщение для микросервиса портфеля. Микросервис портфеля подписан на это.
+// Для проверки наличия у пользователя необходимого количества товара.
+message ValidateProductQuantity {
+   // Дабы избежать дубликаты.
+   string message_id = 1;
+   string user_id = 2;
+   string product_id = 3;
+   string quantity = 4;
+}
+```
+
+```
+// Сообщение от микросервиса портфеля. Микросервис заявок подписан на это.
+// Ответ на проверку для микросервиса заявок.
+message ValidateProductQuantityResult {
+   // Для избегания повторной обработки одного и того же сообщения.
+   string message_id = 1;
+   string user_id = 2;
+   string product_id = 3;
+   oneof result {
+       Errorr error = 4;
+       SuccessResponse success = 5;
+   }
+}
+```
+
+```
+// Сообщение для микросервиса баланса. Микросервис баланса подписан на это.
+// Для проверки необходимого количества денег на счету пользователя.
+message ValidateUserBalance {
+   // Чтобы избежать повторной обработки дубликата.
+   string message_id = 1;
+   string user_id = 2;
+   DecimalValue value = 3;
+}
+```
+
+```
+// Сообщение для микросевиса заявок.
+message ValidateUserBalance {
+   // Чтобы избежать повторной обработки дубликата.
+   string message_id = 1;
+   string user_id = 2;
+   oneof result {
+      Error error = 3;
+      SuccessReponse success = 4;
+   }
+}
+```
 
 ---
 
