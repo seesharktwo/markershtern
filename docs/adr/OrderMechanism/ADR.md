@@ -167,7 +167,7 @@ message ValidateProductQuantity {
 }
 ```
 
-```
+```proto
 // Сообщение от микросервиса портфеля. Микросервис заявок подписан на это.
 // Ответ на проверку для микросервиса заявок.
 message ValidateProductQuantityResult {
@@ -182,7 +182,7 @@ message ValidateProductQuantityResult {
 }
 ```
 
-```
+```proto
 // Сообщение для микросервиса баланса. Микросервис баланса подписан на это.
 // Для проверки необходимого количества денег на счету пользователя.
 message ValidateUserBalance {
@@ -193,7 +193,7 @@ message ValidateUserBalance {
 }
 ```
 
-```
+```proto
 // Сообщение для микросевиса заявок.
 message ValidateUserBalance {
    // Чтобы избежать повторной обработки дубликата.
