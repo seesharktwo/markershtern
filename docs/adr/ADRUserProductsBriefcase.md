@@ -127,8 +127,8 @@ message ProductsList {
 
 ---
 
-### Получение списка продуктов пользователя
-
+### Получение списка продуктов пользователя | gRPC
+ 
 ```proto
 service UserBriefcase {
    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse)
@@ -160,7 +160,7 @@ message GetUserProductsResponse {
 
 ---
 
-### Добавление товара
+### Добавление товара | gRPC
 
 ```proto
 service UserBriefcase {
@@ -191,7 +191,7 @@ message AddProductResponse {
 
 ---
 
-### Удаление товара
+### Удаление товара | gRPC
 
 ```proto
 service UserBriefcase {
@@ -223,36 +223,34 @@ message RemoveProductResponse {
 
 ---
 
-### Проверка необходимых данных для микросервиса заявок.  | gRPC
+### Проверка данных для микросервиса заявкок для создания заявки. | Apache Kafka
+
 
 ```proto
-service UserBriefcase {
-   rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse)
+// Сообщение для микросервиса портфеля. Микросервис портфеля подписан на это.
+// Для проверки наличия у пользователя необходимого количества товара.
+message ValidateProductQuantity {
+   // Дабы избежать дубликатов.
+   string message_id = 1;
+   string user_id = 2;
+   string product_id = 3;
+   string quantity = 4;
 }
 ```
 
-```proto
-// Сообщение от Facade через gRPC. Проверяет, имеется ли необходимое количество товара у пользователя 
-// для создания заявки.
-message ValidateOrderRequest {
-    // ID пользователя, по которому ведется поиск.
-    string user_id = 1;
-    // ID товара, по которому ведется поиск.
-    string product_id = 2;
-    // Проверяет, есть ли необходимое количество товара.
-    int32 quantity = 3;
-    }
 ```
-
-
-```proto
-// Сообщение для Facade. Ответ для Facade, который подтверждает, что у пользователя имеется необходимое количество продукта.
-message ValidateOrderResponse {
-    oneof result {
-    	Errors error = 1;
-    	SuccessResponse success = 2;
-        }
-    }
+// Сообщение от микросервиса портфеля. Микросервис заявок подписан на это.
+// Ответ на проверку для микросервиса заявок.
+message ValidateProductQuantityResult {
+   // Для избегания повторной обработки одного и того же сообщения.
+   string message_id = 1;
+   string user_id = 2;
+   string product_id = 3;
+   oneof result {
+       Errorr error = 4;
+       SuccessResponse success = 5;
+   }
+}
 ```
 Возможные ошибки:
 - Пользователя с таким UserID не существует в БД.  
@@ -279,7 +277,7 @@ message UserRegisteredSuccess {
 
 ---
 
-###  Передача товара между пользователями. | Kafka
+###  Передача товара между пользователями. | Apache Kafka
 
 Микросервис транзакций гарантирует, что товар спишется у одного пользователя и зачислиться другому.
 
@@ -357,7 +355,7 @@ enum SourceEventTransaction {
 
 ---
 
-### Уведомление, что количество товара у пользователя изменилось. | Kafka
+### Уведомление, что количество товара у пользователя изменилось. | Apache Kafka
 
 Это нужно, чтобы микросервис заявок мог удалить недействительные.
 
