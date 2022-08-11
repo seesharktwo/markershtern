@@ -9,15 +9,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\auth.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\event.proto" GrpcServices="Server" ProtoRoot="Protos\" />
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" ProtoRoot="Protos\" />
-    <Protobuf Include="Protos\briefcase.proto" GrpcServices="Client" ProtoRoot="Protos\" />
-    <Protobuf Include="Protos\orders.proto" GrpcServices="Client" ProtoRoot="Protos\" />
-    <Protobuf Include="Protos\decimalValue.proto" GrpcServices="Server" ProtoRoot="Protos\" />
+    <Protobuf Include="..\..\..\Protos\auth.proto" GrpcServices="Client" />
+    <Protobuf Include="..\..\..\Protos\event.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\greet.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\briefcase.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\orders.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\decimalValue.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\ClientProtos\ordersClient.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
+    
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Confluent.Kafka" Version="1.9.0" />
     <PackageReference Include="Google.Protobuf" Version="3.21.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />

@@ -1,4 +1,4 @@
-﻿namespace Facade.Protos.CustomTypes
+﻿namespace CustomTypes
 {
     public partial class DecimalValue
     {

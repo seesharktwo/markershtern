@@ -1,11 +1,13 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Orders";
+option csharp_namespace = "OrdersClient";
 
 import "decimalValue.proto";
 
+package ordersClient;
 
-service Orders {
+//service for Client
+service OrdersClient {
    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
 }
 
@@ -26,3 +28,4 @@ enum OrderType {
    SELL_ORDER = 0;
    BUY_ORDER = 1;
 }
+
