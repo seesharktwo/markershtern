@@ -77,9 +77,10 @@ https://docs.google.com/document/d/1NvxJDdTIB7qBqGpAQsgQmtSa3DbxsR0sPqAFgcczsjY/
 
 ```proto
 message Product {
-	string name = 1;
-	string author_id = 2;
-	int32 quantity = 3;
+        string product_id = 1;
+	string name = 2;
+	string author_id = 3;
+	int32 quantity = 4;
 } 
 ```
 
