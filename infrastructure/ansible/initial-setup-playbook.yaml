@@ -47,11 +47,6 @@
         dest: "{{ src_path }}"
         version: server_env
         force: true
-
-    - name: Copy file with owner and permissions
-      ansible.builtin.copy:
-        src: ../docker-compose.yaml
-        dest: "{{ src_path }}/infrastructure/docker-compose.yaml"
         
     - name: Stop docker stack
       ansible.builtin.command:
@@ -59,8 +54,8 @@
            docker compose
            -f "{{ src_path }}"/infrastructure/docker-compose.yaml
            --profile webui --profile basic --profile donotstart
-           down -v
-
+           --profile mongo
+           down
 
     - name: Run docker server stack
       block:
@@ -82,7 +77,8 @@
             cmd: >
               docker compose
               -f "{{ src_path }}"/infrastructure/docker-compose.yaml
-              up -d mongo
+              --profile mongo
+              up -d
           when: inventory_hostname in groups['mongo']
 
         - name: Run mongodb setup
@@ -98,7 +94,7 @@
                   docker compose
                   -f "{{ src_path }}"/infrastructure/docker-compose.yaml
                   up -d mongo_setup
-          when: inventory_hostname == groups['ubuntu'][0]
+              when: inventory_hostname == groups['mongo'][0]
 
     - name: Run docker webui
       block:
@@ -134,6 +130,13 @@
           environment:
             KAFKA_BROKER_ID: "{{ groups['kafka'].index(inventory_hostname) + 1 }}"
             KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: "{{ kraft_controllers_quorum[:-2] }}"
+
+        - name: Run kowl
+          ansible.builtin.command:
+            cmd: >
+              docker compose
+              -f {{ src_path }}/infrastructure/docker-compose.yaml
+              up -d kowl
 
       vars:
         kraft_controllers_quorum: ""

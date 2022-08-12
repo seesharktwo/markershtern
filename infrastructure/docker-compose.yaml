@@ -34,6 +34,8 @@ services:
   kowl:
     image: rsmnarts/kowl
     restart: on-failure
+    profiles:
+      - donotstart
     ports:
       - 8080:8080
     environment:
@@ -56,16 +58,40 @@ services:
       options:
         tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
 
-  mongo:
+  mongo1:
     image: mongo
     restart: on-failure
     profiles:
-      - donotstart
-    ports:
-      - 27017:27017
+      - mongo
     volumes:
-      - mongo:/data/db
-    command: [ "--bind_ip_all", "--replSet", "rs0",  "--dbpath", "/data/db" ]
+      - mongo1:/data/db
+    command: [ "mongod", "--bind_ip=0.0.0.0", "--replSet", "rs0",  "--dbpath", "/data/db" ]
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  mongo2:
+    image: mongo
+    restart: on-failure
+    profiles:
+      - mongo
+    volumes:
+      - mongo2:/data/db
+    command: [ "mongod", "--bind_ip=0.0.0.0", "--replSet", "rs0",  "--dbpath", "/data/db" ]
+    logging:
+      driver: json-file
+      options:
+        tag: "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"
+
+  mongo3:
+    image: mongo
+    restart: on-failure
+    profiles:
+      - mongo
+    volumes:
+      - mongo3:/data/db
+    command: [ "mongod", "--bind_ip=0.0.0.0", "--replSet", "rs0",  "--dbpath", "/data/db" ]
     logging:
       driver: json-file
       options:
@@ -143,4 +169,6 @@ volumes:
   kafka:
   grafana:
   prometheus_data:
-  mongo:
+  mongo1:
+  mongo2:
+  mongo3:

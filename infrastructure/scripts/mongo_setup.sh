@@ -1,28 +1,33 @@
 #!/bin/bash
 
+MONGODB1=mongo1
+MONGODB2=mongo2
+MONGODB3=mongo3
+
 echo "**********************************************"
 
-mongo mongo:27017 <<EOF
+mongosh ${MONGODB1}:27017 <<EOF
 var cfg = {
     "_id": "rs0",
-    "version": 1,
     "members": [
-{% for serverip in groups['ubuntu'] %}
         {
-{% if serverip == inventory_hostname %}
             "_id": 0,
-            "host": "mongo:27017",
-            "priority": 2,
-{% else %}
-            "_id": {{ loop.index }},
-            "host": "{{ serverip }}:27017",
-            "priority": 0,
-{% endif %}
+            "host": "${MONGODB1}:27017",
+            "priority": 2
         },
-{% endfor %}
+        {
+            "_id": 1,
+            "host": "${MONGODB2}:27017",
+            "priority": 0
+        },
+        {
+            "_id": 2,
+            "host": "${MONGODB3}:27017",
+            "priority": 0
+        }
     ]
 };
-
 rs.initiate(cfg);
 rs.reconfig(cfg);
 quit();
+EOF
