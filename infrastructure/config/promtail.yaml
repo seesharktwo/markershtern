@@ -6,7 +6,13 @@ positions:
   filename: /tmp/positions.yaml
 
 clients:
+{% for serverip in groups['webui'] %}
+{% if serverip == inventory_hostname %}
   - url: http://loki:3100/loki/api/v1/push
+{% else %}
+  - url: http://{{ serverip }}:3100/loki/api/v1/push
+{% endif %}
+{% endfor %}
 
 scrape_configs:
 - job_name: containers
@@ -14,6 +20,7 @@ scrape_configs:
   - targets:
       - localhost
     labels:
+      remote_addr: {{inventory_hostname}}
       job: containerlogs
       __path__: /var/lib/docker/containers/*/*log
 
@@ -33,7 +40,7 @@ scrape_configs:
   - timestamp:
       format: RFC3339Nano
       source: time
-  - labels:
+  - labels:    
       tag:
       stream:
       image_name:

@@ -1,0 +1,13 @@
+[webui]
+host
+
+[kafka]
+host
+
+[mongo]
+host
+
+[ubuntu:children]
+webui
+kafka
+mongo

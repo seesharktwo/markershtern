@@ -1,35 +1,32 @@
-## Environment quick setup
+## Server Environment setup
 ### Prerequisites
 * Docker [download](https://www.docker.com/get-started/)
 * Docker-compose
+* Ansible
+
+### Add users
+- Fill ansible/users_to_ssh.json
 
 ### Run
 ```cmd
-docker compose up -d
+    ansible-playbook ansible/initial-setup-playbook.yaml -l ubuntu -i ansible/inventory.ini -v -k
 ```
 
-### Profiles
+### Inventory groups
 ```cmd
-docker compose --profile profile_name [--profile another_profile] up -d
-
-Always starts up:
-- kafka, kowl, mongo1 (primary), mongo2, mongo3
-
-Profiles avail:
-- monitor: node_exporter + prometheus + grafana
-- logging: loki + promtail + grafana
+- webui: loki + promtail + grafana + prometheus + kowl
+- kafka: kafka + kraft
+- mongo: mongodb
 ```
 
 ### Connection ports
 ```md
 - Kafka: 9092
+- Kraft: 9093
 - Kowl: 8080
 - Grafana: 3030
-- Mongodb: 27017 (primary), 27018, 27019
+- Mongodb: 27017
 ```
-
-### Set memory limits for JVM via env vars
-- KAFKA_MAX_MEM, default: 1024m
 
 ### Monitoring
 [About stack](https://habr.com/ru/amp/post/652185/)
