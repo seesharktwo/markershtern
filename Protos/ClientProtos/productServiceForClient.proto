@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+option csharp_namespace = "FacadeClient";
+
+package greet;
+
+import "decimalValue.proto";
+
+
+
+service ProductServiceClient {
+  rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
+}
+
+message GetProductsRequest
+{
+
+}
+
+message GetProductsResponse
+{
+	message Product
+	{
+		string id = 1;
+
+		string name = 2;
+
+		customTypes.DecimalValue bid = 3;
+
+		customTypes.DecimalValue ask = 4;
+	}
+	repeated Product products = 1;
+}
+
+
