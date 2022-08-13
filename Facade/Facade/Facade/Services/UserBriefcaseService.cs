@@ -7,6 +7,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Facade2;
 using Google.Protobuf;
+using Microsoft.Extensions.Options;
+using Facade.Сonfigs;
+using Microsoft.Extensions.Logging;
 
 namespace Facade.Services
 {
@@ -14,9 +17,11 @@ namespace Facade.Services
     {
         private readonly UserBriefcase.UserBriefcaseClient _client;
         private Exception _exception;
+        private string _connectionString;
 
-        public UserBriefcaseService()
+        public UserBriefcaseService(IOptions<ConnectionString<OrderService>> config)
         {
+            _connectionString = config.Value.String;
             _client = GetClient();
         }
 
@@ -92,28 +97,10 @@ namespace Facade.Services
 
         private UserBriefcase.UserBriefcaseClient GetClient()
         {
-            string connectionString = GetConnectionString();
-            using var channel = GrpcChannel.ForAddress(connectionString);
+            using var channel = GrpcChannel.ForAddress(_connectionString);
             var client = new UserBriefcase.UserBriefcaseClient(channel);
             return client;
         }
 
-        private string GetConnectionString()
-        {
-            string result = string.Empty;
-            try
-            {
-                var config = new ConfigurationBuilder();
-                config.SetBasePath(Directory.GetCurrentDirectory());
-                config.AddJsonFile("appsettings.json");
-                IConfigurationRoot root = config.Build();
-                result = root["ConnectionUserBrifcaseMicroservice"];
-            }
-            catch
-            {
-                //To DO log
-            }
-            return result;
-        }
     }
 }

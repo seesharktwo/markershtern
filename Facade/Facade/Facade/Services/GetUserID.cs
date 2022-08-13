@@ -1,5 +1,8 @@
-﻿using Grpc.Net.Client;
+﻿using Facade.Сonfigs;
+using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -10,9 +13,9 @@ namespace Facade.Services
     {
         readonly string _connectionString;
 
-        public GetUserID()
+        public GetUserID(IOptions<ConnectionString<OrderService>> config)
         {
-            _connectionString = GetConnectionString();
+            _connectionString = config.Value.String;
         }
 
         public async Task<(bool isComplite, string userId, Exception exception)>

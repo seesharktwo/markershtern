@@ -6,7 +6,11 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:5000;https://localhost:5001",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionProductMicroservice": "https://localhost:5001",
+        "ConnectionUserBrifcaseMicroservice": "https://localhost:6001",
+        "ConnectionOrderMicroservice": "https://localhost:7001",
+        "ConnectionAuthorizationMicroservice": "https://localhost:8001"
       }
     }
   }

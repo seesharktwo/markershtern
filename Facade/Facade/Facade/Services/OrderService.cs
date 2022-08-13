@@ -6,16 +6,20 @@ using System;
 using Microsoft.Extensions.Configuration;
 using Grpc.Net.Client;
 using System.IO;
+using Facade.Сonfigs;
+using Microsoft.Extensions.Logging;
 
 namespace Facade.Services
 {
     public class OrderService
     {
         private string _connectionString;
+        private ILogger<OrderService> _logger;
 
-        public OrderService()
+        public OrderService(IOptions<ConnectionString<OrderService>> config, ILogger<OrderService> logger)
         {
-            _connectionString = GetConnectionString();
+            _connectionString = config.Value.String;
+            _logger = logger;
         }
 
         public async Task<(bool isComplite, CreateOrderResponse responce, Exception exception)>
@@ -25,7 +29,7 @@ namespace Facade.Services
             CreateOrderResponse responce = null;
             try
             {
-                responce = await LoadDataAsync(request);
+                responce = await LoadCreateOrderResponseAsync(request);
                 return (true, responce, exception);
             }
             catch (Exception e)
@@ -36,7 +40,7 @@ namespace Facade.Services
             return (false, responce, exception);
         }
 
-        public async Task<CreateOrderResponse> LoadDataAsync(CreateOrderRequest request)
+        public async Task<CreateOrderResponse> LoadCreateOrderResponseAsync(CreateOrderRequest request)
         {
             using (var channel = GrpcChannel.ForAddress(_connectionString))
             {
@@ -44,24 +48,6 @@ namespace Facade.Services
                 var reply = await client.CreateOrderAsync(request);
                 return reply;
             }
-        }
-
-        private string GetConnectionString()
-        {
-            string result = string.Empty;
-            try
-            {
-                var config = new ConfigurationBuilder();
-                config.SetBasePath(Directory.GetCurrentDirectory());
-                config.AddJsonFile("appsettings.json");
-                IConfigurationRoot root = config.Build();
-                result = root["ConnectionOrderMicroservice"];
-            }
-            catch(Exception e)
-            {
-                //To DO log
-            }
-            return result;
         }
 
     }

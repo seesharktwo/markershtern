@@ -1,6 +1,9 @@
 ﻿
+using Facade.Сonfigs;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,9 +16,10 @@ namespace Facade.Services
     public class GetListTradeProducts
     {
         readonly string _connectionString;
-        public GetListTradeProducts()
+
+        public GetListTradeProducts(IOptions<ConnectionString<OrderService>> config)
         {
-            _connectionString = GetConnectionString();
+            _connectionString = config.Value.String;
         }
 
         public async Task<(bool isComplite, List<Product> products, Exception exception)>
@@ -41,28 +45,10 @@ namespace Facade.Services
         {
             using (var channel = GrpcChannel.ForAddress(_connectionString)) 
             {
-                var client = new ProductService.ProductServiceClient(channel);
+                var client = new Facade.ProductService.ProductServiceClient(channel);
                 var reply = await client.GetProductsAsync(new GetProductsRequest());
                 return reply.Products.ToList();
             }
-        }
-
-        private string GetConnectionString()
-        {
-            string result = string.Empty;
-            try
-            {
-                var config = new ConfigurationBuilder();
-                config.SetBasePath(Directory.GetCurrentDirectory());
-                config.AddJsonFile("appsettings.json");
-                IConfigurationRoot root = config.Build();
-                result = root["ConnectionTradeCargoMicroservice"];
-            }
-            catch
-            {
-                //To DO log
-            }
-            return result;
         }
     }
 }
