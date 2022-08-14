@@ -1,6 +1,5 @@
 ﻿using Facade.GrpcServices;
 using Facade.Services;
-using Facade.Сonfigs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,9 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Facade
 {
@@ -29,16 +25,6 @@ namespace Facade
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddGrpc(); 
-
-            // configs
-            //services.Configure<ConnectionString<OrderService>>
-            //    (c => c.String = );
-            //services.Configure<ConnectionString<UserBriefcaseService>>
-            //    (c => c.String = Configuration.GetValue<string>("ConnectionUserBrifcaseMicroservice"));
-            //services.Configure<ConnectionString<GetUserID>>
-            //    (c => c.String = Configuration.GetValue<string>("ConnectionAuthorizationMicroservice"));
-            //services.Configure<ConnectionString<GetListTradeProducts>>
-            //    (c => c.String = Configuration.GetValue<string>("ConnectionProductMicroservice"));
 
             services.AddGrpcClient<Orders.Orders.OrdersClient>(o =>
             {
