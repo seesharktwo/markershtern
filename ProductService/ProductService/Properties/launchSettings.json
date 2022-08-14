@@ -4,9 +4,14 @@
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "http://localhost:5084;https://localhost:7084",
+      "applicationUrl": "http://localhost:5001;https://localhost:5002",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "KafkaConsumerSettings_GroupId": "test123",
+        "KafkaConsumerSettings_BootstrapServers": "localhost:9092",
+        "Mongo_ConnectionString": "mongodb://localhost:27017",
+        "Mongo_DatabaseName": "ProductStore",
+        "Mongo_ProductsCollectionName": "Products"
       }
     }
   }

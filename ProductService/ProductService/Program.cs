@@ -9,10 +9,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 
 // Интеграция в DI конфигурации для сервисов
-builder.Services.Configure<ProductStoreDatabaseSettings>(
-    builder.Configuration.GetSection("ProductStoreDatabase"));
-builder.Services.Configure<KafkaConsumerSettings>(
-    builder.Configuration.GetSection("BootstrapServerKafka"));
+builder.Services.Configure<ProductStoreDatabaseSettings>(c =>
+{
+    c.ConnectionString = builder.Configuration.GetValue<string>("Mongo_ConnectionString");
+    c.ProductsCollectionName = builder.Configuration.GetValue<string>("Mongo_ProductsCollectionName");
+    c.DatabaseName = builder.Configuration.GetValue<string>("Mongo_DatabaseName");
+});
+builder.Services.Configure<KafkaConsumerSettings>(c => 
+{
+    c.GroupId = builder.Configuration.GetValue<string>("KafkaConsumerSettings_GroupId");
+    c.BootstrapServers= builder.Configuration.GetValue<string>("KafkaConsumerSettings_BootstrapServers");
+});
 
 // Внедрение зависимости ProductContext
 builder.Services.AddSingleton<ProductContext>();
@@ -29,5 +36,4 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<ProductServiceGrpc>();
-
 app.Run();
