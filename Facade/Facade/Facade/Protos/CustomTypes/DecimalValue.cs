@@ -1,4 +1,4 @@
-﻿namespace CustomTypes
+﻿namespace MoneyTypes
 {
     public partial class DecimalValue
     {
@@ -18,7 +18,6 @@
         {
             if (decimalValue is null)
                 return 0;
-            // throw new ArgumentException("decimal value is null");
             return decimalValue.Units + decimalValue.Nanos / NanoFactor;
         }
 

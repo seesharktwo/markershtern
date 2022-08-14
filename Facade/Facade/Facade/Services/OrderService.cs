@@ -6,7 +6,6 @@ using System;
 using Microsoft.Extensions.Configuration;
 using Grpc.Net.Client;
 using System.IO;
-using Facade.Сonfigs;
 using Microsoft.Extensions.Logging;
 
 namespace Facade.Services

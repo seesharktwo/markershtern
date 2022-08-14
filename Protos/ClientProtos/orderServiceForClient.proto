@@ -16,7 +16,7 @@ message CreateOrderRequest {
   string user_id = 1;
   OrderType type = 2;
   string product_id = 3;
-  customTypes.DecimalValue price = 4;
+  moneyTypes.DecimalValue price = 4;
   int32 quantity = 5;   
 }
 

@@ -1,8 +1,8 @@
 ﻿syntax = "proto3";
 
-package customTypes;
+package moneyTypes;
 
-option csharp_namespace = "CustomTypes";
+option csharp_namespace = "MoneyTypes";
 
 message DecimalValue
 {

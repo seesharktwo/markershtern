@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Facade2;
 using Google.Protobuf;
 using Microsoft.Extensions.Options;
-using Facade.Сonfigs;
 using Microsoft.Extensions.Logging;
 
 namespace Facade.Services

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MoneyTypes;
 
 namespace Facade
 {
@@ -9,8 +10,8 @@ namespace Facade
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<TIn, TOut>();
                 // настройки маппинга кастомного типа
-                cfg.CreateMap<CustomTypes.DecimalValue, decimal>().ConvertUsing(val => val);
-                cfg.CreateMap<decimal, CustomTypes.DecimalValue>().ConvertUsing(val => val);
+                cfg.CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);
+                cfg.CreateMap<decimal, DecimalValue>().ConvertUsing(val => val);
             });
             var mapper = new AutoMapper.Mapper(config);
 

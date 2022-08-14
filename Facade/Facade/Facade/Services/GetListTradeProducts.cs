@@ -1,5 +1,4 @@
 ﻿
-using Facade.Сonfigs;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

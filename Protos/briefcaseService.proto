@@ -66,7 +66,7 @@ message Product {
     string productId = 1; 
     string name = 2; 
     string authorMarker = 3; 
-    customTypes.DecimalValue price = 4; 
+    moneyTypes.DecimalValue price = 4; 
     string description = 5; 
     int32 count = 6; 
 }

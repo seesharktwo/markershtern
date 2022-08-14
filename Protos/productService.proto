@@ -25,9 +25,9 @@ message GetProductsResponse
 
 		string name = 2;
 
-		customTypes.DecimalValue bid = 3;
+		moneyTypes.DecimalValue bid = 3;
 
-		customTypes.DecimalValue ask = 4;
+		moneyTypes.DecimalValue ask = 4;
 	}
 	repeated Product products = 1;
 }
