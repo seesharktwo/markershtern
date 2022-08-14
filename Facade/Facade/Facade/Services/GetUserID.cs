@@ -13,7 +13,7 @@ namespace Facade.Services
     {
         readonly string _connectionString;
 
-        public GetUserID(IOptions<ConnectionString<OrderService>> config)
+        public GetUserID(IOptions<ConnectionString<GetUserID>> config)
         {
             _connectionString = config.Value.String;
         }

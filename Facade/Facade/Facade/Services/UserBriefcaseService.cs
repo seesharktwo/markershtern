@@ -19,7 +19,7 @@ namespace Facade.Services
         private Exception _exception;
         private string _connectionString;
 
-        public UserBriefcaseService(IOptions<ConnectionString<OrderService>> config)
+        public UserBriefcaseService(IOptions<ConnectionString<UserBriefcaseService>> config)
         {
             _connectionString = config.Value.String;
             _client = GetClient();

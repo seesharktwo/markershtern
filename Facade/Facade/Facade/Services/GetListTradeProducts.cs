@@ -17,7 +17,7 @@ namespace Facade.Services
     {
         readonly string _connectionString;
 
-        public GetListTradeProducts(IOptions<ConnectionString<OrderService>> config)
+        public GetListTradeProducts(IOptions<ConnectionString<GetListTradeProducts>> config)
         {
             _connectionString = config.Value.String;
         }
