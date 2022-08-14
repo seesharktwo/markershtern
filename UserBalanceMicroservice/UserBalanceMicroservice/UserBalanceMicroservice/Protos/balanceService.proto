@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+import "decimalValue.proto";
+
+option csharp_namespace = "Protos.CustomTypes";
+package customTypes;
+
+service BalanceService
+{
+  rpc GetBalance(GetBalanceRequest) returns(GetBalanceResponse);
+}
+
+message GetBalanceRequest
+{
+	string id = 1;
+}
+
+message GetBalanceResponse
+{
+	string user_id = 1;
+
+	customTypes.DecimalValue balance = 2;
+}
