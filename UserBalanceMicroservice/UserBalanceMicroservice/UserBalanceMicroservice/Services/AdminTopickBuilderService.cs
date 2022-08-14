@@ -8,15 +8,15 @@ namespace UserBalanceMicroservice.Services
     {
         public async static void Build()
         {
-            using (var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = "localhost:9092" }).Build())
+            var config = new ConfigurationBuilder();
+            config.SetBasePath(Directory.GetCurrentDirectory());
+            config.AddJsonFile("appsettings.json");
+            IConfigurationRoot root = config.Build();
+            var settings = new KafkaSettings();
+            root.GetSection("BootstrapServerKafka").Bind(settings);
+            using (var adminClient = new AdminClientBuilder(new AdminClientConfig { BootstrapServers = settings.BootstrapServers }).Build())
             {
-                var config = new ConfigurationBuilder();
-                config.SetBasePath(Directory.GetCurrentDirectory());
-                config.AddJsonFile("appsettings.json");
-                IConfigurationRoot root = config.Build();
-                var x = new KafkaSettings();
-                root.GetSection("BootstrapServerKafka").Bind(x);
-                foreach (var item in x.Topicks)
+                foreach (var item in settings.Topicks)
                 {
                     try
                     {

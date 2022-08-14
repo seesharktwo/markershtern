@@ -17,6 +17,10 @@ builder.Services.Configure<KafkaSettings>(
 
 builder.Services.AddSingleton<BalanceContext>();
 
+builder.Services.AddSingleton<BalanceOperationService>();
+builder.Services.AddHostedService<KafkaConsumerService>();
+
+
 AdminTopickBuilderService.Build();
 var app = builder.Build();
 

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace ProductService
+namespace UserBalanceMicroservice
 {
     public static class Mapper
     {
