@@ -15,14 +15,13 @@ namespace Facade.Services
 {
     public class UserBriefcaseService
     {
-        private readonly UserBriefcase.UserBriefcaseClient _client;
+        private UserBriefcase.UserBriefcaseClient _client;
         private Exception _exception;
         private string _connectionString;
 
-        public UserBriefcaseService(IOptions<ConnectionString<UserBriefcaseService>> config)
+        public UserBriefcaseService(Facade2.UserBriefcase.UserBriefcaseClient client)
         {
-            _connectionString = config.Value.String;
-            _client = GetClient();
+            _client = client;
         }
 
         public async Task<(bool isComplite, List<Product> products, Exception exception)>
@@ -93,13 +92,6 @@ namespace Facade.Services
             }
 
             return (false, _exception);
-        }
-
-        private UserBriefcase.UserBriefcaseClient GetClient()
-        {
-            using var channel = GrpcChannel.ForAddress(_connectionString);
-            var client = new UserBriefcase.UserBriefcaseClient(channel);
-            return client;
         }
 
     }

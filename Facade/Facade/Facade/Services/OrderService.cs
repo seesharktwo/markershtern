@@ -13,12 +13,12 @@ namespace Facade.Services
 {
     public class OrderService
     {
-        private string _connectionString;
+        private Orders.Orders.OrdersClient _client;
         private ILogger<OrderService> _logger;
 
-        public OrderService(IOptions<ConnectionString<OrderService>> config, ILogger<OrderService> logger)
+        public OrderService(Orders.Orders.OrdersClient client, ILogger<OrderService> logger)
         {
-            _connectionString = config.Value.String;
+            _client = client;
             _logger = logger;
         }
 
@@ -42,12 +42,8 @@ namespace Facade.Services
 
         public async Task<CreateOrderResponse> LoadCreateOrderResponseAsync(CreateOrderRequest request)
         {
-            using (var channel = GrpcChannel.ForAddress(_connectionString))
-            {
-                var client = new Orders.Orders.OrdersClient(channel);
-                var reply = await client.CreateOrderAsync(request);
-                return reply;
-            }
+            var reply = await _client.CreateOrderAsync(request);
+            return reply;
         }
 
     }

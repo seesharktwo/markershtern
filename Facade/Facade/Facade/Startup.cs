@@ -31,14 +31,31 @@ namespace Facade
             services.AddGrpc(); 
 
             // configs
-            services.Configure<ConnectionString<OrderService>>
-                (c => c.String = Configuration.GetValue<string>("ConnectionOrderMicroservice"));
-            services.Configure<ConnectionString<UserBriefcaseService>>
-                (c => c.String = Configuration.GetValue<string>("ConnectionUserBrifcaseMicroservice"));
-            services.Configure<ConnectionString<GetUserID>>
-                (c => c.String = Configuration.GetValue<string>("ConnectionAuthorizationMicroservice"));
-            services.Configure<ConnectionString<GetListTradeProducts>>
-                (c => c.String = Configuration.GetValue<string>("ConnectionProductMicroservice"));
+            //services.Configure<ConnectionString<OrderService>>
+            //    (c => c.String = );
+            //services.Configure<ConnectionString<UserBriefcaseService>>
+            //    (c => c.String = Configuration.GetValue<string>("ConnectionUserBrifcaseMicroservice"));
+            //services.Configure<ConnectionString<GetUserID>>
+            //    (c => c.String = Configuration.GetValue<string>("ConnectionAuthorizationMicroservice"));
+            //services.Configure<ConnectionString<GetListTradeProducts>>
+            //    (c => c.String = Configuration.GetValue<string>("ConnectionProductMicroservice"));
+
+            services.AddGrpcClient<Orders.Orders.OrdersClient>(o =>
+            {
+                o.Address = new Uri(Configuration.GetValue<string>("ConnectionOrderMicroservice"));
+            });
+            services.AddGrpcClient<Facade2.UserBriefcase.UserBriefcaseClient>(o =>
+            {
+                o.Address = new Uri(Configuration.GetValue<string>("ConnectionUserBrifcaseMicroservice"));
+            });
+            services.AddGrpcClient<Facade.ProductService.ProductServiceClient>(o =>
+            {
+                o.Address = new Uri(Configuration.GetValue<string>("ConnectionProductMicroservice"));
+            });
+            services.AddGrpcClient<Facade.Authorization.AuthorizationClient>(o =>
+            {
+                o.Address = new Uri(Configuration.GetValue<string>("ConnectionAuthorizationMicroservice"));
+            });
 
 
             services.AddTransient<OrderService>();
@@ -64,6 +81,7 @@ namespace Facade
             {
 
                 endpoints.MapGrpcService<GrpcOrderService>();
+                endpoints.MapGrpcService<GrpcProductService>();
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");

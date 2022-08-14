@@ -11,11 +11,11 @@ namespace Facade.Services
 {
     public class GetUserID
     {
-        readonly string _connectionString;
+        private Authorization.AuthorizationClient _client;
 
-        public GetUserID(IOptions<ConnectionString<GetUserID>> config)
+        public GetUserID(Authorization.AuthorizationClient client)
         {
-            _connectionString = config.Value.String;
+            _client = client;
         }
 
         public async Task<(bool isComplite, string userId, Exception exception)>
@@ -41,32 +41,10 @@ namespace Facade.Services
         {
             var request = new LoginRequest{ Login = login, Password = password };
 
-            using (var channel = GrpcChannel.ForAddress(_connectionString))
-            {
-                var client = new Authorization.AuthorizationClient(channel);
-                var reply = await client.LoginAsync(request);
+            var reply = await _client.LoginAsync(request);
 
-                return reply.UserId;
-            }
+            return reply.UserId;
         }
 
-        private string GetConnectionString()
-        {
-            string result = string.Empty;
-            try
-            {
-                var config = new ConfigurationBuilder();
-                config.SetBasePath(Directory.GetCurrentDirectory());
-                config.AddJsonFile("appsettings.json");
-                IConfigurationRoot root = config.Build();
-                result = root["ConnectionUserBrifcaseMicroservice"];
-            }
-            catch
-            {
-                //To DO log
-            }
-
-            return result;
-        }
     }
 }

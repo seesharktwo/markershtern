@@ -15,6 +15,7 @@
     <Protobuf Include="..\..\..\Protos\orderService.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
     <Protobuf Include="..\..\..\Protos\decimalValue.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
     <Protobuf Include="..\..\..\Protos\ClientProtos\orderServiceForClient.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\ClientProtos\productServiceForClient.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
     
   </ItemGroup>
 

@@ -15,40 +15,36 @@ namespace Facade.Services
 {
     public class GetListTradeProducts
     {
-        readonly string _connectionString;
+        private ProductService.ProductServiceClient _client;
 
-        public GetListTradeProducts(IOptions<ConnectionString<GetListTradeProducts>> config)
+        public GetListTradeProducts(ProductService.ProductServiceClient client)
         {
-            _connectionString = config.Value.String;
+            _client = client;
         }
 
-        public async Task<(bool isComplite, List<Product> products, Exception exception)>
+        public async Task<(bool isComplite, GetProductsResponse products, Exception exception)>
             GetProductsAsync()
         {
             Exception exception = null;
-            List<Product> products = new List<Product>();
+            GetProductsResponse response = new GetProductsResponse();
 
             try
             {
-                products = await LoadDataAsync();
-                return (true, products, exception);
+                response = await LoadDataAsync();
+                return (true, response, exception);
             }
             catch(Exception e)
             {
                 exception = e;
             }
 
-            return (false, products, exception);
+            return (false, response, exception);
         }
 
-        private async Task<List<Product>> LoadDataAsync()
+        private async Task<GetProductsResponse> LoadDataAsync()
         {
-            using (var channel = GrpcChannel.ForAddress(_connectionString)) 
-            {
-                var client = new Facade.ProductService.ProductServiceClient(channel);
-                var reply = await client.GetProductsAsync(new GetProductsRequest());
-                return reply.Products.ToList();
-            }
+            var reply = await _client.GetProductsAsync(new GetProductsRequest());
+            return reply;
         }
     }
 }
