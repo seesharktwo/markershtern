@@ -9,7 +9,7 @@ namespace Facade
         {
             var config = new MapperConfiguration(cfg => {
                 cfg.CreateMap<TIn, TOut>();
-                // настройки маппинга кастомного типа
+                // configs mapper for custom types
                 cfg.CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);
                 cfg.CreateMap<decimal, DecimalValue>().ConvertUsing(val => val);
             });

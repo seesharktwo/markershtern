@@ -26,6 +26,7 @@ namespace Facade
         {
             services.AddGrpc(); 
 
+            
             services.AddGrpcClient<Order.Orders.OrdersClient>(o =>
             {
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionOrderMicroservice"));
@@ -46,7 +47,7 @@ namespace Facade
 
             services.AddTransient<OrderService>();
             services.AddTransient<UserBriefcaseService>();
-            services.AddTransient<Services.ProductService>();
+            services.AddTransient<ProductService>();
             services.AddTransient<GetUserID>();
 
            
