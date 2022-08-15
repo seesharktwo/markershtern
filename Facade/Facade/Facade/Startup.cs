@@ -50,6 +50,8 @@ namespace Facade
             services.AddTransient<ProductService>();
             services.AddTransient<GetUserID>();
 
+            services.AddTransient<Mapper.IMapper, Mapper.Mapper>();
+
            
           
         }

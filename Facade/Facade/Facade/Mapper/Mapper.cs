@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using MoneyTypes;
 
-namespace Facade
+namespace Facade.Mapper
 {
-    public class Mapper
+    public class Mapper : Facade.Mapper.IMapper
     {
-        public static TOut Map<TIn, TOut>(TIn valueToConvert)
+        public TOut Map<TIn, TOut>(TIn valueToConvert)
         {
-            var config = new MapperConfiguration(cfg => {
+            var config = new MapperConfiguration(cfg =>
+            {
                 cfg.CreateMap<TIn, TOut>();
                 // configs mapper for custom types
                 cfg.CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);
