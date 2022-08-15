@@ -1,4 +1,5 @@
 ﻿
+using Authorization;
 using Grpc.Net.Client;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -11,39 +12,44 @@ namespace Facade.Services
 {
     public class GetUserID
     {
-        private Authorization.AuthorizationClient _client;
+        private AuthorizationService.AuthorizationServiceClient _client;
+        private ILogger<GetUserID> _logger;
 
-        public GetUserID(Authorization.AuthorizationClient client)
+        public GetUserID(AuthorizationService.AuthorizationServiceClient client, ILogger<GetUserID> logger)
         {
             _client = client;
+            _logger = logger;
         }
 
-        public async Task<(bool isComplite, string userId, Exception exception)>
+        /// <summary>
+        /// Login method
+        /// </summary>
+        /// <param name="login"></param>
+        /// <param name="password"></param>
+        /// <returns><LoginResponse if success, null if catches error/returns>
+        public async Task<LoginResponse>
             GetUserId(string login, string password)
         {
-            Exception exception = null;
-            string userId = null;
 
             try
             {
-                userId = await LoadDataAsync(login, password);
-                return (true, userId, exception);
+                LoginResponse response = await LoadLoginResponseAsync(login, password);
+                return response;
             }
             catch (Exception e)
             {
-                exception = e;
+                _logger.LogError(e.Message);
+                return null;
             }
-
-            return (false, userId, exception);
         }
 
-        private async Task<string> LoadDataAsync(string login, string password)
+        private async Task<LoginResponse> LoadLoginResponseAsync(string login, string password)
         {
             var request = new LoginRequest{ Login = login, Password = password };
 
             var reply = await _client.LoginAsync(request);
 
-            return reply.UserId;
+            return reply;
         }
 
     }

@@ -7,23 +7,25 @@ using System.Threading.Tasks;
 
 namespace Facade.GrpcServices
 {
-    public class GrpcProductService : FacadeClient.ProductServiceClient.ProductServiceClientBase
+    public class GrpcProductService : ProductClient.ProductServiceClient.ProductServiceClientBase
     {
-        private GetListTradeProducts _productService;
+        private Services.ProductService _productService;
 
-        public GrpcProductService(Services.GetListTradeProducts productService)
+        public GrpcProductService(Services.ProductService productService)
         {
             _productService = productService;
         }
 
-        public override async Task<FacadeClient.GetProductsResponse> GetProducts(FacadeClient.GetProductsRequest request, ServerCallContext context)
+        public override async Task<ProductClient.GetProductsResponse> GetProducts(ProductClient.GetProductsRequest request, ServerCallContext context)
         {
-            var mappedRequest = Mapper.Map<FacadeClient.GetProductsRequest, Facade.GetProductsRequest>(request);
-            (bool isComplite, Facade.GetProductsResponse responce, Exception exception) creationResult =
+            var mappedRequest = Mapper.Map<ProductClient.GetProductsRequest, Product.GetProductsRequest>(request);
+            Product.GetProductsResponse response =
                         await _productService.GetProductsAsync();
-            if (!creationResult.isComplite)
-                throw new RpcException(Status.DefaultCancelled, creationResult.exception.Message);
-            var mappedResponse = Mapper.Map<Facade.GetProductsResponse, FacadeClient.GetProductsResponse>(creationResult.responce);
+            if (response is null)
+                throw new RpcException(Status.DefaultCancelled,
+                    "Exception in getting products for marketing");
+            var mappedResponse = Mapper.Map<Product.GetProductsResponse,
+                ProductClient.GetProductsResponse>(response);
             return mappedResponse;
         }
     }

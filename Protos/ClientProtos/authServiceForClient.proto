@@ -1,9 +1,9 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "FacadeClient";
+option csharp_namespace = "AuthorizationClient";
 
 // implementation service
-service AuthorizationClient{
+service AuthorizationServiceClient{
      rpc Login(LoginRequest) returns(LoginResponse);
 }
 

@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using Orders;
+using Order;
 using System;
 using Microsoft.Extensions.Configuration;
 using Grpc.Net.Client;
@@ -12,31 +12,33 @@ namespace Facade.Services
 {
     public class OrderService
     {
-        private Orders.Orders.OrdersClient _client;
+        private Orders.OrdersClient _client;
         private ILogger<OrderService> _logger;
 
-        public OrderService(Orders.Orders.OrdersClient client, ILogger<OrderService> logger)
+        public OrderService(Orders.OrdersClient client, ILogger<OrderService> logger)
         {
             _client = client;
             _logger = logger;
         }
 
-        public async Task<(bool isComplite, CreateOrderResponse responce, Exception exception)>
+        /// <summary>
+        /// Method create's new order
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>CreateOrderResponse if success, null if catches error</returns>
+        public async Task<CreateOrderResponse>
             CreateOrderAsync(CreateOrderRequest request)
         {
-            Exception exception = null;
-            CreateOrderResponse responce = null;
             try
             {
-                responce = await LoadCreateOrderResponseAsync(request);
-                return (true, responce, exception);
+                CreateOrderResponse responce = await LoadCreateOrderResponseAsync(request);
+                return responce;
             }
             catch (Exception e)
             {
-                exception = e;
+                _logger.LogError(e.Message);
+                return null;
             }
-
-            return (false, responce, exception);
         }
 
         public async Task<CreateOrderResponse> LoadCreateOrderResponseAsync(CreateOrderRequest request)

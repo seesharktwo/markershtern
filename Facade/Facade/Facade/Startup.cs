@@ -26,19 +26,19 @@ namespace Facade
         {
             services.AddGrpc(); 
 
-            services.AddGrpcClient<Orders.Orders.OrdersClient>(o =>
+            services.AddGrpcClient<Order.Orders.OrdersClient>(o =>
             {
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionOrderMicroservice"));
             });
-            services.AddGrpcClient<Facade2.UserBriefcase.UserBriefcaseClient>(o =>
+            services.AddGrpcClient<Briefcase.UserBriefcaseService.UserBriefcaseServiceClient>(o =>
             {
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionUserBrifcaseMicroservice"));
             });
-            services.AddGrpcClient<Facade.ProductService.ProductServiceClient>(o =>
+            services.AddGrpcClient<Product.ProductService.ProductServiceClient>(o =>
             {
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionProductMicroservice"));
             });
-            services.AddGrpcClient<Facade.Authorization.AuthorizationClient>(o =>
+            services.AddGrpcClient<Authorization.AuthorizationService.AuthorizationServiceClient>(o =>
             {
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionAuthorizationMicroservice"));
             });
@@ -46,7 +46,7 @@ namespace Facade
 
             services.AddTransient<OrderService>();
             services.AddTransient<UserBriefcaseService>();
-            services.AddTransient<GetListTradeProducts>();
+            services.AddTransient<Services.ProductService>();
             services.AddTransient<GetUserID>();
 
            

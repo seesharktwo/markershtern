@@ -1,12 +1,12 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Facade2";
+option csharp_namespace = "Briefcase";
 
-package userProducts;
+package briefcase;
 
 import "decimalValue.proto";
 
-service UserBriefcase  {
+service UserBriefcaseService  {
     rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
     rpc AddProduct (AddProductRequest) returns (AddProductResponse);
     rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);

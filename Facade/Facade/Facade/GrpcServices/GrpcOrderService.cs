@@ -1,12 +1,12 @@
 ﻿using Facade.Services;
 using Grpc.Core;
-using OrdersClient;
+using OrderClient;
 using System;
 using System.Threading.Tasks;
 
 namespace Facade.GrpcServices
 {
-    public class GrpcOrderService : OrdersClient.OrdersClient.OrdersClientBase
+    public class GrpcOrderService : OrderServiceClient.OrderServiceClientBase
     {
         private OrderService _orderService;
 
@@ -19,12 +19,12 @@ namespace Facade.GrpcServices
 
         public override async Task<CreateOrderResponse> CreateOrder(CreateOrderRequest request, ServerCallContext context)
         {
-            var mappedRequest = Mapper.Map<OrdersClient.CreateOrderRequest, Orders.CreateOrderRequest>(request);
-            (bool isComplite, Orders.CreateOrderResponse responce, Exception exception) creationResult =
+            var mappedRequest = Mapper.Map<CreateOrderRequest, Order.CreateOrderRequest>(request);
+            Order.CreateOrderResponse response =
                         await _orderService.CreateOrderAsync(mappedRequest);
-            if (!creationResult.isComplite)
-                throw new RpcException(Status.DefaultCancelled, creationResult.exception.Message);
-            var mappedResponse = Mapper.Map<Orders.CreateOrderResponse, OrdersClient.CreateOrderResponse>(creationResult.responce);
+            if (response is null)
+                throw new RpcException(Status.DefaultCancelled, "Exception in creating order");
+            var mappedResponse = Mapper.Map<Order.CreateOrderResponse, CreateOrderResponse>(response);
             return mappedResponse;
         }
     }

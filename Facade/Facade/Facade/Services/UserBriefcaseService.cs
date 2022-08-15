@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Facade2;
+using Briefcase;
 using Google.Protobuf;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
@@ -14,19 +14,23 @@ namespace Facade.Services
 {
     public class UserBriefcaseService
     {
-        private UserBriefcase.UserBriefcaseClient _client;
-        private Exception _exception;
-        private string _connectionString;
+        private Briefcase.UserBriefcaseService.UserBriefcaseServiceClient _client;
+        private ILogger<UserBriefcaseService> _logger;
 
-        public UserBriefcaseService(Facade2.UserBriefcase.UserBriefcaseClient client)
+        public UserBriefcaseService(Briefcase.UserBriefcaseService.UserBriefcaseServiceClient client, ILogger<UserBriefcaseService> logger)
         {
             _client = client;
+            _logger = logger;
         }
 
-        public async Task<(bool isComplite, List<Product> products, Exception exception)>
+        /// <summary>
+        /// Get products from briefcase micro-service method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>GetUserResponse if succes, null if cathced exception </returns>
+        public async Task<GetUserProductsResponse>
             GetUserProductsAsync(GetUserProductsRequest request)
         {
-            List<Product> products = new List<Product>();
 
             try
             {
@@ -37,19 +41,21 @@ namespace Facade.Services
                     throw new Exception(reply.Error.ToString());
                 }
 
-                products = reply.List.Products.ToList();
-
-                return (true, products, null);
+                return reply;
             }
             catch (Exception e)
             {
-                _exception = e;
+                _logger.LogError(e.Message);
+                return null;
             }
-
-            return (false, products, _exception);
         }
 
-        public async Task<(bool isComplite, Exception exception)>
+        /// <summary>
+        /// Add product to briefcase micro-service method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>AddProductResponse  if succes, null if cathced exception</returns>
+        public async Task<AddProductResponse>
           AddProduct(AddProductRequest request)
         {
             try
@@ -61,17 +67,22 @@ namespace Facade.Services
                     throw new Exception(reply.Error.ToString());
                 }
 
-                return (true, null);
+                return reply;
             }
             catch (Exception e)
             {
-                _exception = e;
+                _logger.LogError(e.Message);
+                return null;
             }
 
-            return (false, _exception);
         }
 
-        public async Task<(bool isComplite, Exception exception)>
+        /// <summary>
+        /// Remove product from briefcase micro-service method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>RemoveProductResponse  if succes, null if cathced exception</returns>
+        public async Task<RemoveProductResponse>
            RemoveProduct(RemoveProductRequest request)
         {
             try
@@ -83,14 +94,13 @@ namespace Facade.Services
                     throw new Exception(reply.Error.ToString());
                 }
 
-                return (true, null);
+                return reply;
             }
             catch (Exception e)
             {
-                _exception = e;
+                _logger.LogError(e.Message);
+                return null;
             }
-
-            return (false, _exception);
         }
 
     }

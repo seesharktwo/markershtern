@@ -1,12 +1,12 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Facade2Client";
+option csharp_namespace = "BriefcaseClient";
 
-package userProducts;
+package BriefcaseClient;
 
 import "decimalValue.proto";
 
-service UserBriefcaseClient  {
+service UserBriefcaseServiceClient  {
     rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
     rpc AddProduct (AddProductRequest) returns (AddProductResponse);
     rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
