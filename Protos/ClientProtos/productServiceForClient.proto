@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+option csharp_namespace = "ProductClient";
+
+package productClient;
+
+import "decimalValue.proto";
+
+
+
+service ProductServiceClient {
+  rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
+}
+
+message GetProductsRequest
+{
+
+}
+
+message GetProductsResponse
+{
+	message Product
+	{
+		string id = 1;
+
+		string name = 2;
+
+		moneyTypes.DecimalValue bid = 3;
+
+		moneyTypes.DecimalValue ask = 4;
+	}
+	repeated Product products = 1;
+}
