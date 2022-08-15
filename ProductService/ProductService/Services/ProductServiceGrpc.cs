@@ -1,12 +1,12 @@
 ﻿using Grpc.Core;
-using ProductService.Protos.Services;
+using Product;
 
 namespace ProductService.Services
 {
     /// <summary>
     /// implementation of proto contract
     /// </summary>
-    public class ProductServiceGrpc : Protos.Services.ProductService.ProductServiceBase
+    public class ProductServiceGrpc : Product.ProductService.ProductServiceBase
     {
         private readonly ProductContext _context;
 

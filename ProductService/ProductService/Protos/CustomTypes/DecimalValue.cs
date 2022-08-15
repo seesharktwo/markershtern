@@ -1,4 +1,4 @@
-﻿namespace ProductService.Protos.CustomTypes
+﻿namespace MoneyTypes
 {
     public partial class DecimalValue
     {

@@ -3,7 +3,7 @@ using Confluent.Kafka.SyncOverAsync;
 using Microsoft.Extensions.Options;
 using ProducerService.CustomDeserializers;
 using ProductService.Configs;
-using ProductService.Protos.Events;
+using OrderEvents;
 using System.Diagnostics;
 using System.Net;
 using System.Text.Json;
