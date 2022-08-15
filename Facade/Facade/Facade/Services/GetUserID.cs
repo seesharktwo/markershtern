@@ -26,21 +26,17 @@ namespace Facade.Services
         /// </summary>
         /// <param name="login"></param>
         /// <param name="password"></param>
-        /// <returns><LoginResponse if success, null if catches error/returns>
+        /// <returns><LoginResponse/returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<LoginResponse>
             GetUserId(string login, string password)
         {
+            LoginResponse response = await LoadLoginResponseAsync(login, password);
 
-            try
-            {
-                LoginResponse response = await LoadLoginResponseAsync(login, password);
-                return response;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                return null;
-            }
+            if (response is null)
+                throw new ArgumentNullException("LoginResponse");
+
+            return response;
         }
 
         private async Task<LoginResponse> LoadLoginResponseAsync(string login, string password)
@@ -48,7 +44,7 @@ namespace Facade.Services
             var request = new LoginRequest{ Login = login, Password = password };
 
             var reply = await _client.LoginAsync(request);
-
+            
             return reply;
         }
 

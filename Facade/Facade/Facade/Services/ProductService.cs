@@ -25,20 +25,20 @@ namespace Facade.Services
         /// <summary>
         /// Method for getting products for marketing
         /// </summary>
-        /// <returns>GetProductsResponse if success, null if catches error</returns>
+        /// <returns>GetProductsResponse</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<GetProductsResponse>
             GetProductsAsync()
         {
-            try
-            {
-                GetProductsResponse response = await LoadtGetProductsResponseAsync();
-                return response;
-            }
-            catch(Exception e)
-            {
-                _logger.LogError(e.Message);
-                return null;
-            }
+          
+            GetProductsResponse response = await LoadtGetProductsResponseAsync();
+
+            if (response is null)
+                throw new ArgumentNullException("GetProductsResponse");
+
+
+            return response;
+   
 
         }
 

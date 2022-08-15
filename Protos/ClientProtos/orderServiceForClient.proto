@@ -7,7 +7,7 @@ import "decimalValue.proto";
 package orderClient;
 
 //service for Client
-service OrderServiceClient {
+service OrderProcessingClient {
    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
 }
 
@@ -21,11 +21,26 @@ message CreateOrderRequest {
 }
 
 message CreateOrderResponse {
-   bool result = 1;
+   oneof result {
+      Error error = 1;
+      SuccessResponse success = 2;
+   }
+}
+
+message SuccessResponse {
+
+}
+
+enum Error {
+   // Пользователь с таким Id не был найден. 
+	USER_NOT_FOUND = 0;
+	// Пользователь не имеет продукт с таким Id.  
+	USER_NOT_HAVE_PRODUCT = 1;
+	// Пользователь не имеет необходимое количества продукта. 
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
 }
 
 enum OrderType {
    SELL_ORDER = 0;
    BUY_ORDER = 1;
 }
-

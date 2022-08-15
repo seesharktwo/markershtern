@@ -12,10 +12,10 @@ namespace Facade.Services
 {
     public class OrderService
     {
-        private Orders.OrdersClient _client;
+        private Order.OrderProcessing.OrderProcessingClient _client;
         private ILogger<OrderService> _logger;
 
-        public OrderService(Orders.OrdersClient client, ILogger<OrderService> logger)
+        public OrderService(Order.OrderProcessing.OrderProcessingClient client, ILogger<OrderService> logger)
         {
             _client = client;
             _logger = logger;
@@ -25,20 +25,21 @@ namespace Facade.Services
         /// Method create's new order
         /// </summary>
         /// <param name="request"></param>
-        /// <returns>CreateOrderResponse if success, null if catches error</returns>
+        /// <returns>CreateOrderResponse</returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<CreateOrderResponse>
             CreateOrderAsync(CreateOrderRequest request)
         {
-            try
-            {
-                CreateOrderResponse responce = await LoadCreateOrderResponseAsync(request);
-                return responce;
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-                return null;
-            }
+            
+            CreateOrderResponse response = await LoadCreateOrderResponseAsync(request);
+
+            
+
+            if (response is null)
+                throw new ArgumentNullException("CreateOrderResponse");
+
+            return response;
+            
         }
 
         public async Task<CreateOrderResponse> LoadCreateOrderResponseAsync(CreateOrderRequest request)

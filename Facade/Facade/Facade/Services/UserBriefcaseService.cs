@@ -27,53 +27,48 @@ namespace Facade.Services
         /// Get products from briefcase micro-service method
         /// </summary>
         /// <param name="request"></param>
-        /// <returns>GetUserResponse if succes, null if cathced exception </returns>
+        /// <returns>GetUserResponse</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public async Task<GetUserProductsResponse>
             GetUserProductsAsync(GetUserProductsRequest request)
         {
 
-            try
-            {
-                var reply = await _client.GetUserProductsAsync(request);
+            var reply = await _client.GetUserProductsAsync(request);
 
-                if (reply.ResultCase.Equals(AddProductResponse.ResultOneofCase.Error))
-                {
-                    throw new Exception(reply.Error.ToString());
-                }
+            if (reply is null)
+                throw new ArgumentNullException("GetUserProductsResponse");
 
-                return reply;
-            }
-            catch (Exception e)
+
+            if (reply.ResultCase.Equals(AddProductResponse.ResultOneofCase.Error))
             {
-                _logger.LogError(e.Message);
-                return null;
+                throw new Exception(reply.Error.ToString());
             }
+
+            return reply;
         }
 
         /// <summary>
         /// Add product to briefcase micro-service method
         /// </summary>
         /// <param name="request"></param>
-        /// <returns>AddProductResponse  if succes, null if cathced exception</returns>
+        /// <returns>AddProductResponse</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public async Task<AddProductResponse>
           AddProduct(AddProductRequest request)
         {
-            try
-            {
-                var reply = await _client.AddProductAsync(request);
+            var reply = await _client.AddProductAsync(request);
 
-                if (reply.ResultCase.Equals(AddProductResponse.ResultOneofCase.Error))
-                {
-                    throw new Exception(reply.Error.ToString());
-                }
+            if (reply is null)
+                throw new ArgumentNullException("GetUserProductsResponse");
 
-                return reply;
-            }
-            catch (Exception e)
+            if (reply.ResultCase.Equals(AddProductResponse.ResultOneofCase.Error))
             {
-                _logger.LogError(e.Message);
-                return null;
+                throw new Exception(reply.Error.ToString());
             }
+
+            return reply;
 
         }
 
@@ -81,26 +76,24 @@ namespace Facade.Services
         /// Remove product from briefcase micro-service method
         /// </summary>
         /// <param name="request"></param>
-        /// <returns>RemoveProductResponse  if succes, null if cathced exception</returns>
+        /// <returns>RemoveProductResponse</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
         public async Task<RemoveProductResponse>
            RemoveProduct(RemoveProductRequest request)
         {
-            try
-            {
-                var reply = await _client.RemoveProductAsync(request);
+            var reply = await _client.RemoveProductAsync(request);
 
-                if (reply.ResultCase.Equals(RemoveProductResponse.ResultOneofCase.Error))
-                {
-                    throw new Exception(reply.Error.ToString());
-                }
+            if (reply is null)
+                throw new ArgumentNullException("GetUserProductsResponse");
 
-                return reply;
-            }
-            catch (Exception e)
+
+            if (reply.ResultCase.Equals(RemoveProductResponse.ResultOneofCase.Error))
             {
-                _logger.LogError(e.Message);
-                return null;
+                throw new Exception(reply.Error.ToString());
             }
+
+            return reply;
         }
 
     }

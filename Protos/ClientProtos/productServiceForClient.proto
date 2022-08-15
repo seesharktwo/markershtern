@@ -31,5 +31,3 @@ message GetProductsResponse
 	}
 	repeated Product products = 1;
 }
-
-

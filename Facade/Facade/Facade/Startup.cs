@@ -27,7 +27,7 @@ namespace Facade
             services.AddGrpc(); 
 
             
-            services.AddGrpcClient<Order.Orders.OrdersClient>(o =>
+            services.AddGrpcClient<Order.OrderProcessing.OrderProcessingClient>(o =>
             {
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionOrderMicroservice"));
             });
