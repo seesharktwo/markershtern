@@ -1,16 +1,16 @@
 name: Deploy
 on:
-workflow_dispatch:
-  inputs:
-    serviceName:
-      description: 'Name of service, will be used as docker service name, shouldn\'t contain special symbols'
-      required: true
-    srcPath:
-      description: 'Path to folder with .csproj file to run dotnet build'
-      required: true
-    servicePort:
-      description: 'Port to open'
-      required: true
+  workflow_dispatch:
+    inputs:
+      serviceName:
+        description: 'Name of service, will be used as docker service name, shouldn\'t contain special symbols'
+        required: true
+      srcPath:
+        description: 'Path to folder with .csproj file to run dotnet build'
+        required: true
+      servicePort:
+        description: 'Port to open'
+        required: true
 jobs:
   deploy:
     runs-on: ubuntu-latest
