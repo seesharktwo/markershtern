@@ -1,0 +1,40 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs:
+      srcBranchName:
+        description: "Name of branch where source is stored"
+        required: true
+        default: "main"
+      serviceName:
+        description: "Name of service, will be used as docker service name, shouldn't contain special symbols and must be lowercase"
+        required: true
+      csprojPath:
+        description: 'Path to .csproj file to run dotnet build'
+        required: true
+      executableName:
+        description: 'Executable name. ex: MyService.dll'
+        required: true
+      servicePort:
+        description: 'Port to open'
+        required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install ansible
+      - uses: actions/checkout@v3
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: cd-run-playbook.yaml
+          directory: ./cd
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: ${{ secrets.HOSTS }}
+          options: >
+             -v -u ${{ secrets.SSH_USER }} -e SERVICE_NAME="${{ github.event.inputs.serviceName }}"
+             -e CSPROJ_PATH="${{ github.event.inputs.csprojPath }}"
+             -e SERVICE_PORT="${{ github.event.inputs.servicePort }}"
+             -e SERVICE_BRANCH="${{ github.event.inputs.srcBranchName }}"
+             -e EXECUTABLE_NAME="${{ github.event.inputs.executableName }}"
+          

@@ -1,0 +1,38 @@
+---
+- hosts: all
+  gather_facts: false
+  vars:
+    store_directory: "/tmp"
+    network_name: "infrastructure_default"
+  tasks:
+    - name: Clone repo and set server branch
+      ansible.builtin.git:
+        repo: https://github.com/FizzyShow/markershtern.git
+        dest: "{{ store_directory }}/{{ SERVICE_NAME }}"
+        version: "{{ SERVICE_BRANCH }}"
+        force: true
+        
+    - name: Stop previous version
+      ansible.builtin.shell:
+        cmd: "docker stop {{ SERVICE_NAME }} || true"
+        
+    - name: Remove previous version container
+      ansible.builtin.shell:
+        cmd: "docker rm {{ SERVICE_NAME }} || true"
+
+    - name: Copy Dockerfile
+      ansible.builtin.copy:
+        src: ./Dockerfile
+        dest: "{{ store_directory }}/{{ SERVICE_NAME }}/Dockerfile"
+        mode: 0600
+        owner: "{{ ansible_user }}"
+
+    - name: Dockerize service
+      ansible.builtin.shell:
+        cmd: "docker build -t {{ SERVICE_NAME }} --build-arg CSPROJ_PATH='{{ CSPROJ_PATH }}' --build-arg EXECUTABLE_NAME='{{ EXECUTABLE_NAME }}' ."
+        chdir: "{{ store_directory }}/{{ SERVICE_NAME }}"
+
+    - name: Run dockerized service
+      ansible.builtin.command:
+        cmd: "docker run -d --network {{ network_name }} --publish {{ SERVICE_PORT }}:{{ SERVICE_PORT }} --name {{ SERVICE_NAME }} {{ SERVICE_NAME }}"
+...
