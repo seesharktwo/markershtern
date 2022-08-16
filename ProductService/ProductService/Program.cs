@@ -9,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddGrpc();
 
-// Интеграция в DI конфигурации для сервисов
+// intagration in DI configs
 builder.Services.Configure<ProductStoreDatabaseSettings>(c =>
 {
     c.ConnectionString = builder.Configuration.GetValue<string>("Mongo_ConnectionString");
@@ -22,15 +22,12 @@ builder.Services.Configure<KafkaConsumerSettings>(c =>
     c.BootstrapServers= builder.Configuration.GetValue<string>("KafkaConsumerSettings_BootstrapServers");
 });
 
-// Внедрение зависимости ProductContext
+
 builder.Services.AddSingleton<ProductContext>();
-// Аналогично с ProductService
 builder.Services.AddSingleton<ProductService.Services.ProductService>();
-// Добавление зависимости фонового сервиса KafkaConsumerService
 builder.Services.AddHostedService<KafkaConsumerService>();
 builder.Services.AddTransient<IMapper, Mapper>();
 
-// Подключение Serilog для логов
 builder.Host.UseSerilog((context, config) => config
                         .WriteTo.Console());
 
