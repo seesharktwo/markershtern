@@ -1,5 +1,6 @@
 using ProductService;
 using ProductService.Configs;
+using ProductService.Mapper;
 using ProductService.Services;
 using Serilog;
 
@@ -27,6 +28,7 @@ builder.Services.AddSingleton<ProductContext>();
 builder.Services.AddSingleton<ProductService.Services.ProductService>();
 // Добавление зависимости фонового сервиса KafkaConsumerService
 builder.Services.AddHostedService<KafkaConsumerService>();
+builder.Services.AddTransient<IMapper, Mapper>();
 
 // Подключение Serilog для логов
 builder.Host.UseSerilog((context, config) => config
