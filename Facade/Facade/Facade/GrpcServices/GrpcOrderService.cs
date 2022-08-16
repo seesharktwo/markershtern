@@ -1,4 +1,4 @@
-﻿using Facade.Mapper;
+﻿using AutoMapper;
 using Facade.Services;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
@@ -14,7 +14,7 @@ namespace Facade.GrpcServices
         private OrderService _orderService;
         private ILogger<GrpcOrderService> _logger;
 
-        public GrpcOrderService(OrderService orderService, Facade.Mapper.IMapper mapper, ILogger<GrpcOrderService> logger)
+        public GrpcOrderService(OrderService orderService, IMapper mapper, ILogger<GrpcOrderService> logger)
         {
             _mapper = mapper;
             _orderService = orderService;
