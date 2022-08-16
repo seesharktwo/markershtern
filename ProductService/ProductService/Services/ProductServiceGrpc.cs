@@ -1,4 +1,5 @@
-﻿using Grpc.Core;
+﻿using AutoMapper;
+using Grpc.Core;
 using Product;
 using ProductService.Mapper;
 

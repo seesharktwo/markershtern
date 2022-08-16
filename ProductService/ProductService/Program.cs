@@ -3,6 +3,7 @@ using ProductService.Configs;
 using ProductService.Mapper;
 using ProductService.Services;
 using Serilog;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +27,7 @@ builder.Services.Configure<KafkaConsumerSettings>(c =>
 builder.Services.AddSingleton<ProductContext>();
 builder.Services.AddSingleton<ProductService.Services.ProductService>();
 builder.Services.AddHostedService<KafkaConsumerService>();
-builder.Services.AddTransient<IMapper, Mapper>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Host.UseSerilog((context, config) => config
                         .WriteTo.Console());
