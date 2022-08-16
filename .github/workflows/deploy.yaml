@@ -1,0 +1,35 @@
+name: Deploy
+on: 
+  workflow_dispatch:
+    inputs:
+      service_name:
+        description: 'Name of service, will be used as docker service name, shouldn\'t contain special symbols'
+        required: true
+        type: string
+      src_path:
+        description: 'Path to folder with .csproj file to run dotnet build'
+        required: true
+        type: string
+      service_port:
+        description: 'Port to open'
+        required: true
+        type: int
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - run: pip install ansible
+      - uses: actions/checkout@v3
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: cd-run-playbook.yaml
+          directory: ./infrastructure/cd
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          inventory: ${{ secrets.HOSTS }}
+          options: -v -u ${{ secrets.SSH_USER }}
+        env:
+          SERVICE_NAME: ${{ inputs.service_name }}
+          SRC_PATH: ${{ inputs.src_path }}
+          SERVICE_PORT: ${{ inputs.service_port }}
+          
