@@ -1,18 +1,22 @@
-﻿using Grpc.Core;
-using ProductService.Protos.Services;
+﻿using AutoMapper;
+using Grpc.Core;
+using Product;
+using ProductService.Mapper;
 
 namespace ProductService.Services
 {
     /// <summary>
     /// implementation of proto contract
     /// </summary>
-    public class ProductServiceGrpc : Protos.Services.ProductService.ProductServiceBase
+    public class ProductServiceGrpc : Product.ProductService.ProductServiceBase
     {
         private readonly ProductContext _context;
+        private readonly IMapper _mapper;
 
-        public ProductServiceGrpc( ProductContext context)
+        public ProductServiceGrpc(ProductContext context, IMapper mapper)
         {   
             _context = context;
+            _mapper = mapper;
         }
 
 
@@ -28,7 +32,7 @@ namespace ProductService.Services
             var products = await  _context.GetAsync();
             products.ForEach(p =>
             {
-                var productResponce = Mapper.Map<Models.Product, GetProductsResponse.Types.Product>(p);
+                var productResponce = _mapper.Map<Models.Product, GetProductsResponse.Types.Product>(p);
                 responce.Products.Add(productResponce);
             }); 
             return responce;

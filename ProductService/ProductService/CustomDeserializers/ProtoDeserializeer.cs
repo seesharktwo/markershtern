@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 using Google.Protobuf;
-using ProductService.Protos.Events;
+using OrderEvents;
 
 namespace ProducerService.CustomDeserializers
 {

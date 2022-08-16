@@ -10,38 +10,38 @@ namespace ProductService
     /// </summary>
     public class ProductContext
     {
-        private readonly IMongoCollection<Models.Product> _productsCOllection;
+        private readonly IMongoCollection<Models.Product> _productsCollection;
 
         public ProductContext(
-            IOptions<ProductStoreDatabaseSettings> bookStoreDatabaseSettings)
+            IOptions<ProductStoreDatabaseSettings> productsStoreDatabaseSettings)
         {
             var mongoClient = new MongoClient(
-                bookStoreDatabaseSettings.Value.ConnectionString);
+                productsStoreDatabaseSettings.Value.ConnectionString);
 
             var mongoDatabase = mongoClient.GetDatabase(
-                bookStoreDatabaseSettings.Value.DatabaseName);
+                productsStoreDatabaseSettings.Value.DatabaseName);
 
-            _productsCOllection = mongoDatabase.GetCollection<Models.Product>(
-                bookStoreDatabaseSettings.Value.ProductsCollectionName);
+            _productsCollection = mongoDatabase.GetCollection<Models.Product>(
+                productsStoreDatabaseSettings.Value.ProductsCollectionName);
         }
 
         public async Task<List<Models.Product>> GetAsync() =>
-            await _productsCOllection.Find(_ => true).ToListAsync();
+            await _productsCollection.Find(_ => true).ToListAsync();
 
         public async Task<Models.Product?> GetAsync(string id) =>
-            await _productsCOllection.Find(x => x.Id == id).FirstOrDefaultAsync();
+            await _productsCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
         public async Task<Models.Product?> GetByNameAsync(string name) =>
-           await _productsCOllection.Find(x => x.Name == name).FirstOrDefaultAsync();
+           await _productsCollection.Find(x => x.Name == name).FirstOrDefaultAsync();
 
 
         public async Task CreateAsync(Models.Product newProduct) =>
-            await _productsCOllection.InsertOneAsync(newProduct);
+            await _productsCollection.InsertOneAsync(newProduct);
 
         public async Task UpdateAsync(string id, Models.Product updatedProduct) =>
-            await _productsCOllection.ReplaceOneAsync(x => x.Id == id, updatedProduct);
+            await _productsCollection.ReplaceOneAsync(x => x.Id == id, updatedProduct);
 
         public async Task RemoveAsync(string id) =>
-            await _productsCOllection.DeleteOneAsync(x => x.Id == id);
+            await _productsCollection.DeleteOneAsync(x => x.Id == id);
     }
 }

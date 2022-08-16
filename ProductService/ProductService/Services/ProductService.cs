@@ -1,4 +1,4 @@
-﻿using ProductService.Protos.Events;
+﻿using OrderEvents;
 
 namespace ProductService.Services
 {
