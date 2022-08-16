@@ -2,13 +2,13 @@ name: Deploy
 on:
 workflow_dispatch:
   inputs:
-    service_name:
+    serviceName:
       description: 'Name of service, will be used as docker service name, shouldn\'t contain special symbols'
       required: true
-    src_path:
+    srcPath:
       description: 'Path to folder with .csproj file to run dotnet build'
       required: true
-    service_port:
+    servicePort:
       description: 'Port to open'
       required: true
 jobs:
@@ -26,7 +26,7 @@ jobs:
           inventory: ${{ secrets.HOSTS }}
           options: -v -u ${{ secrets.SSH_USER }}
         env:
-          SERVICE_NAME: ${{ inputs.service_name }}
-          SRC_PATH: ${{ inputs.src_path }}
-          SERVICE_PORT: ${{ inputs.service_port }}
+          SERVICE_NAME: ${{ inputs.serviceName }}
+          SRC_PATH: ${{ inputs.srcPath }}
+          SERVICE_PORT: ${{ inputs.servicePort }}
           
