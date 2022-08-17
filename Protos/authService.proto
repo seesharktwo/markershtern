@@ -1,4 +1,4 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 option csharp_namespace = "Authorization";
 
@@ -7,7 +7,7 @@ service AuthorizationService{
      rpc Login(LoginRequest) returns(LoginResponse);
 }
 
-// The request message
+// The request message who
 message LoginRequest {
     string login = 1;
     string password = 2;
