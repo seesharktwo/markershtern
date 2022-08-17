@@ -6,12 +6,7 @@
       "launchBrowser": false,
       "applicationUrl": "http://localhost:5001;https://localhost:5002",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "KafkaConsumerSettings_GroupId": "test123",
-        "KafkaConsumerSettings_BootstrapServers": "localhost:9092",
-        "Mongo_ConnectionString": "mongodb://localhost:27017",
-        "Mongo_DatabaseName": "ProductStore",
-        "Mongo_ProductsCollectionName": "Products"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     }
   }
