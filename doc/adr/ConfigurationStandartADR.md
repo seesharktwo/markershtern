@@ -32,10 +32,8 @@
 
 ---
 Конфигурация консюмера:  
-- Поле индетификатора группы консюмера
 - Поле строки подключения к серверам Bootstrap  
 ```json
-  "KafkaConsumerSettings_GroupId": "test123",
   "KafkaSettings_BootstrapServers": "localhost:9093"
 ```
 
@@ -60,7 +58,7 @@
 Команда для сборки(в корне проекта): dotnet build 
 Команда для запуска(в корне проекта): dotnet bin\debug\net6.0\ProductService.dll
 Зависимсоти:
-Монга, переменные среды для подключения: Mongo_ConnectionString, Mongo_ProductsCollectionName, Mongo_DatabaseName
-Кафка, переменные среды для подключения: KafkaConsumerSettings_BootstrapServers, KafkaConsumerSettings_GroupId
+Монга, переменные среды для подключения: Mongo_DatabaseName
+Кафка, переменные среды для подключения: KafkaSettings_BootstrapServers
 Как протестить что работает: Если не сможет подключиться к кафке, то сразу будет кидать ошибки в консоль
 ```
