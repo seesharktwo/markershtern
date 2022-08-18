@@ -11,8 +11,6 @@ namespace Facade.Mapper
             CreateMap<ProductForClient.GetProductsRequest, Product.GetProductsRequest>();
             CreateMap<ProductForClient.GetProductsResponse, Product.GetProductsResponse>();
             CreateMap<Product.GetProductsResponse, ProductForClient.GetProductsResponse>();
-            CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);
-            CreateMap<decimal, DecimalValue>().ConvertUsing(val => val);
         }
 
     }
