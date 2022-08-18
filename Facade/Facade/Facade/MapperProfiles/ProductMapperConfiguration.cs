@@ -7,10 +7,10 @@ namespace Facade.Mapper
     {
         public ProductMapperConfiguration()
         {
-            CreateMap<Product.GetProductsRequest, ProductClient.GetProductsRequest>();
-            CreateMap<ProductClient.GetProductsRequest, Product.GetProductsRequest>();
-            CreateMap<ProductClient.GetProductsResponse, Product.GetProductsResponse>();
-            CreateMap<Product.GetProductsResponse, ProductClient.GetProductsResponse>();
+            CreateMap<Product.GetProductsRequest, ProductForClient.GetProductsRequest>();
+            CreateMap<ProductForClient.GetProductsRequest, Product.GetProductsRequest>();
+            CreateMap<ProductForClient.GetProductsResponse, Product.GetProductsResponse>();
+            CreateMap<Product.GetProductsResponse, ProductForClient.GetProductsResponse>();
             CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);
             CreateMap<decimal, DecimalValue>().ConvertUsing(val => val);
         }

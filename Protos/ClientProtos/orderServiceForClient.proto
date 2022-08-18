@@ -1,13 +1,13 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "OrderClient";
+option csharp_namespace = "OrderForClient";
 
 import "decimalValue.proto";
 
 package orderClient;
 
 //service for Client
-service OrderProcessingClient {
+service OrderProcessingForClient {
    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
 }
 
