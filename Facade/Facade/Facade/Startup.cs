@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Reflection;
 
 namespace Facade
 {
@@ -50,7 +51,7 @@ namespace Facade
             services.AddTransient<ProductService>();
             services.AddTransient<GetUserID>();
 
-            services.AddTransient<Mapper.IMapper, Mapper.Mapper>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
            
           

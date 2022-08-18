@@ -1,4 +1,5 @@
-﻿using Facade.Mapper;
+﻿using AutoMapper;
+using Facade.Mapper;
 using Facade.Services;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,7 @@ namespace Facade.GrpcServices
         private IMapper _mapper;
         private ILogger<GrpcProductService> _logger;
 
-        public GrpcProductService(Services.ProductService productService, Facade.Mapper.IMapper mapper, ILogger<GrpcProductService> logger)
+        public GrpcProductService(Services.ProductService productService, IMapper mapper, ILogger<GrpcProductService> logger)
         {
             _productService = productService;
             _mapper = mapper;
