@@ -7,7 +7,7 @@ service AuthorizationService{
      rpc Login(LoginRequest) returns(LoginResponse);
 }
 
-// The request message who
+// The request message
 message LoginRequest {
     string login = 1;
     string password = 2;
