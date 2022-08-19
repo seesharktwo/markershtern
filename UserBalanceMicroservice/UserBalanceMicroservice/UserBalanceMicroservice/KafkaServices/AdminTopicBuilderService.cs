@@ -3,19 +3,25 @@ using Confluent.Kafka.Admin;
 using Microsoft.Extensions.Options;
 using UserBalanceMicroservice.Configs;
 
-namespace UserBalanceMicroservice.Extensions
+namespace UserBalanceMicroservice.KafkaServices
 {
-    public static class WebApplicationExtensions
+    public class AdminTopicBuilderService
     {
+        WebApplication _webHost;
+        public AdminTopicBuilderService(WebApplication webHost)
+        {
+            _webHost = webHost;
+        }
+
         /// <summary>
         /// Расширение для инициализации топиков
         /// </summary>
         /// <param name="webHost"></param>
         /// <returns></returns>
-        public static async Task<WebApplication> TopicsBuild(this WebApplication webHost)
+        public async void TopicsBuildAsync()
         {
-            KafkaSettings kafkaSettings = webHost.Services.GetService<IOptions<KafkaSettings>>().Value;
-            ILogger<WebApplication> logger = webHost.Services.GetService<ILogger<WebApplication>>();
+            KafkaSettings kafkaSettings = _webHost.Services.GetService<IOptions<KafkaSettings>>().Value;
+            ILogger<WebApplication> logger = _webHost.Services.GetService<ILogger<WebApplication>>();
             if (kafkaSettings is null)
                 throw new ArgumentNullException("kafkaSettings");
             if (logger is null)
@@ -49,7 +55,7 @@ namespace UserBalanceMicroservice.Extensions
                 }
             }
 
-            return webHost;
+            return;
         }
     }
 }
