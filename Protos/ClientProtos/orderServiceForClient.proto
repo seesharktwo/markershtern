@@ -1,14 +1,16 @@
 syntax = "proto3";
 
-option csharp_namespace = "OrderClient";
+option csharp_namespace = "OrderForClient";
 
 import "decimalValue.proto";
 /*Определение сервиса создания заявки, которое включает:
 Запрос-ответ на создание заявки пользователя с типом - покупка или продажа
 */
 package orderClient;
+
 // Удаленный вызов процедуры создания заявки
-service OrderProcessingClient {
+service OrderProcessingForClient {
+
    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
 }
 // Запрос на создание заявки

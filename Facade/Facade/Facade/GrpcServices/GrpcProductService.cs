@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Facade.GrpcServices
 {
-    public class GrpcProductService : ProductClient.ProductServiceClient.ProductServiceClientBase
+    public class GrpcProductService : ProductForClient.ProductServiceForClient.ProductServiceForClientBase
     {
         private Services.ProductService _productService;
         private IMapper _mapper;
@@ -23,16 +23,17 @@ namespace Facade.GrpcServices
             _logger = logger;
         }
 
-        public override async Task<ProductClient.GetProductsResponse> GetProducts(ProductClient.GetProductsRequest request, ServerCallContext context)
+        public override async Task<ProductForClient.GetProductsResponse> GetProducts(ProductForClient.GetProductsRequest request, ServerCallContext context)
         {
 
-            var mappedRequest = _mapper.Map<ProductClient.GetProductsRequest, Product.GetProductsRequest>(request);
+            var mappedRequest = _mapper.Map<ProductForClient.GetProductsRequest, 
+                                            Product.GetProductsRequest>(request);
             try
             {
                 Product.GetProductsResponse response =
                         await _productService.GetProductsAsync();
                 var mappedResponse = _mapper.Map<Product.GetProductsResponse,
-                ProductClient.GetProductsResponse>(response);
+                                                 ProductForClient.GetProductsResponse>(response);
                 return mappedResponse;
             }
             catch (ArgumentNullException ex)

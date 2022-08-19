@@ -1,17 +1,20 @@
 syntax = "proto3";
 
-option csharp_namespace = "BriefcaseClient";
+option csharp_namespace = "BriefcaseForClient";
 
 package BriefcaseClient;
 
 import "decimalValue.proto";
+
 /* Определение сервиса портфеля пользователя, которое включает:
 1. Запрос-ответ на получение товаров пользователя
 2. Запрос-ответ на добавление товара пользователя
 3. Запрос-ответ на удаление товара пользователя
 4. Запрос-ответ на подтверждение выставления заявки
 */
-service UserBriefcaseServiceClient  {
+
+service UserBriefcaseServiceForClient  {
+
     rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
     rpc AddProduct (AddProductRequest) returns (AddProductResponse);
     rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);

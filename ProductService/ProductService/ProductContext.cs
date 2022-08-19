@@ -22,7 +22,7 @@ namespace ProductService
                 productsStoreDatabaseSettings.Value.DatabaseName);
 
             _productsCollection = mongoDatabase.GetCollection<Models.Product>(
-                productsStoreDatabaseSettings.Value.ProductsCollectionName);
+                productsStoreDatabaseSettings.Value.CollectionName);
         }
 
         public async Task<List<Models.Product>> GetAsync() =>

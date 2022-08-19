@@ -2,10 +2,11 @@
 
 syntax = "proto3";
 
-option csharp_namespace = "AuthorizationClient";
+option csharp_namespace = "AuthorizationForClient";
 
 // Сервис внедрения авторизации
-service AuthorizationServiceClient{
+service AuthorizationServiceForClient{
+
      rpc Login(LoginRequest) returns(LoginResponse);
 }
 
