@@ -8,9 +8,10 @@ import "decimalValue.proto";
 */
 package orderClient;
 
-// Удаленный вызов процедуры создания заявки
+// Обработка заявок
 service OrderProcessingForClient {
 
+// Удаленный вызов процедуры создания заявки
    rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
 }
 // Запрос на создание заявки
@@ -34,7 +35,7 @@ message CreateOrderResponse {
    oneof result {
       /*Сообщение об ошибке 
       Сообщение об ошибке выводится, если:
-      1. Пользователь с таким Id не найден
+      1. Пользователь не имеет товара с таким Id
       2. Пользователь с таким Id не имеет товаров
       3. Пользователь не имеет необходимое количества товара*/
       Error error = 1;
