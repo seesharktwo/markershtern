@@ -139,7 +139,7 @@ enum Error {
 message SuccessResponse {
    
 }
-//Список продуктов
+//Список товаров
 message ProductsList {
 	repeated Product products = 1;
 }
