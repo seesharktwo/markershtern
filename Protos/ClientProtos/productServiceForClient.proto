@@ -2,17 +2,14 @@ syntax = "proto3";
 
 option csharp_namespace = "ProductForClient";
 
-package product;
+package productClient;
 
 import "decimalValue.proto";
-/*Определение сервиса списка товаров в торговле, которое включает:
-Запрос-ответ на получение списка товаров в торговле
-*/
 
 
-// Удаленный вызов процедуры просмотра списка товаров в торговле
+// Сервис списка товаров в торговле
 service ProductServiceForClient {
-
+// Удаленный вызов процедуры просмотра списка товаров в торговле
   rpc GetProducts(GetProductsRequest) returns(GetProductsResponse);
 }
 //Запрос на получение списка товаров в торговле
