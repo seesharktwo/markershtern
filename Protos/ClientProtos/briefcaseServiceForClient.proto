@@ -110,7 +110,7 @@ message ValidateOrderResponse {
     	SuccessResponse success = 2;
     }
 }
-//Список товаров
+//Информация о товаре
 message Product {
     //Id товара, который расшифровывается по схеме 8-4-4-4-12: 
     //"3422b448-2460-4fd2-9183-8000de6f8343".
