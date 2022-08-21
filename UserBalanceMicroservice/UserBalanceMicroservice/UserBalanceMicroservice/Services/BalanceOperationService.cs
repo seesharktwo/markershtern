@@ -15,11 +15,14 @@ namespace UserBalanceMicroservice.Services
         private readonly BalanceContext _context;
         private readonly ILogger<BalanceOperationService> _logger;
         private readonly IOptions<KafkaSettings> _config;
+        private readonly ProducerService _producer;
         public BalanceOperationService(BalanceContext context, ILogger<BalanceOperationService> logger, IOptions<KafkaSettings> config)
         {
+            
             _context = context;
             _logger = logger;
             _config = config;
+            _producer = new ProducerService(_config);
         }
 
         public async Task ExecuteTransact(TransactionBalanceCommitted transaction)
@@ -77,7 +80,7 @@ namespace UserBalanceMicroservice.Services
 
             if (result)
             {
-                var producerCompleted = new ProducerService<TransactionCompleted>(_config);
+                var producerCompleted = new ProducerService(_config);
                 TransactionCompleted message = new TransactionCompleted()
                 {
                     IdGlobalTransact = transaction.IdGlobalTransact,
@@ -90,7 +93,7 @@ namespace UserBalanceMicroservice.Services
             }
             else
             {
-                var producerCompleted = new ProducerService<TransactionCanceled>(_config);
+                var producerCompleted = new ProducerService(_config);
                 TransactionCanceled message = new TransactionCanceled()
                 {
                     IdGlobalTransact = transaction.IdGlobalTransact,

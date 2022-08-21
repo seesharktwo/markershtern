@@ -7,7 +7,7 @@ using UserBalanceMicroservice.ProtosServices;
 
 namespace UserBalanceMicroservice.Services
 {
-    public class ProducerService<T>  where T : IMessage<T>, new()
+    public class ProducerService
     {
         private readonly ProducerConfig _producerConfig;
         public ProducerService(IOptions<KafkaSettings> config)
@@ -19,18 +19,19 @@ namespace UserBalanceMicroservice.Services
             };
         }
 
-        public async Task ProduceMessageAsync(T message,string topic)
+        public async Task ProduceMessageAsync<T>(T message,string topic)
+            where T : IMessage<T>, new()
         {
             var producer = new ProducerBuilder<Ignore, T>(_producerConfig);
 
             producer.SetValueSerializer(new ProducerSerializer<T>());
-            var producerBuild = producer.Build();
-            await producerBuild.ProduceAsync(topic, new Message<Ignore, T>
+            using (var producerBuild = producer.Build())
             {
-                Value = message
-            });
-
-            producerBuild?.Dispose();
+                await producerBuild.ProduceAsync(topic, new Message<Ignore, T>
+                {
+                    Value = message
+                });
+            }
         }
     }
 }

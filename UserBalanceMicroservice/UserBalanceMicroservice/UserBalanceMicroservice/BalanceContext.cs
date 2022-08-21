@@ -12,13 +12,13 @@ namespace UserBalanceMicroservice
         private const string _userCollection = "User";
         private const string _transactCollection = "Transact";
         public BalanceContext(
-            IOptions<DatabaseSettings> bookStoreDatabaseSettings)
+            IOptions<DatabaseSettings> balanceDatabaseSettings)
         {
             var mongoClient = new MongoClient(
-                bookStoreDatabaseSettings.Value.ConnectionString);
+                balanceDatabaseSettings.Value.ConnectionString);
 
             _mongoDatabase = mongoClient.GetDatabase(
-                bookStoreDatabaseSettings.Value.DatabaseName);
+                balanceDatabaseSettings.Value.DatabaseName);
 
         }
 
