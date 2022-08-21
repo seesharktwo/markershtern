@@ -1,0 +1,45 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Order";
+
+import "decimalValue.proto";
+
+package order;
+
+service OrderProcessing {
+   rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+}
+
+// Сообщение приходит от Facade. На основе полей формируется заявка.
+message CreateOrderRequest {
+  string user_id = 1;
+  OrderType type = 2;
+  string product_id = 3;
+  moneyTypes.DecimalValue price = 4;
+  int32 quantity = 5;   
+}
+
+message CreateOrderResponse {
+   oneof result {
+      Error error = 1;
+      SuccessResponse success = 2;
+   }
+}
+
+message SuccessResponse {
+
+}
+
+enum Error {
+   // Пользователь с таким Id не был найден. 
+	USER_NOT_FOUND = 0;
+	// Пользователь не имеет продукт с таким Id.  
+	USER_NOT_HAVE_PRODUCT = 1;
+	// Пользователь не имеет необходимое количества продукта. 
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
+}
+
+enum OrderType {
+   SELL_ORDER = 0;
+   BUY_ORDER = 1;
+}
