@@ -19,5 +19,5 @@ message GetBalanceResponse
 {
 	string user_id = 1;
 
-	customTypes.DecimalValue balance = 2;
+	moneyTypes.DecimalValue balance = 2;
 }

@@ -1,4 +1,4 @@
-﻿namespace Protos.CustomTypes
+﻿namespace MoneyTypes
 {
     public partial class DecimalValue
     {

@@ -1,6 +1,7 @@
 using Grpc.Core;
 using UserBalanceMicroservice;
 using Protos.CustomTypes;
+using MoneyTypes;
 using AutoMapper;
 using UserBalanceMicroservice.Models;
 namespace UserBalanceMicroservice.Services

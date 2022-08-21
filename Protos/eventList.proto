@@ -11,7 +11,7 @@ message TransactionBalanceCommitted
 	string id_global_transact = 1;
 	string id_order = 2;
 	string id_user = 3;
-	DecimalValue sum = 4;
+	moneyTypes.DecimalValue sum = 4;
 	Operation MODE = 5;
 	TransactionType TYPE = 6;
 }
@@ -21,7 +21,7 @@ message TransactionCompleted
 	string id_global_transact = 1;
 	SourceEventTransaction SOURCE = 2;
 	string id_object = 3;
-	DecimalValue quanity = 4;
+	moneyTypes.DecimalValue quanity = 4;
 }
 
 message TransactionCanceled

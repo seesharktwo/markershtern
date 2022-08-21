@@ -6,6 +6,7 @@ using Protos.CustomTypes;
 using UserBalanceMicroservice;
 using UserBalanceMicroservice.Configs;
 using UserBalanceMicroservice.Services;
+using MoneyTypes;
 
 namespace UserBalanceMicroservice.Services
 {
