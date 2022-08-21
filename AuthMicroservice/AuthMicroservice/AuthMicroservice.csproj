@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\auth.proto" />
+    <Protobuf Include="..\..\Protos\authService.proto" GrpcServices="Server" ProtoRoot="..\..\Protos\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,10 +15,6 @@
     <PackageReference Include="Confluent.Kafka" Version="1.9.0" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.47.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="Protos\auth.proto" GrpcServices="Server" />
   </ItemGroup>
 
 </Project>

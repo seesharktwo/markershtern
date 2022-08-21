@@ -1,9 +1,9 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "AuthMicroservice.Protos.Grpc";
+option csharp_namespace = "AuthorizationForClient";
 
 // implementation service
-service Authorization{
+service AuthorizationServiceForClient{
      rpc Login(LoginRequest) returns(LoginResponse);
 }
 

@@ -1,9 +1,9 @@
-﻿using AuthMicroservice.Protos.Grpc;
+﻿using Authorization;
 using Grpc.Core;
 
 namespace AuthMicroservice.Services
 {
-    public class AuthService : Authorization.AuthorizationBase
+    public class AuthService : AuthorizationService.AuthorizationServiceBase
     {
         private readonly ILogger<AuthService> _logger;
         private readonly UsersContext _context;

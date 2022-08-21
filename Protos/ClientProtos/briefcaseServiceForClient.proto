@@ -1,0 +1,86 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "BriefcaseForClient";
+
+package BriefcaseClient;
+
+import "decimalValue.proto";
+
+service UserBriefcaseServiceForClient  {
+    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
+    rpc AddProduct (AddProductRequest) returns (AddProductResponse);
+    rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
+    rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse);
+}
+
+message GetUserProductsRequest {
+    string user_id = 1;
+} 
+
+message GetUserProductsResponse {
+    oneof response {
+    	ProductsList list = 1;
+    	Error error = 2;
+    }
+}
+
+message AddProductRequest {
+    string user_id = 1;
+    Product product = 2;
+}  
+
+message AddProductResponse {
+   oneof result {
+      Error error = 1;
+      SuccessResponse success = 2;
+   }
+}
+
+message RemoveProductRequest {
+    string user_id = 1;
+    string product_id = 2;
+    string author_id = 3;
+}
+
+message RemoveProductResponse {
+   oneof result {
+      Error error = 1;
+      SuccessResponse success = 2;
+   }
+}
+
+message ValidateOrderRequest {
+    string user_id = 1;
+    string product_id = 2;
+    int32 quantity = 3;
+}
+
+message ValidateOrderResponse {
+    oneof result {
+    	Error error = 1;
+    	SuccessResponse success = 2;
+    }
+}
+
+message Product { 
+    string productId = 1; 
+    string name = 2; 
+    string authorMarker = 3; 
+    moneyTypes.DecimalValue price = 4; 
+    string description = 5; 
+    int32 count = 6; 
+}
+
+enum Error {
+	USER_NOT_FOUND = 0;
+	USER_NOT_HAVE_PRODUCT = 1;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
+}
+
+message SuccessResponse {
+   
+}
+
+message ProductsList {
+	repeated Product products = 1;
+}
