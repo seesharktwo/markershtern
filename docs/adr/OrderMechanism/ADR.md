@@ -73,8 +73,9 @@ flowchart TD
 // В качестве индекса OrderId
 [fb3a2347-d50a-4ca7-8348-97230710302d]
 {
+   "user_id" : "130059de-d832-4064-acf1-35529897a8d0"
    "type" : 1,
-   "product_id" : "6ff5a871-1008-414d-9803-5a8f7fb8ac31",
+   "product_id" : "670be718-ce60-4392-ad37-583e8e7bddff",
    "product_name" : "razor head"
    "quantity" : 2343,
    "price" : 900
