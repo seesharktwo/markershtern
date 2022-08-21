@@ -75,8 +75,19 @@ flowchart TD
 {
    "type" : 1,
    "product_id" : "6ff5a871-1008-414d-9803-5a8f7fb8ac31",
+   "product_name" : "razor head"
    "quantity" : 2343,
    "price" : 900
+}
+```
+
+```
+Коллекция, содержащая лучшую цену на товар
+В качестве индекса ID Продукта
+[fbcv53a7-as3f-a34s-f541-9zx45td0302d]
+{
+   "product_name" : "razor head",
+   "best_price" : 3232
 }
 ```
 
