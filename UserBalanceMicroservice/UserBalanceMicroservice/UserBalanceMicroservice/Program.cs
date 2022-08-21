@@ -3,6 +3,7 @@ using UserBalanceMicroservice;
 using UserBalanceMicroservice.Services;
 using Microsoft.Extensions.Options;
 using UserBalanceMicroservice.KafkaServices;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +23,8 @@ builder.Services.AddSingleton<BalanceContext>();
 builder.Services.AddSingleton<BalanceOperationService>();
 builder.Services.AddHostedService<KafkaConsumerService>();
 
-
+builder.Host.UseSerilog((context, config) => config
+                        .WriteTo.Console());
 
 var app = builder.Build();
 
