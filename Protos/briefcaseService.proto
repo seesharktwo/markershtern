@@ -7,6 +7,7 @@ service UserBriefcaseService  {
 	rpc AddProduct (AddProductRequest) returns (AddProductResponse);
 	rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
 	rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse);
+
 }
 
 message GetUserProductsRequest {
@@ -15,8 +16,8 @@ message GetUserProductsRequest {
 
 message GetUserProductsResponse {
     oneof result {
-    	ProductsList list = 1;
-    	Error error = 2;
+       ProductsList list = 1;
+       Error error = 2;
     }
 }
 
@@ -26,8 +27,8 @@ message AddProductRequest {
 
 message AddProductResponse {
    oneof result {
-	Error error = 1;
-	SuccessResponse success = 2;
+	    Error error = 1;
+	    SuccessResponse success = 2;
    }
 }
 
@@ -39,21 +40,21 @@ message RemoveProductRequest {
 
 message RemoveProductResponse {
    oneof result {
-	Error error = 1;
-	SuccessResponse success = 2;
+      Error error = 1;
+      SuccessResponse success = 2;
    }
 }
 
 message ValidateOrderRequest {
-	string user_id = 1;
-	string product_id = 2;
-	int32 quantity = 3;
-    }
+    string user_id = 1;
+    string product_id = 2;
+    int32 quantity = 3;
+}
 
 message ValidateOrderResponse {
     oneof result {
-    	Error error = 1;
-    	SuccessResponse success = 2;
+       Error error = 1;
+       SuccessResponse success = 2;
         }
     }
 
@@ -77,3 +78,4 @@ enum Error {
 
 message SuccessResponse {
 }
+
