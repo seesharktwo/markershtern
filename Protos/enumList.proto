@@ -1,0 +1,40 @@
+﻿syntax = "proto3";
+
+package customTypes;
+
+option csharp_namespace = "EnumList.CustomTypes";
+
+enum TransactionType {
+	// Операция проводки транзакции 
+	ACTION  = 0;
+	// Операция отката транзакции 
+	ROLLBACK = 1;
+}
+
+enum Operation {
+	// Операция добавления 
+	ADDITION = 0;
+	// Операция вычитания  
+	SUBTRACT = 1;
+}
+
+enum SourceEventTransaction {
+	// Операция проводки транзакции 
+	PRODUCT_ORDER_ADDITION_ACTION = 0;
+	PRODUCT_ORDER_SUBTRACT_ACTION = 1;
+	
+	BALANCE_ADDITION_IMMEDIATE = 2;
+	BALANCE_SUBTRACT_IMMEDIATE = 3;
+	
+	PRODUCT_ORDER_ADDITION_ROLLBACK = 4;
+	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 5;
+	
+	BALANCE_ADDITION_ROLLBACK = 6;
+	BALANCE_SUBTRACT_ROLLBACK = 7;
+	
+	PRODUCT_BRIEFCASE_ADDITION_ROLLBACK = 8;
+	PRODUCT_BRIEFCASE_SUBTRACT_ROLLBACK = 9;
+	
+	PRODUCT_BRIEFCASE_ADDITION_IMMEDIATE = 10;
+	PRODUCT_BRIEFCASE_SUBTRACT_IMMEDIATE = 11;
+}
