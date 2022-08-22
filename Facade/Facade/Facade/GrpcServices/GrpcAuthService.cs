@@ -10,10 +10,10 @@ namespace Facade.GrpcServices
     public class GrpcAuthService : AuthorizationForClient.AuthorizationServiceForClient.AuthorizationServiceForClientBase
     {
         private IMapper _mapper;
-        private GetUserID _authService;
+        private AuthService _authService;
         private ILogger<GrpcAuthService> _logger;
 
-        public GrpcAuthService(GetUserID authService, IMapper mapper, ILogger<GrpcAuthService> logger)
+        public GrpcAuthService(AuthService authService, IMapper mapper, ILogger<GrpcAuthService> logger)
         {
             _mapper = mapper;
             _logger = logger;
