@@ -54,7 +54,7 @@ namespace Facade
             services.AddTransient<UserBriefcaseService>();
             services.AddTransient<ProductService>();
             services.AddTransient<GetUserID>();
-
+            services.AddTransient<UserBalanceService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
            
@@ -78,6 +78,7 @@ namespace Facade
                 endpoints.MapGrpcService<GrpcProductService>();
                 endpoints.MapGrpcService<GrpcAuthService>();
                 endpoints.MapGrpcService<GrpcBriefcaseService>();
+                endpoints.MapGrpcService<GrpcBalanceService>();
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
