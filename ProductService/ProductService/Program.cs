@@ -1,5 +1,6 @@
 using ProductService;
 using ProductService.Configs;
+using ProductService.KafkaServices;
 using ProductService.Mapper;
 using ProductService.Services;
 using Serilog;
@@ -12,7 +13,7 @@ builder.Services.AddGrpc();
 
 // intagration in DI configs
 builder.Services.Configure<ProductStoreDatabaseSettings>(builder.Configuration.GetSection("MongoSettings"));
-builder.Services.Configure<KafkaConsumerSettings>(builder.Configuration.GetSection("KafkaSettings"));
+builder.Services.Configure<KafkaSettings>(builder.Configuration.GetSection("KafkaSettings"));
 
 builder.Services.AddSingleton<ProductContext>();
 builder.Services.AddSingleton<ProductService.Services.ProductService>();
@@ -23,6 +24,9 @@ builder.Host.UseSerilog((context, config) => config
                         .WriteTo.Console());
 
 var app = builder.Build();
+
+var topickService = new AdminTopickBuilderService(app);
+topickService.TopicsBuildAsync();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<ProductServiceGrpc>();

@@ -21,7 +21,7 @@ namespace ProductService.Services
         private readonly ProductService _service;
         private readonly ILogger<KafkaConsumerService> _logger;
 
-        public KafkaConsumerService(IOptions<KafkaConsumerSettings> config, ProductService service, ILogger<KafkaConsumerService> logger)
+        public KafkaConsumerService(IOptions<KafkaSettings> config, ProductService service, ILogger<KafkaConsumerService> logger)
         {
             _config = new ConsumerConfig
             {
