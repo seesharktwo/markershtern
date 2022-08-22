@@ -28,6 +28,7 @@ namespace Facade.GrpcServices
             {
                 Briefcase.AddProductResponse response =
                         await _briefcaseService.AddProductAsync(mappedRequest);
+
                 var mappedResponse = _mapper.Map<Briefcase.AddProductResponse,
                                                  BriefcaseForClient.AddProductResponse>(response);
                 return mappedResponse;
@@ -64,6 +65,7 @@ namespace Facade.GrpcServices
             {
                 Briefcase.RemoveProductResponse response =
                         await _briefcaseService.RemoveProductAsync(mappedRequest);
+
                 var mappedResponse = _mapper.Map<Briefcase.RemoveProductResponse,
                                                  BriefcaseForClient.RemoveProductResponse>(response);
                 return mappedResponse;

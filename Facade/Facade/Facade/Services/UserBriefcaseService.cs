@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Briefcase;
 
+
 namespace Facade.Services
 {
     public class UserBriefcaseService
@@ -118,6 +119,5 @@ namespace Facade.Services
 
             return reply;
         }
-
     }
 }
