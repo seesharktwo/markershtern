@@ -44,6 +44,10 @@ namespace Facade
             {
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionAuthorizationMicroservice"));
             });
+            services.AddGrpcClient<Protos.CustomTypes.BalanceService.BalanceServiceClient>(o =>
+            {
+                o.Address = new Uri(Configuration.GetValue<string>("ConnectionUserBalanceMicroservice"));
+            });
 
 
             services.AddTransient<OrderService>();
