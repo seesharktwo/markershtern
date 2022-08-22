@@ -1,0 +1,13 @@
+﻿{
+  "profiles": {
+    "AuthMicroservice": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": false,
+      "applicationUrl": "https://localhost:7054",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    } 
+  }
+}
