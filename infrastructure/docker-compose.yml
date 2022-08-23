@@ -83,30 +83,6 @@ services:
     volumes:
       - mongo3:/data/db
 
-  mongo4:
-    image: mongo
-    ports:
-      - 27020:27017
-    restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
-    volumes:
-      - mongo4:/data/db
-  mongo5:
-    image: mongo
-    ports:
-      - 27021:27017
-    restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
-    volumes:
-      - mongo5:/data/db
-  mongo6:
-    image: mongo
-    ports:
-      - 27021:27017
-    restart: always
-    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0", "--journal", "--dbpath", "/data/db" ]
-    volumes:
-      - mongo5:/data/db
 volumes:
   kafka:
   mongo1:
