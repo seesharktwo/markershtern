@@ -59,7 +59,7 @@ namespace UserBagMicroservice.KafkaServices
                     }
                     catch (Exception e)
                     {
-                        throw e;
+                       throw e;
                     }
                 }
             }

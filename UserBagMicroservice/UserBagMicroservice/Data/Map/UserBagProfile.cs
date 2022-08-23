@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Briefcase;
 using MoneyTypes;
 
 namespace UserBagMicroservice.Data.Map
@@ -8,9 +7,11 @@ namespace UserBagMicroservice.Data.Map
     {
         public UserBagProfile()
         {
-            CreateMap<Protos.Product, Product>();
 
-            CreateMap<Protos.ProductsList, ProductsList>()
+            CreateMap<Briefcase.Product, Protos.Product>();
+            CreateMap<Protos.Product, Briefcase.Product>();
+
+            CreateMap<Protos.ProductsList, Briefcase.ProductsList>()
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Value));
 
             CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);

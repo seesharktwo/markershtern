@@ -15,9 +15,13 @@ namespace UserBagMicroservice.Data.Repository
 
         Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression);
 
+        Task<TDocument> FindOrCreateOneAsync(Expression<Func<TDocument, bool>> filterExpression, TDocument document);
+
         TDocument FindById(string id);
 
         Task<TDocument> FindByIdAsync(string id);
+
+        Task<TDocument> FindOrCreateByIdAsync(TDocument document);
 
         void InsertOne(TDocument document);
 

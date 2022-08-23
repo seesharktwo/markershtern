@@ -17,12 +17,13 @@ message GetUserProductsResponse {
     oneof result {
        ProductsList list = 1;
        Error error = 2;
-
     }
 }
 
 message AddProductRequest {
-	Product product = 1;
+	string user_id = 1;
+	string name = 2;
+	int32 quantity = 3;
 }  
 
 message AddProductResponse {
