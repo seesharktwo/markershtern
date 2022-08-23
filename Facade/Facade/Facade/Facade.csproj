@@ -11,6 +11,7 @@
   <ItemGroup>
     <Protobuf Include="..\..\..\Protos\authService.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\..\Protos\productService.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\balanceService.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
     <Protobuf Include="..\..\..\Protos\briefcaseService.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
     <Protobuf Include="..\..\..\Protos\orderService.proto" GrpcServices="Client" ProtoRoot="..\..\..\Protos\" />
     <Protobuf Include="..\..\..\Protos\decimalValue.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
@@ -18,19 +19,14 @@
     <Protobuf Include="..\..\..\Protos\ClientProtos\productServiceForClient.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
     <Protobuf Include="..\..\..\Protos\ClientProtos\authServiceForClient.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
     <Protobuf Include="..\..\..\Protos\ClientProtos\briefcaseServiceForClient.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
+    <Protobuf Include="..\..\..\Protos\ClientProtos\balanceServiceForClient.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Confluent.Kafka" Version="1.9.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.21.2" />
     <PackageReference Include="Grpc.AspNetCore" Version="2.34.0" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.47.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
   </ItemGroup>
 

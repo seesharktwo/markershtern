@@ -1,16 +1,12 @@
-﻿syntax = "proto3";
+syntax = "proto3";
 
 option csharp_namespace = "Briefcase";
 
-package briefcase;
-
-import "decimalValue.proto";
-
 service UserBriefcaseService  {
-    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
-    rpc AddProduct (AddProductRequest) returns (AddProductResponse);
-    rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
-    rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse);
+	rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
+	rpc AddProduct (AddProductRequest) returns (AddProductResponse);
+	rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
+	rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse);
 }
 
 message GetUserProductsRequest {
@@ -19,20 +15,20 @@ message GetUserProductsRequest {
 
 message GetUserProductsResponse {
     oneof result {
-    	ProductsList list = 1;
-    	Error error = 2;
+       ProductsList list = 1;
+       Error error = 2;
+
     }
 }
 
 message AddProductRequest {
-    string user_id = 1;
-    Product product = 2;
+	Product product = 1;
 }  
 
 message AddProductResponse {
    oneof result {
-      Error error = 1;
-      SuccessResponse success = 2;
+	    Error error = 1;
+	    SuccessResponse success = 2;
    }
 }
 
@@ -57,30 +53,28 @@ message ValidateOrderRequest {
 
 message ValidateOrderResponse {
     oneof result {
-    	Error error = 1;
-    	SuccessResponse success = 2;
+       Error error = 1;
+       SuccessResponse success = 2;
+        }
     }
-}
 
-message Product { 
-    string productId = 1; 
-    string name = 2; 
-    string authorMarker = 3; 
-    moneyTypes.DecimalValue price = 4; 
-    string description = 5; 
-    int32 count = 6; 
+message Product {
+	string product_id = 1;
+	string name = 2;
+	string author_id = 3;
+	int32 quantity = 4;
+} 
+
+message ProductsList {
+	repeated Product products = 1;
 }
 
 enum Error {
 	USER_NOT_FOUND = 0;
 	USER_NOT_HAVE_PRODUCT = 1;
 	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
+	USER_IS_NOT_OWNER = 3; 
 }
 
 message SuccessResponse {
-   
-}
-
-message ProductsList {
-	repeated Product products = 1;
 }
