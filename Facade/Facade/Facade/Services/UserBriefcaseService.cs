@@ -1,14 +1,8 @@
-﻿using Grpc.Net.Client;
-using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
-using Briefcase;
-using Google.Protobuf;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Logging;
+using Briefcase;
+
 
 namespace Facade.Services
 {
@@ -37,8 +31,9 @@ namespace Facade.Services
             var reply = await _client.GetUserProductsAsync(request);
 
             if (reply is null)
+            {
                 throw new ArgumentNullException("GetUserProductsResponse");
-
+            }
 
             if (reply.ResultCase.Equals(AddProductResponse.ResultOneofCase.Error))
             {
@@ -56,12 +51,14 @@ namespace Facade.Services
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="Exception"></exception>
         public async Task<AddProductResponse>
-          AddProduct(AddProductRequest request)
+          AddProductAsync(AddProductRequest request)
         {
             var reply = await _client.AddProductAsync(request);
 
             if (reply is null)
-                throw new ArgumentNullException("GetUserProductsResponse");
+            {
+                throw new ArgumentNullException("AddProductResponse");
+            }
 
             if (reply.ResultCase.Equals(AddProductResponse.ResultOneofCase.Error))
             {
@@ -80,13 +77,14 @@ namespace Facade.Services
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="Exception"></exception>
         public async Task<RemoveProductResponse>
-           RemoveProduct(RemoveProductRequest request)
+           RemoveProductAsync(RemoveProductRequest request)
         {
             var reply = await _client.RemoveProductAsync(request);
 
             if (reply is null)
-                throw new ArgumentNullException("GetUserProductsResponse");
-
+            {
+                throw new ArgumentNullException("RemoveProductResponse");
+            }
 
             if (reply.ResultCase.Equals(RemoveProductResponse.ResultOneofCase.Error))
             {
@@ -96,5 +94,30 @@ namespace Facade.Services
             return reply;
         }
 
+
+        /// <summary>
+        /// Checks the availability of the required amount of product from briefcase micro-service method
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns>ValidateOrderResponse</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="Exception"></exception>
+        public async Task<ValidateOrderResponse>
+            ValidateOrderAsync(ValidateOrderRequest request)
+        {
+            var reply = await _client.ValidateOrderAsync(request);
+
+            if (reply is null)
+            {
+                throw new ArgumentNullException("ValidateOrderResponse");
+            }
+                
+            if (reply.ResultCase.Equals(RemoveProductResponse.ResultOneofCase.Error))
+            {
+                throw new Exception(reply.Error.ToString());
+            }
+
+            return reply;
+        }
     }
 }

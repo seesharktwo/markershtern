@@ -1,11 +1,13 @@
 syntax = "proto3";
 
-option csharp_namespace = "Briefcase";
+import "decimalValue.proto";
 
-service UserBriefcaseService  {
-	rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
-	rpc AddProduct (AddProductRequest) returns (AddProductResponse);
-	rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
+option csharp_namespace = "UserBagMicroservice.Protos";
+
+service UserBriefcase  {
+    rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
+    rpc AddProduct (AddProductRequest) returns (AddProductResponse);
+    rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
 	rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse);
 }
 
@@ -15,20 +17,19 @@ message GetUserProductsRequest {
 
 message GetUserProductsResponse {
     oneof result {
-       ProductsList list = 1;
-       Error error = 2;
-
+    	ProductsList list = 1;
+    	Error error = 2;
     }
 }
 
 message AddProductRequest {
-	Product product = 1;
+    Product product = 1;
 }  
 
 message AddProductResponse {
    oneof result {
-	    Error error = 1;
-	    SuccessResponse success = 2;
+      Error error = 1;
+      SuccessResponse success = 2;
    }
 }
 
@@ -49,32 +50,32 @@ message ValidateOrderRequest {
     string user_id = 1;
     string product_id = 2;
     int32 quantity = 3;
-}
+    }
 
 message ValidateOrderResponse {
     oneof result {
-       Error error = 1;
-       SuccessResponse success = 2;
+    	Error error = 1;
+    	SuccessResponse success = 2;
         }
     }
 
 message Product {
-	string product_id = 1;
+    string product_id = 1;
 	string name = 2;
 	string author_id = 3;
 	int32 quantity = 4;
 } 
 
-message ProductsList {
-	repeated Product products = 1;
-}
-
 enum Error {
 	USER_NOT_FOUND = 0;
 	USER_NOT_HAVE_PRODUCT = 1;
 	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
-	USER_IS_NOT_OWNER = 3; 
+    USER_IS_NOT_OWNER = 3; 
 }
 
 message SuccessResponse {
+}
+
+message ProductsList {
+	repeated Product products = 1;
 }

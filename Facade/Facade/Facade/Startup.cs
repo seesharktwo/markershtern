@@ -53,7 +53,7 @@ namespace Facade
             services.AddTransient<OrderService>();
             services.AddTransient<UserBriefcaseService>();
             services.AddTransient<ProductService>();
-            services.AddTransient<GetUserID>();
+            services.AddTransient<AuthService>();
             services.AddTransient<UserBalanceService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 

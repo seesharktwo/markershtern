@@ -27,7 +27,8 @@ namespace Facade.GrpcServices
             try
             {
                 Briefcase.AddProductResponse response =
-                        await _briefcaseService.AddProduct(mappedRequest);
+                        await _briefcaseService.AddProductAsync(mappedRequest);
+
                 var mappedResponse = _mapper.Map<Briefcase.AddProductResponse,
                                                  BriefcaseForClient.AddProductResponse>(response);
                 return mappedResponse;
@@ -63,7 +64,8 @@ namespace Facade.GrpcServices
             try
             {
                 Briefcase.RemoveProductResponse response =
-                        await _briefcaseService.RemoveProduct(mappedRequest);
+                        await _briefcaseService.RemoveProductAsync(mappedRequest);
+
                 var mappedResponse = _mapper.Map<Briefcase.RemoveProductResponse,
                                                  BriefcaseForClient.RemoveProductResponse>(response);
                 return mappedResponse;
@@ -74,11 +76,5 @@ namespace Facade.GrpcServices
                 throw new RpcException(Status.DefaultCancelled, "Exception in creating order");
             }
         }
-
-        public override Task<ValidateOrderResponse> ValidateOrder(ValidateOrderRequest request, ServerCallContext context)
-        {
-            return base.ValidateOrder(request, context);
-        }
-
     }
 }
