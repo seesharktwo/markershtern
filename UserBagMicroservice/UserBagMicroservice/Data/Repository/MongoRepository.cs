@@ -53,6 +53,22 @@ namespace UserBagMicroservice.Data.Repository
             return Task.Run(() => _collection.Find(filterExpression).FirstOrDefaultAsync());
         }
 
+        public virtual Task<TDocument> FindOrCreateOneAsync(Expression<Func<TDocument, bool>> filterExpression, TDocument document)
+        {
+            return Task.Run(() =>
+            {           
+                var findResult = _collection.Find(filterExpression).FirstOrDefaultAsync();
+
+                if (findResult.Result is null)
+                {
+                    _collection.InsertOne(document);
+                    return FindOrCreateOneAsync(filterExpression, document);
+                }
+
+                return findResult;
+            });
+        }
+
         public virtual TDocument FindById(string id)
         {
             var objectId = new ObjectId(id);
@@ -70,6 +86,22 @@ namespace UserBagMicroservice.Data.Repository
             });
         }
 
+        public virtual Task<TDocument> FindOrCreateByIdAsync(TDocument document)
+        {
+            return Task.Run(() =>
+            {
+                var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+                var findResult = _collection.Find(filter).SingleOrDefaultAsync();
+
+                if (findResult.Result is null)
+                {
+                    _collection.InsertOne(document);
+                    return FindOrCreateByIdAsync(document);
+                }
+
+                return findResult;
+            });
+        } 
 
         public virtual void InsertOne(TDocument document)
         {
@@ -85,7 +117,6 @@ namespace UserBagMicroservice.Data.Repository
         {
             _collection.InsertMany(documents);
         }
-
 
         public virtual async Task InsertManyAsync(ICollection<TDocument> documents)
         {

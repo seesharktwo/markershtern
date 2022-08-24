@@ -7,6 +7,7 @@ using EnumList.CustomTypes;
 using eventList.CustomTypes;
 using MoneyTypes;
 using UserBagMicroservice.KafkaServices;
+using MongoDB.Bson;
 
 namespace UserBagMicroservice.Services
 {
@@ -24,11 +25,10 @@ namespace UserBagMicroservice.Services
         }
 
         public async Task ChangeProduct(ProductChanged response)
-        {
-            var userBag = await _userBagRepository.FindByIdAsync(response.IdUser);   
+        {           
             try
             {
-                CheckService.CheckUserBagOnNull(userBag);
+                var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(response.IdUser) });
 
                 if(response.Mode == Operation.Addition)
                 {
@@ -58,11 +58,12 @@ namespace UserBagMicroservice.Services
 
             if (product is null)
             {
-                userBag.Products.Add(new UserBagProduct { Id = MongoDB.Bson.ObjectId.Parse(response.IdProduct), Quantity = 0 });
-                product = userBag.Products.FirstOrDefault(x => x.Id.ToString() == response.IdProduct);
+                userBag.Products.Add(new UserBagProduct { Id = ObjectId.Parse(response.IdProduct)});
+                product = userBag.Products.First(x => x.Id.ToString() == response.IdProduct);
             }
 
             CheckService.CheckDublicateTransaction(product.TransactionId, response.IdGlobalTransact);
+
             product.Quantity += response.Count;
             product.TransactionId = response.IdGlobalTransact;
         }
@@ -70,9 +71,11 @@ namespace UserBagMicroservice.Services
         private void SubtractProduct(UserBag userBag, ProductChanged response)
         {
             var product = userBag.Products.FirstOrDefault(x => x.Id.ToString() == response.IdProduct);
+
             CheckService.CheckProductOnNull(product);
             CheckService.CheckDublicateTransaction(product.TransactionId, response.IdGlobalTransact);
             CheckService.CheckProductOnQuantity(product.Quantity, response.Count);
+
             product.Quantity -= response.Count;
             product.TransactionId = response.IdGlobalTransact;
 
@@ -133,6 +136,5 @@ namespace UserBagMicroservice.Services
                 }
             };
         }
-
     }
 }

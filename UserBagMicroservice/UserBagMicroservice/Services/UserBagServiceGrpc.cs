@@ -3,6 +3,7 @@ using Grpc.Core;
 using UserBagMicroservice.Data.Repository;
 using UserBagMicroservice.Models;
 using Briefcase;
+using MongoDB.Bson;
 
 namespace UserBagMicroservice.Services
 {
@@ -31,9 +32,7 @@ namespace UserBagMicroservice.Services
             var productList = new Protos.ProductsList();
             try
             {
-                var userBag = await _userBagRepository.FindByIdAsync(request.UserId);
-
-                CheckService.CheckUserBagOnNull(userBag);
+                var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId)});
 
                 foreach (var userBagProduct in userBag.Products)
                 {
@@ -51,11 +50,6 @@ namespace UserBagMicroservice.Services
 
                 response.List = _mapper.Map<ProductsList>(productList);
             }
-            catch (ArgumentException e)
-            {
-                response.Error = CheckService.GerError(e.Message);
-                _logger.LogError(e.Message);
-            }
             catch (Exception e)
             {    
                 _logger.LogError(e.Message);
@@ -67,35 +61,21 @@ namespace UserBagMicroservice.Services
         public override async Task<AddProductResponse> AddProduct(AddProductRequest request, ServerCallContext context)
         {
             var response = new AddProductResponse();
-            var reqProduct = request.Product;
             try
             {
-                var userBag = await _userBagRepository.FindByIdAsync(reqProduct.AuthorId);
-                var product = await _productRepository.FindOneAsync(product => product.Name == reqProduct.Name && product.AuthorId == reqProduct.AuthorId);
-                CheckService.CheckUserBagOnNull(userBag);
-
-                if (product is null)
-                {
-                    await _productRepository.InsertOneAsync(new Models.Product { Name = reqProduct.Name, AuthorId = reqProduct.AuthorId });
-                    product = await _productRepository.FindOneAsync(x => x.Name == reqProduct.Name && x.AuthorId == reqProduct.AuthorId);
-                }
-
+                var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId) });
+                var product = await _productRepository.FindOrCreateOneAsync(p => p.Name == request.Name && p.AuthorId == request.UserId, new Models.Product { Name = request.Name, AuthorId = request.UserId });
                 var userProduct = userBag.Products.FirstOrDefault(userProduct => userProduct.Id == product.Id);
 
                 if (userProduct is null)
                 {
                     userBag.Products.Add(new UserBagProduct { Id = product.Id, Quantity = 0, TransactionId = "" });
-                    userProduct = userBag.Products.FirstOrDefault(userProduct => userProduct.Id == product.Id);
+                    userProduct = userBag.Products.First(userProduct => userProduct.Id == product.Id);
                 }
                 
-                userProduct.Quantity += reqProduct.Quantity;      
+                userProduct.Quantity += request.Quantity;      
                 await _userBagRepository.ReplaceOneAsync(userBag);
-                response.Success = new SuccessResponse();
-            }
-            catch (ArgumentException e)
-            {
-                response.Error = CheckService.GerError(e.Message);
-                _logger.LogError(e.Message);
+                response.Success = new SuccessResponse();      
             }
             catch (Exception e)
             {
@@ -111,12 +91,15 @@ namespace UserBagMicroservice.Services
             try
             { 
                 CheckService.CheckProductOwner(request.UserId, request.AuthorId);
-                var userBag = await _userBagRepository.FindByIdAsync(request.UserId);
-                CheckService.CheckUserBagOnNull(userBag);
+                var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId)});
                 var product = userBag.Products.FirstOrDefault(product => product.Id.ToString() == request.ProductId);
-                CheckService.CheckProductOnNull(product);
-                userBag.Products.Remove(product);
-                await _userBagRepository.ReplaceOneAsync(userBag);
+
+                if (product is not null)
+                {
+                    userBag.Products.Remove(product);
+                    await _userBagRepository.ReplaceOneAsync(userBag);
+                }
+                          
                 response.Success = new SuccessResponse();
             }
             catch (ArgumentException e)
@@ -134,10 +117,10 @@ namespace UserBagMicroservice.Services
 
         public override async Task<ValidateOrderResponse> ValidateOrder(ValidateOrderRequest request, ServerCallContext context)
         {
-            var response = new ValidateOrderResponse();
-            var userBag = await _userBagRepository.FindByIdAsync(request.UserId);
+            var response = new ValidateOrderResponse();         
             try
             {
+                var userBag = await _userBagRepository.FindByIdAsync(request.UserId);
                 CheckService.CheckUserBagOnNull(userBag);
                 var product = userBag.Products.FirstOrDefault(product => product.Id.ToString() == request.ProductId);
                 CheckService.CheckProductOnNull(product);

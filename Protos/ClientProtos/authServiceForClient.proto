@@ -1,19 +1,22 @@
-﻿syntax = "proto3";
+
+
+syntax = "proto3";
 
 option csharp_namespace = "AuthorizationForClient";
 
-// implementation service
+// Сервис внедрения авторизации
 service AuthorizationServiceForClient{
+
      rpc Login(LoginRequest) returns(LoginResponse);
 }
 
-// The request message
+// Запрос ввода логина и пароля для авторизации пользователя
 message LoginRequest {
     string login = 1;
     string password = 2;
 }
-
-// The responce message
+// Сообщение ответа авторизации для пользователя
 message LoginResponse {
+    //Id пользователя, который расшифровывается по схеме 8-4-4-4-12: "3422b448-2460-4fd2-9183-8000de6f8343".
     string user_Id = 1;
 }    

@@ -1,12 +1,11 @@
 ﻿using Briefcase;
 using UserBagMicroservice.Models;
-using UserBagMicroservice.Protos;
 
 namespace UserBagMicroservice.Services
 {
     public interface CheckService
     {
-        public static void CheckUserBagOnNull(UserBag userBag)
+        public static void CheckUserBagOnNull(UserBag ?userBag)
         {
             if (userBag is null)
             {
@@ -14,7 +13,7 @@ namespace UserBagMicroservice.Services
             }
         }
 
-        public static void CheckProductOnNull(UserBagProduct product)
+        public static void CheckProductOnNull(UserBagProduct ?product)
         {
             if (product is null)
             {
@@ -40,7 +39,7 @@ namespace UserBagMicroservice.Services
 
         public static void CheckDublicateTransaction(string lastTransactionId, string transactionId)
         {
-            if (!lastTransactionId.Equals(transactionId))
+            if (lastTransactionId.Equals(transactionId))
             {
                 throw new ArgumentException("Duplicate transaction");
             }

@@ -19,6 +19,11 @@ namespace AuthMicroservice
 
             _usersCollection = mongoDatabase.GetCollection<User>(
                 MongoDBSettings.Value.CollectionName);
+
+            //InsertUser("Andrey", "password");
+            //InsertUser("Alexander", "passwordTest");
+            //InsertUser("Roman", "passw0rd");
+            //InsertUser("Sergey", "p@ssw0rd");
         }
 
         public async Task<List<User>> GetAsync() =>
@@ -38,5 +43,17 @@ namespace AuthMicroservice
 
         public async Task RemoveAsync(string id) =>
             await _usersCollection.DeleteOneAsync(x => x.Id == id);
+        
+        private async Task InsertUser( string login, string password)
+        {
+            var user = await GetAsyncByLogin(login);
+            if(user == null)
+            {
+                var salt = BCrypt.Net.BCrypt.GenerateSalt();
+                var saltedPassword = password + salt;
+                var hash = BCrypt.Net.BCrypt.HashPassword(saltedPassword);
+                await CreateAsync(new User { Login = login, Hash = hash, Salt = salt });
+            }   
+        }
     }
 }
