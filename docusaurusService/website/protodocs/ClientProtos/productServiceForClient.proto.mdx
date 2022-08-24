@@ -18,15 +18,15 @@ _**package** productClient_
 
 
 ### `GetProductsRequest`
-<ProtoMessage key={0} message={{"name":"GetProductsRequest","longName":"GetProductsRequest","fullName":"productClient.GetProductsRequest","description":"","hasExtensions":false,"hasFields":false,"hasOneofs":false,"extensions":[],"fields":[]}} />
+<ProtoMessage key={0} message={{"name":"GetProductsRequest","longName":"GetProductsRequest","fullName":"productClient.GetProductsRequest","description":"Запрос на получение списка товаров в торговле","hasExtensions":false,"hasFields":false,"hasOneofs":false,"extensions":[],"fields":[]}} />
 
 
 ### `GetProductsResponse`
-<ProtoMessage key={1} message={{"name":"GetProductsResponse","longName":"GetProductsResponse","fullName":"productClient.GetProductsResponse","description":"","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"products","description":"","label":"repeated","type":"Product","longType":"GetProductsResponse.Product","fullType":"productClient.GetProductsResponse.Product","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/ClientProtos/productServiceForClient.proto#getproductsresponseproduct"}]}} />
+<ProtoMessage key={1} message={{"name":"GetProductsResponse","longName":"GetProductsResponse","fullName":"productClient.GetProductsResponse","description":"Ответ на получение","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"products","description":"Вывод последующей строчки в списке товаров","label":"repeated","type":"Product","longType":"GetProductsResponse.Product","fullType":"productClient.GetProductsResponse.Product","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/ClientProtos/productServiceForClient.proto#getproductsresponseproduct"}]}} />
 
 
 ### `GetProductsResponse.Product`
-<ProtoMessage key={2} message={{"name":"Product","longName":"GetProductsResponse.Product","fullName":"productClient.GetProductsResponse.Product","description":"","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"id","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"name","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"bid","description":"","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"},{"name":"ask","description":"","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"}]}} />
+<ProtoMessage key={2} message={{"name":"Product","longName":"GetProductsResponse.Product","fullName":"productClient.GetProductsResponse.Product","description":"Информация о товарах в торговле","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"id","description":"Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"name","description":"Название товара","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"bid","description":"Лучшая цена для продажи по текущим заявкам в торговле","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"},{"name":"ask","description":"Лучшая цена для покупки по текущим заявкам в торговле","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"}]}} />
 
 ---
 ## Services
@@ -34,11 +34,11 @@ _**package** productClient_
 
 ### `ProductServiceForClient`
 
-
+Сервис списка товаров в торговле
 
 
 #### `GetProducts`
-<ProtoServiceMethod key={'GetProducts-0'} method={{"name":"GetProducts","description":"","requestType":"GetProductsRequest","requestLongType":"GetProductsRequest","requestFullType":"productClient.GetProductsRequest","requestStreaming":false,"responseType":"GetProductsResponse","responseLongType":"GetProductsResponse","responseFullType":"productClient.GetProductsResponse","responseStreaming":false,"requestTypeLink":"/protodocs/ClientProtos/productServiceForClient.proto#getproductsrequest","responseTypeLink":"/protodocs/ClientProtos/productServiceForClient.proto#getproductsresponse"}} />
+<ProtoServiceMethod key={'GetProducts-0'} method={{"name":"GetProducts","description":"Удаленный вызов процедуры просмотра списка товаров в торговле","requestType":"GetProductsRequest","requestLongType":"GetProductsRequest","requestFullType":"productClient.GetProductsRequest","requestStreaming":false,"responseType":"GetProductsResponse","responseLongType":"GetProductsResponse","responseFullType":"productClient.GetProductsResponse","responseStreaming":false,"requestTypeLink":"/protodocs/ClientProtos/productServiceForClient.proto#getproductsrequest","responseTypeLink":"/protodocs/ClientProtos/productServiceForClient.proto#getproductsresponse"}} />
 
 
 ---

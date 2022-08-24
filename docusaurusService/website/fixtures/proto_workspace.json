@@ -15,7 +15,7 @@
           "name": "LoginRequest",
           "longName": "LoginRequest",
           "fullName": ".LoginRequest",
-          "description": "The request message",
+          "description": "Запрос ввода логина и пароля для авторизации пользователя",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -51,7 +51,7 @@
           "name": "LoginResponse",
           "longName": "LoginResponse",
           "fullName": ".LoginResponse",
-          "description": "The responce message",
+          "description": "Сообщение ответа авторизации для пользователя",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -59,7 +59,7 @@
           "fields": [
             {
               "name": "user_Id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -77,7 +77,7 @@
           "name": "AuthorizationServiceForClient",
           "longName": "AuthorizationServiceForClient",
           "fullName": ".AuthorizationServiceForClient",
-          "description": "implementation service",
+          "description": "Сервис внедрения авторизации",
           "methods": [
             {
               "name": "Login",
@@ -108,22 +108,22 @@
           "name": "Error",
           "longName": "Error",
           "fullName": "BriefcaseClient.Error",
-          "description": "",
+          "description": "Сообщение об ошибке",
           "values": [
             {
               "name": "USER_NOT_FOUND",
               "number": "0",
-              "description": ""
+              "description": "Пользователь с таким Id не был найден."
             },
             {
               "name": "USER_NOT_HAVE_PRODUCT",
               "number": "1",
-              "description": ""
+              "description": "Пользователь с таким Id не имеет товар."
             },
             {
               "name": "USER_NOT_HAVE_QUANTITY_PRODUCT",
               "number": "2",
-              "description": ""
+              "description": "Пользователь не имеет необходимое количества товара."
             }
           ]
         }
@@ -134,7 +134,7 @@
           "name": "AddProductRequest",
           "longName": "AddProductRequest",
           "fullName": "BriefcaseClient.AddProductRequest",
-          "description": "",
+          "description": "Запрос на добавление товара",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -142,7 +142,7 @@
           "fields": [
             {
               "name": "user_id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -154,7 +154,7 @@
             },
             {
               "name": "product",
-              "description": "",
+              "description": "Информация о добавленном товаре",
               "label": "",
               "type": "Product",
               "longType": "Product",
@@ -170,7 +170,7 @@
           "name": "AddProductResponse",
           "longName": "AddProductResponse",
           "fullName": "BriefcaseClient.AddProductResponse",
-          "description": "",
+          "description": "Ответ на добавление товара",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": true,
@@ -178,7 +178,7 @@
           "fields": [
             {
               "name": "error",
-              "description": "",
+              "description": "Сообщение об ошибке \nСообщение об ошибке выводится, если:\n1. Пользователь с таким Id не найден\n2. Пользователь с таким Id не имеет товаров",
               "label": "",
               "type": "Error",
               "longType": "Error",
@@ -190,7 +190,7 @@
             },
             {
               "name": "success",
-              "description": "",
+              "description": "В случае успешного добавления товара - пустое поле",
               "label": "",
               "type": "SuccessResponse",
               "longType": "SuccessResponse",
@@ -206,7 +206,7 @@
           "name": "GetUserProductsRequest",
           "longName": "GetUserProductsRequest",
           "fullName": "BriefcaseClient.GetUserProductsRequest",
-          "description": "",
+          "description": "Запрос на получение товаров пользователя",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -214,7 +214,7 @@
           "fields": [
             {
               "name": "user_id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -230,7 +230,7 @@
           "name": "GetUserProductsResponse",
           "longName": "GetUserProductsResponse",
           "fullName": "BriefcaseClient.GetUserProductsResponse",
-          "description": "",
+          "description": "Ответ на получение товаров пользователя",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": true,
@@ -238,7 +238,7 @@
           "fields": [
             {
               "name": "list",
-              "description": "",
+              "description": "Список товаров",
               "label": "",
               "type": "ProductsList",
               "longType": "ProductsList",
@@ -250,7 +250,7 @@
             },
             {
               "name": "error",
-              "description": "",
+              "description": "Сообщение об ошибке \nСообщение об ошибке выводится, если:\n1. Пользователь с таким Id не найден\n2. Пользователь с таким Id не имеет товаров",
               "label": "",
               "type": "Error",
               "longType": "Error",
@@ -266,7 +266,7 @@
           "name": "Product",
           "longName": "Product",
           "fullName": "BriefcaseClient.Product",
-          "description": "",
+          "description": "Информация о товаре",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -274,7 +274,7 @@
           "fields": [
             {
               "name": "productId",
-              "description": "",
+              "description": "Id товара, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -286,7 +286,7 @@
             },
             {
               "name": "name",
-              "description": "",
+              "description": "Название товара",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -298,7 +298,7 @@
             },
             {
               "name": "authorMarker",
-              "description": "",
+              "description": "Маркер авторства - \"Мой\"/\"Чужой\"",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -310,7 +310,7 @@
             },
             {
               "name": "price",
-              "description": "",
+              "description": "Цена товара",
               "label": "",
               "type": "DecimalValue",
               "longType": "moneyTypes.DecimalValue",
@@ -322,7 +322,7 @@
             },
             {
               "name": "description",
-              "description": "",
+              "description": "Описание товара",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -334,7 +334,7 @@
             },
             {
               "name": "count",
-              "description": "",
+              "description": "Количество товара",
               "label": "",
               "type": "int32",
               "longType": "int32",
@@ -350,7 +350,7 @@
           "name": "ProductsList",
           "longName": "ProductsList",
           "fullName": "BriefcaseClient.ProductsList",
-          "description": "",
+          "description": "Список товаров",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -374,7 +374,7 @@
           "name": "RemoveProductRequest",
           "longName": "RemoveProductRequest",
           "fullName": "BriefcaseClient.RemoveProductRequest",
-          "description": "",
+          "description": "Запрос на удаление товара",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -382,7 +382,7 @@
           "fields": [
             {
               "name": "user_id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -394,7 +394,7 @@
             },
             {
               "name": "product_id",
-              "description": "",
+              "description": "Id товара, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -406,7 +406,7 @@
             },
             {
               "name": "author_id",
-              "description": "",
+              "description": "Id создателя товара, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -422,7 +422,7 @@
           "name": "RemoveProductResponse",
           "longName": "RemoveProductResponse",
           "fullName": "BriefcaseClient.RemoveProductResponse",
-          "description": "",
+          "description": "Ответ на удаление товара",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": true,
@@ -430,7 +430,7 @@
           "fields": [
             {
               "name": "error",
-              "description": "",
+              "description": "Сообщение об ошибке \nСообщение об ошибке выводится, если:\n1. Пользователь с таким Id не найден\n2. Пользователь с таким Id не имеет товаров",
               "label": "",
               "type": "Error",
               "longType": "Error",
@@ -442,7 +442,7 @@
             },
             {
               "name": "success",
-              "description": "",
+              "description": "В случае успешного удаления товара - пустое поле",
               "label": "",
               "type": "SuccessResponse",
               "longType": "SuccessResponse",
@@ -458,7 +458,7 @@
           "name": "SuccessResponse",
           "longName": "SuccessResponse",
           "fullName": "BriefcaseClient.SuccessResponse",
-          "description": "",
+          "description": "Пустое поле при успешной проверке данных",
           "hasExtensions": false,
           "hasFields": false,
           "hasOneofs": false,
@@ -469,7 +469,7 @@
           "name": "ValidateOrderRequest",
           "longName": "ValidateOrderRequest",
           "fullName": "BriefcaseClient.ValidateOrderRequest",
-          "description": "",
+          "description": "Запрос на валидацию входных данных",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -477,7 +477,7 @@
           "fields": [
             {
               "name": "user_id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -489,7 +489,7 @@
             },
             {
               "name": "product_id",
-              "description": "",
+              "description": "Id товара, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -501,7 +501,7 @@
             },
             {
               "name": "quantity",
-              "description": "",
+              "description": "Количество товара",
               "label": "",
               "type": "int32",
               "longType": "int32",
@@ -517,7 +517,7 @@
           "name": "ValidateOrderResponse",
           "longName": "ValidateOrderResponse",
           "fullName": "BriefcaseClient.ValidateOrderResponse",
-          "description": "",
+          "description": "Ответ на валидацию входных данных",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": true,
@@ -525,7 +525,7 @@
           "fields": [
             {
               "name": "error",
-              "description": "",
+              "description": "Сообщение об ошибке \nСообщение об ошибке выводится, если:\n1. Пользователь с таким Id не найден\n2. Пользователь с таким Id не имеет товаров",
               "label": "",
               "type": "Error",
               "longType": "Error",
@@ -537,7 +537,7 @@
             },
             {
               "name": "success",
-              "description": "",
+              "description": "В случае успешной валидации данных - пустое поле",
               "label": "",
               "type": "SuccessResponse",
               "longType": "SuccessResponse",
@@ -622,7 +622,7 @@
           "name": "Error",
           "longName": "Error",
           "fullName": "orderClient.Error",
-          "description": "",
+          "description": "Тип ошибки для вывода сообщения об ошибке",
           "values": [
             {
               "name": "USER_NOT_FOUND",
@@ -637,7 +637,7 @@
             {
               "name": "USER_NOT_HAVE_QUANTITY_PRODUCT",
               "number": "2",
-              "description": "Пользователь не имеет необходимое количества продукта."
+              "description": "Пользователь не имеет необходимое количества товара."
             }
           ]
         },
@@ -645,17 +645,17 @@
           "name": "OrderType",
           "longName": "OrderType",
           "fullName": "orderClient.OrderType",
-          "description": "",
+          "description": "Тип операции при создании заявки",
           "values": [
             {
               "name": "SELL_ORDER",
               "number": "0",
-              "description": ""
+              "description": "Продажа товара"
             },
             {
               "name": "BUY_ORDER",
               "number": "1",
-              "description": ""
+              "description": "Покупка товара"
             }
           ]
         }
@@ -666,7 +666,7 @@
           "name": "CreateOrderRequest",
           "longName": "CreateOrderRequest",
           "fullName": "orderClient.CreateOrderRequest",
-          "description": "Сообщение приходит от Facade. На основе полей формируется заявка.",
+          "description": "Запрос на создание заявки",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -674,7 +674,7 @@
           "fields": [
             {
               "name": "user_id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -686,7 +686,7 @@
             },
             {
               "name": "type",
-              "description": "",
+              "description": "Тип заявки - \"Покупка\" или \"Продажа\"",
               "label": "",
               "type": "OrderType",
               "longType": "OrderType",
@@ -698,7 +698,7 @@
             },
             {
               "name": "product_id",
-              "description": "",
+              "description": "Id товара, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -710,7 +710,7 @@
             },
             {
               "name": "price",
-              "description": "",
+              "description": "Цена товара",
               "label": "",
               "type": "DecimalValue",
               "longType": "moneyTypes.DecimalValue",
@@ -722,7 +722,7 @@
             },
             {
               "name": "quantity",
-              "description": "",
+              "description": "Количество товара",
               "label": "",
               "type": "int32",
               "longType": "int32",
@@ -738,7 +738,7 @@
           "name": "CreateOrderResponse",
           "longName": "CreateOrderResponse",
           "fullName": "orderClient.CreateOrderResponse",
-          "description": "",
+          "description": "Ответ на создание заявки",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": true,
@@ -746,7 +746,7 @@
           "fields": [
             {
               "name": "error",
-              "description": "",
+              "description": "Сообщение об ошибке \nСообщение об ошибке выводится, если:\n1. Пользователь с таким Id не найден\n2. Пользователь не имеет продукт с таким Id \n3. Пользователь не имеет необходимое количества товара",
               "label": "",
               "type": "Error",
               "longType": "Error",
@@ -758,7 +758,7 @@
             },
             {
               "name": "success",
-              "description": "",
+              "description": "В случае успешного удаления товара - пустое поле",
               "label": "",
               "type": "SuccessResponse",
               "longType": "SuccessResponse",
@@ -774,7 +774,7 @@
           "name": "SuccessResponse",
           "longName": "SuccessResponse",
           "fullName": "orderClient.SuccessResponse",
-          "description": "",
+          "description": "Пустое поле при успешной проверке данных",
           "hasExtensions": false,
           "hasFields": false,
           "hasOneofs": false,
@@ -787,11 +787,11 @@
           "name": "OrderProcessingForClient",
           "longName": "OrderProcessingForClient",
           "fullName": "orderClient.OrderProcessingForClient",
-          "description": "service for Client",
+          "description": "Обработка заявок",
           "methods": [
             {
               "name": "CreateOrder",
-              "description": "",
+              "description": "Удаленный вызов процедуры создания заявки",
               "requestType": "CreateOrderRequest",
               "requestLongType": "CreateOrderRequest",
               "requestFullType": "orderClient.CreateOrderRequest",
@@ -820,7 +820,7 @@
           "name": "GetProductsRequest",
           "longName": "GetProductsRequest",
           "fullName": "productClient.GetProductsRequest",
-          "description": "",
+          "description": "Запрос на получение списка товаров в торговле",
           "hasExtensions": false,
           "hasFields": false,
           "hasOneofs": false,
@@ -831,7 +831,7 @@
           "name": "GetProductsResponse",
           "longName": "GetProductsResponse",
           "fullName": "productClient.GetProductsResponse",
-          "description": "",
+          "description": "Ответ на получение",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -839,7 +839,7 @@
           "fields": [
             {
               "name": "products",
-              "description": "",
+              "description": "Вывод последующей строчки в списке товаров",
               "label": "repeated",
               "type": "Product",
               "longType": "GetProductsResponse.Product",
@@ -855,7 +855,7 @@
           "name": "Product",
           "longName": "GetProductsResponse.Product",
           "fullName": "productClient.GetProductsResponse.Product",
-          "description": "",
+          "description": "Информация о товарах в торговле",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -863,7 +863,7 @@
           "fields": [
             {
               "name": "id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -875,7 +875,7 @@
             },
             {
               "name": "name",
-              "description": "",
+              "description": "Название товара",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -887,7 +887,7 @@
             },
             {
               "name": "bid",
-              "description": "",
+              "description": "Лучшая цена для продажи по текущим заявкам в торговле",
               "label": "",
               "type": "DecimalValue",
               "longType": "moneyTypes.DecimalValue",
@@ -899,7 +899,7 @@
             },
             {
               "name": "ask",
-              "description": "",
+              "description": "Лучшая цена для покупки по текущим заявкам в торговле",
               "label": "",
               "type": "DecimalValue",
               "longType": "moneyTypes.DecimalValue",
@@ -917,11 +917,11 @@
           "name": "ProductServiceForClient",
           "longName": "ProductServiceForClient",
           "fullName": "productClient.ProductServiceForClient",
-          "description": "",
+          "description": "Сервис списка товаров в торговле",
           "methods": [
             {
               "name": "GetProducts",
-              "description": "",
+              "description": "Удаленный вызов процедуры просмотра списка товаров в торговле",
               "requestType": "GetProductsRequest",
               "requestLongType": "GetProductsRequest",
               "requestFullType": "productClient.GetProductsRequest",
@@ -950,7 +950,7 @@
           "name": "GetBalanceRequest",
           "longName": "GetBalanceRequest",
           "fullName": "customTypes.GetBalanceRequest",
-          "description": "",
+          "description": "Запрос баланса",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -958,7 +958,7 @@
           "fields": [
             {
               "name": "id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -974,7 +974,7 @@
           "name": "GetBalanceResponse",
           "longName": "GetBalanceResponse",
           "fullName": "customTypes.GetBalanceResponse",
-          "description": "",
+          "description": "Ответ на запрос",
           "hasExtensions": false,
           "hasFields": true,
           "hasOneofs": false,
@@ -982,7 +982,7 @@
           "fields": [
             {
               "name": "user_id",
-              "description": "",
+              "description": "Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".",
               "label": "",
               "type": "string",
               "longType": "string",
@@ -994,7 +994,7 @@
             },
             {
               "name": "balance",
-              "description": "",
+              "description": "Баланс в у.е.",
               "label": "",
               "type": "DecimalValue",
               "longType": "moneyTypes.DecimalValue",
@@ -1012,7 +1012,7 @@
           "name": "BalanceService",
           "longName": "BalanceService",
           "fullName": "customTypes.BalanceService",
-          "description": "",
+          "description": "Сервис баланса Пользователя",
           "methods": [
             {
               "name": "GetBalance",

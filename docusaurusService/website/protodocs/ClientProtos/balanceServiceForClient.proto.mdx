@@ -18,11 +18,11 @@ _**package** customTypes_
 
 
 ### `GetBalanceRequest`
-<ProtoMessage key={0} message={{"name":"GetBalanceRequest","longName":"GetBalanceRequest","fullName":"customTypes.GetBalanceRequest","description":"","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"id","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
+<ProtoMessage key={0} message={{"name":"GetBalanceRequest","longName":"GetBalanceRequest","fullName":"customTypes.GetBalanceRequest","description":"Запрос баланса","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"id","description":"Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
 
 
 ### `GetBalanceResponse`
-<ProtoMessage key={1} message={{"name":"GetBalanceResponse","longName":"GetBalanceResponse","fullName":"customTypes.GetBalanceResponse","description":"","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"user_id","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"balance","description":"","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"}]}} />
+<ProtoMessage key={1} message={{"name":"GetBalanceResponse","longName":"GetBalanceResponse","fullName":"customTypes.GetBalanceResponse","description":"Ответ на запрос","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"user_id","description":"Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"balance","description":"Баланс в у.е.","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"}]}} />
 
 ---
 ## Services
@@ -30,7 +30,7 @@ _**package** customTypes_
 
 ### `BalanceService`
 
-
+Сервис баланса Пользователя
 
 
 #### `GetBalance`

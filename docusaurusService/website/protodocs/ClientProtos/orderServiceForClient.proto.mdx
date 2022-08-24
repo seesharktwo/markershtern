@@ -18,26 +18,26 @@ _**package** orderClient_
 
 
 ### `CreateOrderRequest`
-<ProtoMessage key={0} message={{"name":"CreateOrderRequest","longName":"CreateOrderRequest","fullName":"orderClient.CreateOrderRequest","description":"Сообщение приходит от Facade. На основе полей формируется заявка.","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"user_id","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"type","description":"","label":"","type":"OrderType","longType":"OrderType","fullType":"orderClient.OrderType","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#ordertype"},{"name":"product_id","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"price","description":"","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"},{"name":"quantity","description":"","label":"","type":"int32","longType":"int32","fullType":"int32","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
+<ProtoMessage key={0} message={{"name":"CreateOrderRequest","longName":"CreateOrderRequest","fullName":"orderClient.CreateOrderRequest","description":"Запрос на создание заявки","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"user_id","description":"Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"type","description":"Тип заявки - \"Покупка\" или \"Продажа\"","label":"","type":"OrderType","longType":"OrderType","fullType":"orderClient.OrderType","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#ordertype"},{"name":"product_id","description":"Id товара, который расшифровывается по схеме 8-4-4-4-12: \n\"3422b448-2460-4fd2-9183-8000de6f8343\".","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"price","description":"Цена товара","label":"","type":"DecimalValue","longType":"moneyTypes.DecimalValue","fullType":"moneyTypes.DecimalValue","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":"","typeLink":"/protodocs/decimalValue.proto#decimalvalue"},{"name":"quantity","description":"Количество товара","label":"","type":"int32","longType":"int32","fullType":"int32","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
 
 
 ### `CreateOrderResponse`
-<ProtoMessage key={1} message={{"name":"CreateOrderResponse","longName":"CreateOrderResponse","fullName":"orderClient.CreateOrderResponse","description":"","hasExtensions":false,"hasFields":true,"hasOneofs":true,"extensions":[],"fields":[{"name":"error","description":"","label":"","type":"Error","longType":"Error","fullType":"orderClient.Error","ismap":false,"isoneof":true,"oneofdecl":"result","defaultValue":"","typeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#error"},{"name":"success","description":"","label":"","type":"SuccessResponse","longType":"SuccessResponse","fullType":"orderClient.SuccessResponse","ismap":false,"isoneof":true,"oneofdecl":"result","defaultValue":"","typeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#successresponse"}]}} />
+<ProtoMessage key={1} message={{"name":"CreateOrderResponse","longName":"CreateOrderResponse","fullName":"orderClient.CreateOrderResponse","description":"Ответ на создание заявки","hasExtensions":false,"hasFields":true,"hasOneofs":true,"extensions":[],"fields":[{"name":"error","description":"Сообщение об ошибке \nСообщение об ошибке выводится, если:\n1. Пользователь с таким Id не найден\n2. Пользователь не имеет продукт с таким Id \n3. Пользователь не имеет необходимое количества товара","label":"","type":"Error","longType":"Error","fullType":"orderClient.Error","ismap":false,"isoneof":true,"oneofdecl":"result","defaultValue":"","typeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#error"},{"name":"success","description":"В случае успешного удаления товара - пустое поле","label":"","type":"SuccessResponse","longType":"SuccessResponse","fullType":"orderClient.SuccessResponse","ismap":false,"isoneof":true,"oneofdecl":"result","defaultValue":"","typeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#successresponse"}]}} />
 
 
 ### `SuccessResponse`
-<ProtoMessage key={2} message={{"name":"SuccessResponse","longName":"SuccessResponse","fullName":"orderClient.SuccessResponse","description":"","hasExtensions":false,"hasFields":false,"hasOneofs":false,"extensions":[],"fields":[]}} />
+<ProtoMessage key={2} message={{"name":"SuccessResponse","longName":"SuccessResponse","fullName":"orderClient.SuccessResponse","description":"Пустое поле при успешной проверке данных","hasExtensions":false,"hasFields":false,"hasOneofs":false,"extensions":[],"fields":[]}} />
 
 ---
 ## Enums
 
 
 ### `Error`
-<ProtoEnum key={0} enumb={{"name":"Error","longName":"Error","fullName":"orderClient.Error","description":"","values":[{"name":"USER_NOT_FOUND","number":"0","description":"Пользователь с таким Id не был найден."},{"name":"USER_NOT_HAVE_PRODUCT","number":"1","description":"Пользователь не имеет продукт с таким Id."},{"name":"USER_NOT_HAVE_QUANTITY_PRODUCT","number":"2","description":"Пользователь не имеет необходимое количества продукта."}]}} />
+<ProtoEnum key={0} enumb={{"name":"Error","longName":"Error","fullName":"orderClient.Error","description":"Тип ошибки для вывода сообщения об ошибке","values":[{"name":"USER_NOT_FOUND","number":"0","description":"Пользователь с таким Id не был найден."},{"name":"USER_NOT_HAVE_PRODUCT","number":"1","description":"Пользователь не имеет продукт с таким Id."},{"name":"USER_NOT_HAVE_QUANTITY_PRODUCT","number":"2","description":"Пользователь не имеет необходимое количества товара."}]}} />
 
 
 ### `OrderType`
-<ProtoEnum key={1} enumb={{"name":"OrderType","longName":"OrderType","fullName":"orderClient.OrderType","description":"","values":[{"name":"SELL_ORDER","number":"0","description":""},{"name":"BUY_ORDER","number":"1","description":""}]}} />
+<ProtoEnum key={1} enumb={{"name":"OrderType","longName":"OrderType","fullName":"orderClient.OrderType","description":"Тип операции при создании заявки","values":[{"name":"SELL_ORDER","number":"0","description":"Продажа товара"},{"name":"BUY_ORDER","number":"1","description":"Покупка товара"}]}} />
 
 ---
 ## Services
@@ -45,11 +45,11 @@ _**package** orderClient_
 
 ### `OrderProcessingForClient`
 
-service for Client
+Обработка заявок
 
 
 #### `CreateOrder`
-<ProtoServiceMethod key={'CreateOrder-0'} method={{"name":"CreateOrder","description":"","requestType":"CreateOrderRequest","requestLongType":"CreateOrderRequest","requestFullType":"orderClient.CreateOrderRequest","requestStreaming":false,"responseType":"CreateOrderResponse","responseLongType":"CreateOrderResponse","responseFullType":"orderClient.CreateOrderResponse","responseStreaming":false,"requestTypeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#createorderrequest","responseTypeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#createorderresponse"}} />
+<ProtoServiceMethod key={'CreateOrder-0'} method={{"name":"CreateOrder","description":"Удаленный вызов процедуры создания заявки","requestType":"CreateOrderRequest","requestLongType":"CreateOrderRequest","requestFullType":"orderClient.CreateOrderRequest","requestStreaming":false,"responseType":"CreateOrderResponse","responseLongType":"CreateOrderResponse","responseFullType":"orderClient.CreateOrderResponse","responseStreaming":false,"requestTypeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#createorderrequest","responseTypeLink":"/protodocs/ClientProtos/orderServiceForClient.proto#createorderresponse"}} />
 
 
 ---

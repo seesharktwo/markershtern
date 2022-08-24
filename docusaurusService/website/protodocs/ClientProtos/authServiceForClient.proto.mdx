@@ -18,11 +18,11 @@ _**package** _
 
 
 ### `LoginRequest`
-<ProtoMessage key={0} message={{"name":"LoginRequest","longName":"LoginRequest","fullName":".LoginRequest","description":"The request message","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"login","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"password","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
+<ProtoMessage key={0} message={{"name":"LoginRequest","longName":"LoginRequest","fullName":".LoginRequest","description":"Запрос ввода логина и пароля для авторизации пользователя","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"login","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"password","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
 
 
 ### `LoginResponse`
-<ProtoMessage key={1} message={{"name":"LoginResponse","longName":"LoginResponse","fullName":".LoginResponse","description":"The responce message","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"user_Id","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
+<ProtoMessage key={1} message={{"name":"LoginResponse","longName":"LoginResponse","fullName":".LoginResponse","description":"Сообщение ответа авторизации для пользователя","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"user_Id","description":"Id пользователя, который расшифровывается по схеме 8-4-4-4-12: \"3422b448-2460-4fd2-9183-8000de6f8343\".","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
 
 ---
 ## Services
@@ -30,7 +30,7 @@ _**package** _
 
 ### `AuthorizationServiceForClient`
 
-implementation service
+Сервис внедрения авторизации
 
 
 #### `Login`
