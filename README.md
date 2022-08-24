@@ -1,2 +1,0 @@
-# markershtern
-stock market
