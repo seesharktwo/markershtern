@@ -1,0 +1,43 @@
+---
+title: authServiceForClient.proto
+hide_title: true
+---
+
+import { ProtoMessage, ProtoServiceMethod, ProtoEnum } from '@theme/ProtoFile';
+
+## `authServiceForClient.proto`
+_**path** ClientProtos/authServiceForClient.proto_
+
+_**package** _
+
+
+
+---
+
+## Messages
+
+
+### `LoginRequest`
+<ProtoMessage key={0} message={{"name":"LoginRequest","longName":"LoginRequest","fullName":".LoginRequest","description":"The request message","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"login","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"password","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
+
+
+### `LoginResponse`
+<ProtoMessage key={1} message={{"name":"LoginResponse","longName":"LoginResponse","fullName":".LoginResponse","description":"The responce message","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"user_Id","description":"","label":"","type":"string","longType":"string","fullType":"string","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
+
+---
+## Services
+
+
+### `AuthorizationServiceForClient`
+
+implementation service
+
+
+#### `Login`
+<ProtoServiceMethod key={'Login-0'} method={{"name":"Login","description":"","requestType":"LoginRequest","requestLongType":".LoginRequest","requestFullType":"LoginRequest","requestStreaming":false,"responseType":"LoginResponse","responseLongType":".LoginResponse","responseFullType":"LoginResponse","responseStreaming":false}} />
+
+
+---
+
+
+  

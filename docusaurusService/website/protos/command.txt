@@ -1,0 +1,10 @@
+protoc --doc_out=./fixtures --doc_opt=json,proto_workspace.json --proto_path=Protos ClientProtos/authServiceForClient.proto ClientProtos/briefcaseServiceForClient.proto ClientProtos/orderServiceForClient.proto ClientProtos/productServiceForClient.proto
+
+
+protoc --doc_out=./fixtures --doc_opt=json,proto_workspace.json --proto_path=Protos ClientProtos
+
+protoc --doc_out=./fixtures --doc_opt=json,proto_workspace.json --proto_path=Protos ClientProtos/authServiceForClient.proto ClientProtos/briefcaseServiceForClient.proto ClientProtos/orderServiceForClient.proto ClientProtos/productServiceForClient.proto decimalValue.proto
+
+
+protoc --doc_out=./fixtures --doc_opt=json,proto_workspace.json --proto_path=../../Protos ClientProtos/authServiceForClient.proto ClientProtos/briefcaseServiceForClient.proto ClientProtos/orderServiceForClient.proto ClientProtos/productServiceForClient.proto ClientProtos/balanceServiceForClient.proto decimalValue.proto 
+

@@ -1,0 +1,1251 @@
+{
+  "files": [
+    {
+      "name": "ClientProtos/authServiceForClient.proto",
+      "description": "",
+      "package": "",
+      "hasEnums": false,
+      "hasExtensions": false,
+      "hasMessages": true,
+      "hasServices": true,
+      "enums": [],
+      "extensions": [],
+      "messages": [
+        {
+          "name": "LoginRequest",
+          "longName": "LoginRequest",
+          "fullName": ".LoginRequest",
+          "description": "The request message",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "login",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "password",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "LoginResponse",
+          "longName": "LoginResponse",
+          "fullName": ".LoginResponse",
+          "description": "The responce message",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "user_Id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        }
+      ],
+      "services": [
+        {
+          "name": "AuthorizationServiceForClient",
+          "longName": "AuthorizationServiceForClient",
+          "fullName": ".AuthorizationServiceForClient",
+          "description": "implementation service",
+          "methods": [
+            {
+              "name": "Login",
+              "description": "",
+              "requestType": "LoginRequest",
+              "requestLongType": ".LoginRequest",
+              "requestFullType": "LoginRequest",
+              "requestStreaming": false,
+              "responseType": "LoginResponse",
+              "responseLongType": ".LoginResponse",
+              "responseFullType": "LoginResponse",
+              "responseStreaming": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ClientProtos/briefcaseServiceForClient.proto",
+      "description": "",
+      "package": "BriefcaseClient",
+      "hasEnums": true,
+      "hasExtensions": false,
+      "hasMessages": true,
+      "hasServices": true,
+      "enums": [
+        {
+          "name": "Error",
+          "longName": "Error",
+          "fullName": "BriefcaseClient.Error",
+          "description": "",
+          "values": [
+            {
+              "name": "USER_NOT_FOUND",
+              "number": "0",
+              "description": ""
+            },
+            {
+              "name": "USER_NOT_HAVE_PRODUCT",
+              "number": "1",
+              "description": ""
+            },
+            {
+              "name": "USER_NOT_HAVE_QUANTITY_PRODUCT",
+              "number": "2",
+              "description": ""
+            }
+          ]
+        }
+      ],
+      "extensions": [],
+      "messages": [
+        {
+          "name": "AddProductRequest",
+          "longName": "AddProductRequest",
+          "fullName": "BriefcaseClient.AddProductRequest",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "user_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "product",
+              "description": "",
+              "label": "",
+              "type": "Product",
+              "longType": "Product",
+              "fullType": "BriefcaseClient.Product",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "AddProductResponse",
+          "longName": "AddProductResponse",
+          "fullName": "BriefcaseClient.AddProductResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": true,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "error",
+              "description": "",
+              "label": "",
+              "type": "Error",
+              "longType": "Error",
+              "fullType": "BriefcaseClient.Error",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            },
+            {
+              "name": "success",
+              "description": "",
+              "label": "",
+              "type": "SuccessResponse",
+              "longType": "SuccessResponse",
+              "fullType": "BriefcaseClient.SuccessResponse",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "GetUserProductsRequest",
+          "longName": "GetUserProductsRequest",
+          "fullName": "BriefcaseClient.GetUserProductsRequest",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "user_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "GetUserProductsResponse",
+          "longName": "GetUserProductsResponse",
+          "fullName": "BriefcaseClient.GetUserProductsResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": true,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "list",
+              "description": "",
+              "label": "",
+              "type": "ProductsList",
+              "longType": "ProductsList",
+              "fullType": "BriefcaseClient.ProductsList",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "response",
+              "defaultValue": ""
+            },
+            {
+              "name": "error",
+              "description": "",
+              "label": "",
+              "type": "Error",
+              "longType": "Error",
+              "fullType": "BriefcaseClient.Error",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "response",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "longName": "Product",
+          "fullName": "BriefcaseClient.Product",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "productId",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "name",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "authorMarker",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "price",
+              "description": "",
+              "label": "",
+              "type": "DecimalValue",
+              "longType": "moneyTypes.DecimalValue",
+              "fullType": "moneyTypes.DecimalValue",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "description",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "count",
+              "description": "",
+              "label": "",
+              "type": "int32",
+              "longType": "int32",
+              "fullType": "int32",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "ProductsList",
+          "longName": "ProductsList",
+          "fullName": "BriefcaseClient.ProductsList",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "products",
+              "description": "",
+              "label": "repeated",
+              "type": "Product",
+              "longType": "Product",
+              "fullType": "BriefcaseClient.Product",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "RemoveProductRequest",
+          "longName": "RemoveProductRequest",
+          "fullName": "BriefcaseClient.RemoveProductRequest",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "user_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "product_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "author_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "RemoveProductResponse",
+          "longName": "RemoveProductResponse",
+          "fullName": "BriefcaseClient.RemoveProductResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": true,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "error",
+              "description": "",
+              "label": "",
+              "type": "Error",
+              "longType": "Error",
+              "fullType": "BriefcaseClient.Error",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            },
+            {
+              "name": "success",
+              "description": "",
+              "label": "",
+              "type": "SuccessResponse",
+              "longType": "SuccessResponse",
+              "fullType": "BriefcaseClient.SuccessResponse",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "SuccessResponse",
+          "longName": "SuccessResponse",
+          "fullName": "BriefcaseClient.SuccessResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": false,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": []
+        },
+        {
+          "name": "ValidateOrderRequest",
+          "longName": "ValidateOrderRequest",
+          "fullName": "BriefcaseClient.ValidateOrderRequest",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "user_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "product_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "quantity",
+              "description": "",
+              "label": "",
+              "type": "int32",
+              "longType": "int32",
+              "fullType": "int32",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "ValidateOrderResponse",
+          "longName": "ValidateOrderResponse",
+          "fullName": "BriefcaseClient.ValidateOrderResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": true,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "error",
+              "description": "",
+              "label": "",
+              "type": "Error",
+              "longType": "Error",
+              "fullType": "BriefcaseClient.Error",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            },
+            {
+              "name": "success",
+              "description": "",
+              "label": "",
+              "type": "SuccessResponse",
+              "longType": "SuccessResponse",
+              "fullType": "BriefcaseClient.SuccessResponse",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            }
+          ]
+        }
+      ],
+      "services": [
+        {
+          "name": "UserBriefcaseServiceForClient",
+          "longName": "UserBriefcaseServiceForClient",
+          "fullName": "BriefcaseClient.UserBriefcaseServiceForClient",
+          "description": "",
+          "methods": [
+            {
+              "name": "GetUserProducts",
+              "description": "",
+              "requestType": "GetUserProductsRequest",
+              "requestLongType": "GetUserProductsRequest",
+              "requestFullType": "BriefcaseClient.GetUserProductsRequest",
+              "requestStreaming": false,
+              "responseType": "GetUserProductsResponse",
+              "responseLongType": "GetUserProductsResponse",
+              "responseFullType": "BriefcaseClient.GetUserProductsResponse",
+              "responseStreaming": false
+            },
+            {
+              "name": "AddProduct",
+              "description": "",
+              "requestType": "AddProductRequest",
+              "requestLongType": "AddProductRequest",
+              "requestFullType": "BriefcaseClient.AddProductRequest",
+              "requestStreaming": false,
+              "responseType": "AddProductResponse",
+              "responseLongType": "AddProductResponse",
+              "responseFullType": "BriefcaseClient.AddProductResponse",
+              "responseStreaming": false
+            },
+            {
+              "name": "RemoveProduct",
+              "description": "",
+              "requestType": "RemoveProductRequest",
+              "requestLongType": "RemoveProductRequest",
+              "requestFullType": "BriefcaseClient.RemoveProductRequest",
+              "requestStreaming": false,
+              "responseType": "RemoveProductResponse",
+              "responseLongType": "RemoveProductResponse",
+              "responseFullType": "BriefcaseClient.RemoveProductResponse",
+              "responseStreaming": false
+            },
+            {
+              "name": "ValidateOrder",
+              "description": "",
+              "requestType": "ValidateOrderRequest",
+              "requestLongType": "ValidateOrderRequest",
+              "requestFullType": "BriefcaseClient.ValidateOrderRequest",
+              "requestStreaming": false,
+              "responseType": "ValidateOrderResponse",
+              "responseLongType": "ValidateOrderResponse",
+              "responseFullType": "BriefcaseClient.ValidateOrderResponse",
+              "responseStreaming": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ClientProtos/orderServiceForClient.proto",
+      "description": "",
+      "package": "orderClient",
+      "hasEnums": true,
+      "hasExtensions": false,
+      "hasMessages": true,
+      "hasServices": true,
+      "enums": [
+        {
+          "name": "Error",
+          "longName": "Error",
+          "fullName": "orderClient.Error",
+          "description": "",
+          "values": [
+            {
+              "name": "USER_NOT_FOUND",
+              "number": "0",
+              "description": "Пользователь с таким Id не был найден."
+            },
+            {
+              "name": "USER_NOT_HAVE_PRODUCT",
+              "number": "1",
+              "description": "Пользователь не имеет продукт с таким Id."
+            },
+            {
+              "name": "USER_NOT_HAVE_QUANTITY_PRODUCT",
+              "number": "2",
+              "description": "Пользователь не имеет необходимое количества продукта."
+            }
+          ]
+        },
+        {
+          "name": "OrderType",
+          "longName": "OrderType",
+          "fullName": "orderClient.OrderType",
+          "description": "",
+          "values": [
+            {
+              "name": "SELL_ORDER",
+              "number": "0",
+              "description": ""
+            },
+            {
+              "name": "BUY_ORDER",
+              "number": "1",
+              "description": ""
+            }
+          ]
+        }
+      ],
+      "extensions": [],
+      "messages": [
+        {
+          "name": "CreateOrderRequest",
+          "longName": "CreateOrderRequest",
+          "fullName": "orderClient.CreateOrderRequest",
+          "description": "Сообщение приходит от Facade. На основе полей формируется заявка.",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "user_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "type",
+              "description": "",
+              "label": "",
+              "type": "OrderType",
+              "longType": "OrderType",
+              "fullType": "orderClient.OrderType",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "product_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "price",
+              "description": "",
+              "label": "",
+              "type": "DecimalValue",
+              "longType": "moneyTypes.DecimalValue",
+              "fullType": "moneyTypes.DecimalValue",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "quantity",
+              "description": "",
+              "label": "",
+              "type": "int32",
+              "longType": "int32",
+              "fullType": "int32",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "CreateOrderResponse",
+          "longName": "CreateOrderResponse",
+          "fullName": "orderClient.CreateOrderResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": true,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "error",
+              "description": "",
+              "label": "",
+              "type": "Error",
+              "longType": "Error",
+              "fullType": "orderClient.Error",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            },
+            {
+              "name": "success",
+              "description": "",
+              "label": "",
+              "type": "SuccessResponse",
+              "longType": "SuccessResponse",
+              "fullType": "orderClient.SuccessResponse",
+              "ismap": false,
+              "isoneof": true,
+              "oneofdecl": "result",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "SuccessResponse",
+          "longName": "SuccessResponse",
+          "fullName": "orderClient.SuccessResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": false,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": []
+        }
+      ],
+      "services": [
+        {
+          "name": "OrderProcessingForClient",
+          "longName": "OrderProcessingForClient",
+          "fullName": "orderClient.OrderProcessingForClient",
+          "description": "service for Client",
+          "methods": [
+            {
+              "name": "CreateOrder",
+              "description": "",
+              "requestType": "CreateOrderRequest",
+              "requestLongType": "CreateOrderRequest",
+              "requestFullType": "orderClient.CreateOrderRequest",
+              "requestStreaming": false,
+              "responseType": "CreateOrderResponse",
+              "responseLongType": "CreateOrderResponse",
+              "responseFullType": "orderClient.CreateOrderResponse",
+              "responseStreaming": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ClientProtos/productServiceForClient.proto",
+      "description": "",
+      "package": "productClient",
+      "hasEnums": false,
+      "hasExtensions": false,
+      "hasMessages": true,
+      "hasServices": true,
+      "enums": [],
+      "extensions": [],
+      "messages": [
+        {
+          "name": "GetProductsRequest",
+          "longName": "GetProductsRequest",
+          "fullName": "productClient.GetProductsRequest",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": false,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": []
+        },
+        {
+          "name": "GetProductsResponse",
+          "longName": "GetProductsResponse",
+          "fullName": "productClient.GetProductsResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "products",
+              "description": "",
+              "label": "repeated",
+              "type": "Product",
+              "longType": "GetProductsResponse.Product",
+              "fullType": "productClient.GetProductsResponse.Product",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "Product",
+          "longName": "GetProductsResponse.Product",
+          "fullName": "productClient.GetProductsResponse.Product",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "name",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "bid",
+              "description": "",
+              "label": "",
+              "type": "DecimalValue",
+              "longType": "moneyTypes.DecimalValue",
+              "fullType": "moneyTypes.DecimalValue",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "ask",
+              "description": "",
+              "label": "",
+              "type": "DecimalValue",
+              "longType": "moneyTypes.DecimalValue",
+              "fullType": "moneyTypes.DecimalValue",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        }
+      ],
+      "services": [
+        {
+          "name": "ProductServiceForClient",
+          "longName": "ProductServiceForClient",
+          "fullName": "productClient.ProductServiceForClient",
+          "description": "",
+          "methods": [
+            {
+              "name": "GetProducts",
+              "description": "",
+              "requestType": "GetProductsRequest",
+              "requestLongType": "GetProductsRequest",
+              "requestFullType": "productClient.GetProductsRequest",
+              "requestStreaming": false,
+              "responseType": "GetProductsResponse",
+              "responseLongType": "GetProductsResponse",
+              "responseFullType": "productClient.GetProductsResponse",
+              "responseStreaming": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "ClientProtos/balanceServiceForClient.proto",
+      "description": "",
+      "package": "customTypes",
+      "hasEnums": false,
+      "hasExtensions": false,
+      "hasMessages": true,
+      "hasServices": true,
+      "enums": [],
+      "extensions": [],
+      "messages": [
+        {
+          "name": "GetBalanceRequest",
+          "longName": "GetBalanceRequest",
+          "fullName": "customTypes.GetBalanceRequest",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        },
+        {
+          "name": "GetBalanceResponse",
+          "longName": "GetBalanceResponse",
+          "fullName": "customTypes.GetBalanceResponse",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "user_id",
+              "description": "",
+              "label": "",
+              "type": "string",
+              "longType": "string",
+              "fullType": "string",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "balance",
+              "description": "",
+              "label": "",
+              "type": "DecimalValue",
+              "longType": "moneyTypes.DecimalValue",
+              "fullType": "moneyTypes.DecimalValue",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        }
+      ],
+      "services": [
+        {
+          "name": "BalanceService",
+          "longName": "BalanceService",
+          "fullName": "customTypes.BalanceService",
+          "description": "",
+          "methods": [
+            {
+              "name": "GetBalance",
+              "description": "",
+              "requestType": "GetBalanceRequest",
+              "requestLongType": "GetBalanceRequest",
+              "requestFullType": "customTypes.GetBalanceRequest",
+              "requestStreaming": false,
+              "responseType": "GetBalanceResponse",
+              "responseLongType": "GetBalanceResponse",
+              "responseFullType": "customTypes.GetBalanceResponse",
+              "responseStreaming": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "decimalValue.proto",
+      "description": "",
+      "package": "moneyTypes",
+      "hasEnums": false,
+      "hasExtensions": false,
+      "hasMessages": true,
+      "hasServices": false,
+      "enums": [],
+      "extensions": [],
+      "messages": [
+        {
+          "name": "DecimalValue",
+          "longName": "DecimalValue",
+          "fullName": "moneyTypes.DecimalValue",
+          "description": "",
+          "hasExtensions": false,
+          "hasFields": true,
+          "hasOneofs": false,
+          "extensions": [],
+          "fields": [
+            {
+              "name": "units",
+              "description": "The whole units of the amount.",
+              "label": "",
+              "type": "int64",
+              "longType": "int64",
+              "fullType": "int64",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            },
+            {
+              "name": "nanos",
+              "description": "Number of nano (10^-9) units of the amount.\nThe value must be between -999,999,999 and +999,999,999 inclusive.\nIf `units` is positive, `nanos` must be positive or zero.\nIf `units` is zero, `nanos` can be positive, zero, or negative.\nIf `units` is negative, `nanos` must be negative or zero.\nFor example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.",
+              "label": "",
+              "type": "sfixed32",
+              "longType": "sfixed32",
+              "fullType": "sfixed32",
+              "ismap": false,
+              "isoneof": false,
+              "oneofdecl": "",
+              "defaultValue": ""
+            }
+          ]
+        }
+      ],
+      "services": []
+    }
+  ],
+  "scalarValueTypes": [
+    {
+      "protoType": "double",
+      "notes": "",
+      "cppType": "double",
+      "csType": "double",
+      "goType": "float64",
+      "javaType": "double",
+      "phpType": "float",
+      "pythonType": "float",
+      "rubyType": "Float"
+    },
+    {
+      "protoType": "float",
+      "notes": "",
+      "cppType": "float",
+      "csType": "float",
+      "goType": "float32",
+      "javaType": "float",
+      "phpType": "float",
+      "pythonType": "float",
+      "rubyType": "Float"
+    },
+    {
+      "protoType": "int32",
+      "notes": "Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.",
+      "cppType": "int32",
+      "csType": "int",
+      "goType": "int32",
+      "javaType": "int",
+      "phpType": "integer",
+      "pythonType": "int",
+      "rubyType": "Bignum or Fixnum (as required)"
+    },
+    {
+      "protoType": "int64",
+      "notes": "Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.",
+      "cppType": "int64",
+      "csType": "long",
+      "goType": "int64",
+      "javaType": "long",
+      "phpType": "integer/string",
+      "pythonType": "int/long",
+      "rubyType": "Bignum"
+    },
+    {
+      "protoType": "uint32",
+      "notes": "Uses variable-length encoding.",
+      "cppType": "uint32",
+      "csType": "uint",
+      "goType": "uint32",
+      "javaType": "int",
+      "phpType": "integer",
+      "pythonType": "int/long",
+      "rubyType": "Bignum or Fixnum (as required)"
+    },
+    {
+      "protoType": "uint64",
+      "notes": "Uses variable-length encoding.",
+      "cppType": "uint64",
+      "csType": "ulong",
+      "goType": "uint64",
+      "javaType": "long",
+      "phpType": "integer/string",
+      "pythonType": "int/long",
+      "rubyType": "Bignum or Fixnum (as required)"
+    },
+    {
+      "protoType": "sint32",
+      "notes": "Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.",
+      "cppType": "int32",
+      "csType": "int",
+      "goType": "int32",
+      "javaType": "int",
+      "phpType": "integer",
+      "pythonType": "int",
+      "rubyType": "Bignum or Fixnum (as required)"
+    },
+    {
+      "protoType": "sint64",
+      "notes": "Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.",
+      "cppType": "int64",
+      "csType": "long",
+      "goType": "int64",
+      "javaType": "long",
+      "phpType": "integer/string",
+      "pythonType": "int/long",
+      "rubyType": "Bignum"
+    },
+    {
+      "protoType": "fixed32",
+      "notes": "Always four bytes. More efficient than uint32 if values are often greater than 2^28.",
+      "cppType": "uint32",
+      "csType": "uint",
+      "goType": "uint32",
+      "javaType": "int",
+      "phpType": "integer",
+      "pythonType": "int",
+      "rubyType": "Bignum or Fixnum (as required)"
+    },
+    {
+      "protoType": "fixed64",
+      "notes": "Always eight bytes. More efficient than uint64 if values are often greater than 2^56.",
+      "cppType": "uint64",
+      "csType": "ulong",
+      "goType": "uint64",
+      "javaType": "long",
+      "phpType": "integer/string",
+      "pythonType": "int/long",
+      "rubyType": "Bignum"
+    },
+    {
+      "protoType": "sfixed32",
+      "notes": "Always four bytes.",
+      "cppType": "int32",
+      "csType": "int",
+      "goType": "int32",
+      "javaType": "int",
+      "phpType": "integer",
+      "pythonType": "int",
+      "rubyType": "Bignum or Fixnum (as required)"
+    },
+    {
+      "protoType": "sfixed64",
+      "notes": "Always eight bytes.",
+      "cppType": "int64",
+      "csType": "long",
+      "goType": "int64",
+      "javaType": "long",
+      "phpType": "integer/string",
+      "pythonType": "int/long",
+      "rubyType": "Bignum"
+    },
+    {
+      "protoType": "bool",
+      "notes": "",
+      "cppType": "bool",
+      "csType": "bool",
+      "goType": "bool",
+      "javaType": "boolean",
+      "phpType": "boolean",
+      "pythonType": "boolean",
+      "rubyType": "TrueClass/FalseClass"
+    },
+    {
+      "protoType": "string",
+      "notes": "A string must always contain UTF-8 encoded or 7-bit ASCII text.",
+      "cppType": "string",
+      "csType": "string",
+      "goType": "string",
+      "javaType": "String",
+      "phpType": "string",
+      "pythonType": "str/unicode",
+      "rubyType": "String (UTF-8)"
+    },
+    {
+      "protoType": "bytes",
+      "notes": "May contain any arbitrary sequence of bytes.",
+      "cppType": "string",
+      "csType": "ByteString",
+      "goType": "[]byte",
+      "javaType": "ByteString",
+      "phpType": "string",
+      "pythonType": "str",
+      "rubyType": "String (ASCII-8BIT)"
+    }
+  ]
+}
