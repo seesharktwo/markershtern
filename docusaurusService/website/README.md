@@ -4,30 +4,25 @@ This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern 
 
 ## Installation
 
-```console
-yarn install
+install node.js LTS version
+
+## Build  
+To build your proto you should run folowwing commands from "website" directory:  
+This command will add protos to generating queue
+```cmd
+  protoc --doc_out=./fixtures --doc_opt=json,proto_workspace.json --proto_path=../../Protos ClientProtos/authServiceForClient.proto ClientProtos/briefcaseServiceForClient.proto ClientProtos/orderServiceForClient.proto ClientProtos/productServiceForClient.proto ClientProtos/balanceServiceForClient.proto decimalValue.proto 
+
+```
+> To add new .proto file for generating you should add to this command proto's path from "Protos" directory in root path  
+
+This command will generate docs for protos in queue
+```cmd
+npx docusaurus generate-proto-docs
 ```
 
-## Local Development
-
-```console
-yarn start
+## Run
+To run docs you should run following command from "website" directory:  
+```cmd
+npm run start
 ```
-
-This command starts a local development server and open up a browser window. Most changes are reflected live without having to restart the server.
-
-## Build
-
-```console
-yarn build
-```
-
-This command generates static content into the `build` directory and can be served using any static contents hosting service.
-
-## Deployment
-
-```console
-GIT_USER=<Your GitHub username> USE_SSH=true yarn deploy
-```
-
-If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+To stop docs press CTRL+C
