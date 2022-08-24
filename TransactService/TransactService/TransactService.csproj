@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="..\..\Protos\productService.proto" GrpcServices="Server" ProtoRoot="..\..\Protos\" />
-    <Protobuf Include="..\..\Protos\orderEvents.proto" GrpcServices="Client" ProtoRoot="..\..\Protos\" />
     <Protobuf Include="..\..\Protos\decimalValue.proto" GrpcServices="Client" ProtoRoot="..\..\Protos\" />
+    <Protobuf Include="..\..\Protos\transactService.proto" GrpcServices="Client" ProtoRoot="..\..\Protos\" />
+    <Protobuf Include="..\..\Protos\orderEvents.proto" GrpcServices="Client" ProtoRoot="..\..\Protos\" />
   </ItemGroup>
 
   <ItemGroup>

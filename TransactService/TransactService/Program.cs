@@ -1,4 +1,7 @@
 using TransactService.Services;
+using UserBalanceMicroservice;
+using UserBalanceMicroservice.Configs;
+using UserBalanceMicroservice.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddGrpc();
+
+builder.Services.Configure<DatabaseSettings>(
+    builder.Configuration.GetSection("Database"));
+builder.Services.Configure<KafkaSettings>(
+    builder.Configuration.GetSection("BootstrapServerKafka"));
+
+AdminTopickBuilderService.Build();
+
+builder.Services.AddSingleton<TransactOperationService>();
+builder.Services.AddSingleton<TransactContext>();
+
+builder.Services.AddHostedService<KafkaConsumerService>();
 
 var app = builder.Build();
 
