@@ -43,11 +43,3 @@ namespace AuthMicroservice.Services
         }
     }
 }
-
-// Создание пользователя
-//var login = "Vasya1337";
-//var password = "qwerty";
-//var salt = BCrypt.Net.BCrypt.GenerateSalt();
-//var saltedPassword = "qwerty" + salt;
-//var hash = BCrypt.Net.BCrypt.HashPassword(saltedPassword);
-//await _context.CreateAsync(new Models.User { Login = login, Hash = hash, Salt = salt });
