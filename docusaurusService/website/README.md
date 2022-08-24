@@ -7,6 +7,8 @@ This website is built using [Docusaurus 2](https://v2.docusaurus.io/), a modern 
 install node.js LTS version
 
 install [yarn](https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable)
+
+install protoc
 ## Build  
 To build your proto you should run folowwing commands from "website" directory:  
   
