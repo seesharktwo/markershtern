@@ -11,6 +11,8 @@ namespace Facade.Mapper
             CreateMap<ProductForClient.GetProductsRequest, Product.GetProductsRequest>();
             CreateMap<ProductForClient.GetProductsResponse, Product.GetProductsResponse>();
             CreateMap<Product.GetProductsResponse, ProductForClient.GetProductsResponse>();
+            CreateMap<Product.GetProductsResponse.Types.Product, ProductForClient.GetProductsResponse.Types.Product>();
+            CreateMap<ProductForClient.GetProductsResponse.Types.Product, Product.GetProductsResponse.Types.Product>();
         }
 
     }
