@@ -3,11 +3,10 @@ using Microsoft.Extensions.Options;
 using UserBagMicroservice.Data.Settings;
 using UserBagMicroservice.Data.Repository;
 using Confluent.Kafka;
-using EnumList.CustomTypes;
-using eventList.CustomTypes;
 using MoneyTypes;
 using UserBagMicroservice.KafkaServices;
 using MongoDB.Bson;
+using Briefcase;
 
 namespace UserBagMicroservice.Services
 {
@@ -24,13 +23,13 @@ namespace UserBagMicroservice.Services
             _userBagRepository = userBagRepository;
         }
 
-        public async Task ChangeProduct(ProductChanged response)
+        public async Task ChangeProduct(TransactionProductCommitted response)
         {           
             try
             {
                 var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(response.IdUser) });
 
-                if(response.Mode == Operation.Addition)
+                if(response.MODE == Operation.Addition)
                 {
                     AddProduct(userBag, response);            
                 }
@@ -42,17 +41,18 @@ namespace UserBagMicroservice.Services
                 await _userBagRepository.ReplaceOneAsync(userBag);
                 var producer = new ProducerService<Null, TransactionCompleted>("TransactionCompleted", _config);
                 await producer.SendMessage(GetTransactionCompletedMessage(response));
-                _logger.LogInformation("Product was changed");
+                _logger.LogInformation($"TransactionCompleted event dispatched\n\t{response.IdProduct}");
+               
             }
             catch (Exception e)
             {
                 var producer = new ProducerService<Null, TransactionCanceled>("TransactionCanceled", _config);
                 await producer.SendMessage(GetTransactionCanceledMessage(response));
-                _logger.LogError(e.Message);
+                _logger.LogError($"TransactionCanceled event dispatched\n\t{e.Message}");
             }
         }
 
-        private void AddProduct(UserBag userBag, ProductChanged response)
+        private void AddProduct(UserBag userBag, TransactionProductCommitted response)
         {
             var product = userBag.Products.FirstOrDefault(x => x.Id.ToString() == response.IdProduct);
 
@@ -68,11 +68,11 @@ namespace UserBagMicroservice.Services
             product.TransactionId = response.IdGlobalTransact;
         }
 
-        private void SubtractProduct(UserBag userBag, ProductChanged response)
+        private void SubtractProduct(UserBag userBag, TransactionProductCommitted response)
         {
             var product = userBag.Products.FirstOrDefault(x => x.Id.ToString() == response.IdProduct);
 
-            CheckService.CheckProductOnNull(product);
+            CheckService.CheckUserProductOnNull(product);
             CheckService.CheckDublicateTransaction(product.TransactionId, response.IdGlobalTransact);
             CheckService.CheckProductOnQuantity(product.Quantity, response.Count);
 
@@ -85,11 +85,11 @@ namespace UserBagMicroservice.Services
             }
         }
 
-        private SourceEventTransaction GetSourceEventTransaction(ProductChanged response)
+        private SourceEventTransaction GetSourceEventTransaction(TransactionProductCommitted response)
         { 
-            if (response.Type == TransactionType.Action)
+            if (response.TYPE == TransactionType.Action)
             {
-                if (response.Mode == Operation.Addition)
+                if (response.MODE == Operation.Addition)
                 {
                     return SourceEventTransaction.ProductBriefcaseAdditionAction;
                 }
@@ -100,7 +100,7 @@ namespace UserBagMicroservice.Services
             }
             else
             {
-                if (response.Mode == Operation.Addition)
+                if (response.MODE == Operation.Addition)
                 {
                     return SourceEventTransaction.ProductBriefcaseAdditionRollback;
                 }
@@ -111,7 +111,7 @@ namespace UserBagMicroservice.Services
             }
         }
 
-        private Message<Null, TransactionCompleted> GetTransactionCompletedMessage(ProductChanged response)
+        private Message<Null, TransactionCompleted> GetTransactionCompletedMessage(TransactionProductCommitted response)
         {
             return new Message<Null, TransactionCompleted>
             {
@@ -125,7 +125,7 @@ namespace UserBagMicroservice.Services
             };
         }
 
-        private Message<Null, TransactionCanceled> GetTransactionCanceledMessage(ProductChanged response)
+        private Message<Null, TransactionCanceled> GetTransactionCanceledMessage(TransactionProductCommitted response)
         {
             return new Message<Null, TransactionCanceled>
             {

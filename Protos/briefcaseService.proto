@@ -2,6 +2,8 @@ syntax = "proto3";
 
 option csharp_namespace = "Briefcase";
 
+import "decimalValue.proto";
+
 service UserBriefcaseService  {
 	rpc GetUserProducts (GetUserProductsRequest) returns (GetUserProductsResponse);
 	rpc AddProduct (AddProductRequest) returns (AddProductResponse);
@@ -36,7 +38,6 @@ message AddProductResponse {
 message RemoveProductRequest {
     string user_id = 1;
     string product_id = 2;
-    string author_id = 3;
 }
 
 message RemoveProductResponse {
@@ -72,10 +73,72 @@ message ProductsList {
 
 enum Error {
 	USER_NOT_FOUND = 0;
-	USER_NOT_HAVE_PRODUCT = 1;
-	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
-	USER_IS_NOT_OWNER = 3; 
+	PRODUCT_NOT_FOUND = 1;
+	USER_NOT_HAVE_PRODUCT = 2;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 3;
+	USER_IS_NOT_OWNER = 4; 
 }
 
 message SuccessResponse {
+}
+
+message TransactionProductCommitted
+{
+	string id_global_transact = 1;
+	string id_product = 2;
+	string id_user = 3;
+	string id_order = 4;
+	int32 count = 5;
+	Operation MODE = 6;
+	TransactionType TYPE = 7;
+}
+
+message TransactionCanceled
+{
+	string id_global_transact = 1;
+	SourceEventTransaction SOURCE = 2;
+}
+
+message TransactionCompleted
+{
+	string id_global_transact = 1;
+	SourceEventTransaction SOURCE = 2;
+	string id_object = 3;
+	moneyTypes.DecimalValue quanity = 4;
+}
+
+
+enum TransactionType {
+	// Операция проводки транзакции 
+	ACTION  = 0;
+	// Операция отката транзакции 
+	ROLLBACK = 1;
+}
+
+enum Operation {
+	// Операция добавления 
+	ADDITION = 0;
+	// Операция вычитания  
+	SUBTRACT = 1;
+}
+
+enum SourceEventTransaction {
+	// Операция проводки транзакции 
+	PRODUCT_ORDER_ADDITION_ACTION = 0;
+	PRODUCT_ORDER_SUBTRACT_ACTION = 1;
+	
+	BALANCE_ADDITION_IMMEDIATE = 2;
+	BALANCE_SUBTRACT_IMMEDIATE = 3;
+	
+	PRODUCT_ORDER_ADDITION_ROLLBACK = 4;
+	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 5;
+	
+	BALANCE_ADDITION_ROLLBACK = 6;
+	BALANCE_SUBTRACT_ROLLBACK = 7;
+	
+	PRODUCT_BRIEFCASE_ADDITION_ROLLBACK = 8;
+	PRODUCT_BRIEFCASE_SUBTRACT_ROLLBACK = 9;
+	
+	PRODUCT_BRIEFCASE_ADDITION_ACTION = 10;
+	PRODUCT_BRIEFCASE_SUBTRACT_ACTION = 11;
 }

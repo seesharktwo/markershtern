@@ -47,8 +47,7 @@ namespace UserBalanceMicroservice
                 user.Money -= sum;
             }
 
-            var update = Builders<User>.Update.Set(x => x.Money, user.Money);
-            update.AddToSet("LastTransactId", transactionId);
+            var update = Builders<User>.Update.Set(x => x.Money, user.Money).Set(x => x.LastTransactId, transactionId);
 
             var temp = await _mongoDatabase.GetCollection<User>(_userCollection)
                     .FindOneAndUpdateAsync(filter, update);

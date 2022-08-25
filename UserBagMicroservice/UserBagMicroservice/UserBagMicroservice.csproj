@@ -10,8 +10,6 @@
 
   <ItemGroup>
     <Protobuf Include="..\..\Protos\briefcaseService.proto" GrpcServices="Server" ProtoRoot="..\..\Protos\" />
-    <Protobuf Include="..\..\Protos\eventList.proto" GrpcServices="Server" ProtoRoot="..\..\Protos\" />
-    <Protobuf Include="..\..\Protos\enumList.proto" GrpcServices="Server" ProtoRoot="..\..\Protos\" />
     <Protobuf Include="..\..\Protos\decimalValue.proto" GrpcServices="Server" ProtoRoot="..\..\Protos\" />
   </ItemGroup>
 

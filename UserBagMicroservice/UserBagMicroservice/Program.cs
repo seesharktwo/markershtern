@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Options;
+using UserBagMicroservice.Data.Interceptors;
 using UserBagMicroservice.Data.Repository;
 using UserBagMicroservice.Data.Settings;
 using UserBagMicroservice.KafkaServices;
@@ -8,7 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 IConfiguration configuration = builder.Configuration;
 
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(options =>
+{
+    options.Interceptors.Add<ServerLoggingInterceptor>();
+}); ;
 
 builder.Services.Configure<MongoDbSettings>(configuration.GetSection("Database"));
 builder.Services.Configure<KafkaSettings>(configuration.GetSection("Kafka"));
