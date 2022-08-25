@@ -27,6 +27,17 @@ namespace TransactService.Services
 
             if (await VirtualTransactionBalance(globalTransact, balanceReplenished.IdUserBuyer, balanceReplenished.IdUserBuyer, null, DecimalValue.ToDecimal(balanceReplenished.Sum)))
             {
+                ProducerService producerService = new ProducerService(_config);
+                TransactionBalanceCommitted UserSeller = new TransactionBalanceCommitted()
+                {
+                    IdGlobalTransact = globalTransact.Id,
+                    IdOrder = string.Empty,
+                    IdUser = balanceReplenished.IdUserBuyer,
+                    Sum = balanceReplenished.Sum,
+                    MODE = Operation.Addition,
+                    TYPE = TransactionType.Action
+                };
+                await producerService.ProduceMessageAsync<TransactionBalanceCommitted>(UserSeller, "TransactionBalanceCommitted");
                 await TransactionBalance(globalTransact, balanceReplenished.IdUserBuyer, balanceReplenished.IdUserBuyer, null, DecimalValue.ToDecimal(balanceReplenished.Sum));
                 await _context.UpdateStatusGlobalTransactAsync(globalTransact.Id, Status.ACTION);
             }
@@ -119,6 +130,8 @@ namespace TransactService.Services
             };
             await producerService.ProduceMessageAsync<TransactionBalanceCommitted>(UserSeller, "TransactionBalanceCommitted");
         }
+
+        
 
         private async Task<List<bool>> TryVirtualExecute(OrderClosed orderClosed, GlobalTransact globalTransact )
         {
@@ -335,9 +348,11 @@ namespace TransactService.Services
         private async Task<bool> VirtualTransactionBalance(GlobalTransact globalTransact, string IdBalance, string UserId,decimal? credit, decimal? debit )
         {
             await _context.CreateBalanceTransactAsync(globalTransact.Value, globalTransact.Id, IdBalance, UserId);
+            await _context.CreateBalanceValueAsync(IdBalance, UserId, 0, 0, 0, string.Empty);
             for (int count = 0; count< _maxCountWrite; count++)
             {
                 var balance = await _context.GetBalanceValueAsync(IdBalance, UserId);
+                
                 bool result = false;
                 if (credit.HasValue )
                 {
@@ -371,6 +386,7 @@ namespace TransactService.Services
         private async Task<bool> VirtualTransactionBriefcase(GlobalTransact globalTransact, string IdProduct, string UserId, int? credit, int? debit)
         {
             await _context.CreateBriefcaseTransactAsync((int)globalTransact.Value, globalTransact.Id, IdProduct, UserId);
+            await _context.CreateBriefcaseValueAsync(IdProduct, UserId, 0, 0, 0, string.Empty);
             for (int count = 0; count < _maxCountWrite; count++)
             {
                 var briefcase = await _context.GetBriefcaseValueAsync(IdProduct, UserId);
@@ -406,6 +422,7 @@ namespace TransactService.Services
         private async Task<bool> VirtualTransactionOrder(GlobalTransact globalTransact, string idObject, string UserId, int? credit, int? debit)
         {
             await _context.CreateOrderTransactAsync((int)globalTransact.Value, globalTransact.Id, idObject, UserId);
+            //await _context.CreateOrderValueAsync(idObject, UserId, 0, 0, 0, string.Empty);
             for (int count = 0; count < _maxCountWrite; count++)
             {
                 var briefcase = await _context.GetOrderValueAsync(idObject, UserId);
