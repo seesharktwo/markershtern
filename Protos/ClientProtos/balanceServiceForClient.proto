@@ -9,6 +9,8 @@ package customTypes;
 service BalanceService
 {
   rpc GetBalance(GetBalanceRequest) returns(GetBalanceResponse);
+
+  rpc PutOnBalance(PutOnBalanceRequest) returns(PutOnBalancesponse);
 }
 //Запрос баланса
 message GetBalanceRequest
@@ -25,4 +27,16 @@ message GetBalanceResponse
 	string user_id = 1;
         // Баланс в у.е.
 	moneyTypes.DecimalValue balance = 2;
+}
+
+message PutOnBalanceRequest
+{
+    string user_id = 1;
+
+    moneyTypes.DecimalValue sum = 2;
+}
+
+message PutOnBalancesponse
+{
+
 }
