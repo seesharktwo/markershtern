@@ -1,4 +1,5 @@
-﻿using Facade.GrpcServices;
+﻿using Facade.Configs;
+using Facade.GrpcServices;
 using Facade.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,12 +50,15 @@ namespace Facade
                 o.Address = new Uri(Configuration.GetValue<string>("ConnectionUserBalanceMicroservice"));
             });
 
+            services.Configure<KafkaSettings>(Configuration.GetSection("KafkaSettings"));
 
+            
             services.AddTransient<OrderService>();
             services.AddTransient<UserBriefcaseService>();
             services.AddTransient<ProductService>();
             services.AddTransient<AuthService>();
             services.AddTransient<UserBalanceService>();
+            services.AddTransient<ProducerService>();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
            

@@ -23,16 +23,16 @@ namespace Facade.Services
         public async Task ProduceMessageAsync<T>(T message, string topic)
             where T : IMessage<T>, new()
         {
-            var producer = new ProducerBuilder<Ignore, T>(_producerConfig);
+            var producer = new ProducerBuilder<Null, T>(_producerConfig);
 
-            producer.SetValueSerializer(new ProducerSerializer<T>());
-            using (var producerBuild = producer.Build())
+            producer.SetValueSerializer(new KafkaServices.ProducerSerializer<T>());
+            var producerBuild = producer.Build();
+            await producerBuild.ProduceAsync(topic, new Message<Null, T>
             {
-                await producerBuild.ProduceAsync(topic, new Message<Ignore, T>
-                {
-                    Value = message
-                });
-            }
+                Value = message
+            });
+
+            producerBuild?.Dispose();
         }
     }
 }
