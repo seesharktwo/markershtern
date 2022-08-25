@@ -39,6 +39,7 @@ namespace ProductService.Services
                 await _context.UpdateAsync(product.Id, product);
             }
         }
+
         /// <summary>
         /// method that processing buyOrderCreated event.
         /// result is create/update document of product with bid.
