@@ -1,9 +1,9 @@
 ﻿using Confluent.Kafka;
-using eventList.CustomTypes;
 using Microsoft.Extensions.Options;
 using UserBagMicroservice.Data.Kafka;
 using UserBagMicroservice.Data.Settings;
 using UserBagMicroservice.Services;
+using Briefcase;
 
 namespace UserBagMicroservice.KafkaServices
 {
@@ -29,15 +29,15 @@ namespace UserBagMicroservice.KafkaServices
         {
             Task[] UnionTasks = new Task[]
             {
-                Task.Run(() => ProductChangedConsumer(stoppingToken))
+                Task.Run(() => TransactionProductCommittedConsumer(stoppingToken))
             };
 
             return Task.WhenAll(UnionTasks);
         }
 
-        private async Task ProductChangedConsumer(CancellationToken stoppingToken)
+        private async Task TransactionProductCommittedConsumer(CancellationToken stoppingToken)
         {
-            using var consumer = new ConsumerBuilder<Null, ProductChanged>(_config).SetValueDeserializer(new Deserializer<ProductChanged>()).Build();
+            using var consumer = new ConsumerBuilder<Null, TransactionProductCommitted>(_config).SetValueDeserializer(new Deserializer<TransactionProductCommitted>()).Build();
             consumer.Subscribe("ProductChanged");
             CancellationTokenSource token = new();
             try
