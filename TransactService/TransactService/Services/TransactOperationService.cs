@@ -393,14 +393,8 @@ namespace TransactService.Services
                 bool result = false;
                 if (credit.HasValue)
                 {
-                    if ((briefcase.Credit + credit.Value) <= briefcase.Quanity)
-                    {
-                        result = await _context.UpdateBalanceValueAsync(IdProduct, UserId, briefcase.Credit + credit.Value, null, null, globalTransact.Id, briefcase.CountUpdate);
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    //Проверки нет, так как отсутствует событие. 
+                    result = await _context.UpdateBalanceValueAsync(IdProduct, UserId, briefcase.Credit + credit.Value, null, null, globalTransact.Id, briefcase.CountUpdate);
                 }
                 else if (debit.HasValue)
                 {
