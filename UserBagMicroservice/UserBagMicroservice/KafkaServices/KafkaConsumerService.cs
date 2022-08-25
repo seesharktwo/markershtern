@@ -38,14 +38,14 @@ namespace UserBagMicroservice.KafkaServices
         private async Task TransactionProductCommittedConsumer(CancellationToken stoppingToken)
         {
             using var consumer = new ConsumerBuilder<Null, TransactionProductCommitted>(_config).SetValueDeserializer(new Deserializer<TransactionProductCommitted>()).Build();
-            consumer.Subscribe("ProductChanged");
+            consumer.Subscribe("TransactionProductCommitted");
             CancellationTokenSource token = new();
             try
             {
                 while (!token.IsCancellationRequested)
                 {
                     var response = consumer.Consume(token.Token).Message.Value;
-                    _logger.LogInformation("Event accepted: ProductChanged");
+                    _logger.LogInformation("Event accepted: TransactionProductCommitted");
                     if (response != null)
                     {
                         await _service.ChangeProduct(response);
