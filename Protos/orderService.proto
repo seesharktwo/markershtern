@@ -12,11 +12,17 @@ service OrderProcessing {
 
 // Сообщение приходит от Facade. На основе полей формируется заявка.
 message CreateOrderRequest {
-  string user_id = 1;
-  OrderType type = 2;
-  string product_id = 3;
-  moneyTypes.DecimalValue price = 4;
-  int32 quantity = 5;   
+DataCreateOrder data = 1;
+}
+
+
+message DataCreateOrder {
+	string user_id = 1;
+	OrderType type = 2;
+	string product_id = 3;
+	string product_name = 4;
+	int32 quantity = 5;
+	DecimalValue price = 6;
 }
 
 message CreateOrderResponse {
