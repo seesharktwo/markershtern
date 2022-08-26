@@ -1,3 +1,4 @@
+using Serilog;
 using TransactService.Services;
 using UserBalanceMicroservice;
 using UserBalanceMicroservice.Configs;
@@ -22,6 +23,12 @@ builder.Services.AddSingleton<TransactOperationService>();
 builder.Services.AddSingleton<TransactContext>();
 
 builder.Services.AddHostedService<KafkaConsumerService>();
+
+builder.Host.UseSerilog(((context, config) =>
+{
+    config
+       .WriteTo.Console();
+}));
 
 var app = builder.Build();
 

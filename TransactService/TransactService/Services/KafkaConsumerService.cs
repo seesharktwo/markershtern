@@ -133,7 +133,7 @@ namespace TransactService.Services
                         _logger.LogError($"KafkaConsumerService Exception - {e.Message}");
                         continue;
                     }
-                    //_logger.LogInformation($"UserBalanceMicroservice KafkaConsumerService Committed IdGlobalTransact - {message.IdGlobalTransact},IdUser - {message.IdUser}");
+                    _logger.LogInformation($"TransactService KafkaConsumerService Committed OrderClosed - {message.IdOrderBuyer},IdUser - {message.IdUserSeller}");
                 }
             }
         }
