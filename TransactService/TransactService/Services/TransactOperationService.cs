@@ -72,11 +72,11 @@ namespace TransactService.Services
             await RollbackTransactionBalance(globalTransact, orderClosed.IdUserBuyer, orderClosed.IdUserBuyer, DecimalValue.ToDecimal(orderClosed.Sum), null);
             await RollbackTransactionBalance(globalTransact, orderClosed.IdUserSeller, orderClosed.IdUserSeller, null, DecimalValue.ToDecimal(orderClosed.Sum));
 
-            await RollbackTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserBuyer, null, (int)DecimalValue.ToDecimal(orderClosed.Sum));
-            await RollbackTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserSeller, (int)DecimalValue.ToDecimal(orderClosed.Sum), null);
+            await RollbackTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserBuyer, null, orderClosed.CountProduct);
+            await RollbackTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserSeller, orderClosed.CountProduct, null);
 
-            await RollbackTransactionOrder(globalTransact, orderClosed.IdOrderBuyer, orderClosed.IdUserBuyer, (int)DecimalValue.ToDecimal(orderClosed.Sum), null);
-            await RollbackTransactionOrder(globalTransact, orderClosed.IdOrderSeller, orderClosed.IdUserSeller, (int)DecimalValue.ToDecimal(orderClosed.Sum), null);
+            await RollbackTransactionOrder(globalTransact, orderClosed.IdOrderBuyer, orderClosed.IdUserBuyer, orderClosed.CountProduct, null);
+            await RollbackTransactionOrder(globalTransact, orderClosed.IdOrderSeller, orderClosed.IdUserSeller, orderClosed.CountProduct, null);
         }
 
 
@@ -139,11 +139,11 @@ namespace TransactService.Services
             result.Add(await VirtualTransactionBalance(globalTransact, orderClosed.IdUserBuyer, orderClosed.IdUserBuyer, DecimalValue.ToDecimal(orderClosed.Sum), null));
             result.Add(await VirtualTransactionBalance(globalTransact, orderClosed.IdUserSeller, orderClosed.IdUserSeller, null, DecimalValue.ToDecimal(orderClosed.Sum)));
 
-            result.Add(await VirtualTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserBuyer, null, (int)DecimalValue.ToDecimal(orderClosed.Sum)));
-            result.Add(await VirtualTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserSeller, (int)DecimalValue.ToDecimal(orderClosed.Sum), null));
+            result.Add(await VirtualTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserBuyer, null, orderClosed.CountProduct));
+            result.Add(await VirtualTransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserSeller, orderClosed.CountProduct, null));
 
-            result.Add(await VirtualTransactionOrder(globalTransact, orderClosed.IdOrderBuyer, orderClosed.IdUserBuyer, (int)DecimalValue.ToDecimal(orderClosed.Sum), null));
-            result.Add(await VirtualTransactionOrder(globalTransact, orderClosed.IdOrderSeller, orderClosed.IdUserSeller, (int)DecimalValue.ToDecimal(orderClosed.Sum), null));
+            result.Add(await VirtualTransactionOrder(globalTransact, orderClosed.IdOrderBuyer, orderClosed.IdUserBuyer, orderClosed.CountProduct, null));
+            result.Add(await VirtualTransactionOrder(globalTransact, orderClosed.IdOrderSeller, orderClosed.IdUserSeller, orderClosed.CountProduct, null));
 
             return result;
         }
@@ -154,11 +154,11 @@ namespace TransactService.Services
             result.Add(await TransactionBalance(globalTransact, orderClosed.IdUserBuyer, orderClosed.IdUserBuyer, DecimalValue.ToDecimal(orderClosed.Sum), null));
             result.Add(await TransactionBalance(globalTransact, orderClosed.IdUserSeller, orderClosed.IdUserSeller, null, DecimalValue.ToDecimal(orderClosed.Sum)));
 
-            result.Add(await TransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserBuyer, null, (int)DecimalValue.ToDecimal(orderClosed.Sum)));
-            result.Add(await TransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserSeller, (int)DecimalValue.ToDecimal(orderClosed.Sum), null));
+            result.Add(await TransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserBuyer, null, orderClosed.CountProduct));
+            result.Add(await TransactionBriefcase(globalTransact, orderClosed.IdProduct, orderClosed.IdUserSeller, orderClosed.CountProduct, null));
 
-            result.Add(await TransactionOrder(globalTransact, orderClosed.IdOrderBuyer, orderClosed.IdUserBuyer, (int)DecimalValue.ToDecimal(orderClosed.Sum), null));
-            result.Add(await TransactionOrder(globalTransact, orderClosed.IdOrderSeller, orderClosed.IdUserSeller, (int)DecimalValue.ToDecimal(orderClosed.Sum), null));
+            result.Add(await TransactionOrder(globalTransact, orderClosed.IdOrderBuyer, orderClosed.IdUserBuyer, orderClosed.CountProduct, null));
+            result.Add(await TransactionOrder(globalTransact, orderClosed.IdOrderSeller, orderClosed.IdUserSeller, orderClosed.CountProduct, null));
 
             return result;
         }
