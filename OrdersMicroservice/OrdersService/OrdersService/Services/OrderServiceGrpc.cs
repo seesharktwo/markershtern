@@ -6,7 +6,7 @@ using MongoDB.Bson;
 using OrdersService.Data.Abstractions;
 using OrdersService.Data.Repository;
 using OrdersService.Models;
-using OrdersService.Protos;
+using OrderProtos;
 using OrdersService.Services.KafkaSettingsFolder;
 
 namespace OrdersService.Services
@@ -19,7 +19,7 @@ namespace OrdersService.Services
         private readonly IMongoRepository<ActiveSellOrder> _repositorySellOrder;
         private readonly IMongoRepository<ActiveBuyOrder> _repositoryBuyOrder;
         private readonly IMongoRepository<CompletedOrder> _repositoryCompleted;
-        private readonly IMongoRepository<Order> _orderRepository;
+        private readonly IMongoRepository<Models.Order> _orderRepository;
         private readonly IMongoRepository<BestProductPrice> _productPriceRepository;
         private readonly IMapper _mapper;
         private readonly IOptions<KafkaSettings> _config;
@@ -29,7 +29,7 @@ namespace OrdersService.Services
                                       IMongoRepository<ActiveSellOrder> repositorySellOrder,
                                       IMongoRepository<ActiveBuyOrder> repositoryBuyOrder,
                                       IMongoRepository<CompletedOrder> repositoryCompleted,
-                                      IMongoRepository<Order> orderRepository,
+                                      IMongoRepository<Models.Order> orderRepository,
                                       IMongoRepository<BestProductPrice> productPriceRepository,
                                       IOptions<KafkaSettings> kafkaSettings,
                                       OrderOperationService service,
@@ -63,7 +63,7 @@ namespace OrdersService.Services
 
             var userId = orderData.UserId;
             var orderId = ObjectId.GenerateNewId();
-            var price = Protos.CustomTypes.DecimalValue.ToDecimal(orderData.Price);
+            var price = MoneyTypes.DecimalValue.ToDecimal(orderData.Price);
 
             var mainOrder = new Models.Order();
             mainOrder.Id = orderId;
@@ -100,9 +100,9 @@ namespace OrdersService.Services
 
                 await _repositorySellOrder.InsertOneAsync(sellOrder);
 
-                var price = Protos.CustomTypes.DecimalValue.FromDecimal(orderData.Price);
+                var price = MoneyTypes.DecimalValue.FromDecimal(orderData.Price);
 
-                var messagePrice = new DecimalValue
+                var messagePrice = new MoneyTypes.DecimalValue
                 {
                     Nanos = price.Nanos,
                     Units = price.Units
@@ -120,7 +120,7 @@ namespace OrdersService.Services
 
                 await producer.ProduceMessageAsync(message, "SellOrderCreated");
 
-                var priceDecimal = Protos.CustomTypes.DecimalValue.ToDecimal(orderData.Price);
+                var priceDecimal = MoneyTypes.DecimalValue.ToDecimal(orderData.Price);
 
                 var data = new DataCreateBestPrice(orderData.ProductId,
                                    orderData.ProductName,
@@ -147,9 +147,9 @@ namespace OrdersService.Services
 
                 await _repositoryBuyOrder.InsertOneAsync(buyOrder);
 
-                var price = Protos.CustomTypes.DecimalValue.FromDecimal(orderData.Price);
+                var price = MoneyTypes.DecimalValue.FromDecimal(orderData.Price);
 
-                var messagePrice = new DecimalValue
+                var messagePrice = new MoneyTypes.DecimalValue
                 {
                     Nanos = price.Nanos,
                     Units = price.Units
@@ -167,7 +167,7 @@ namespace OrdersService.Services
 
                 await producer.ProduceMessageAsync(message, "BuyOrderCreated");
 
-                var priceDecimal = Protos.CustomTypes.DecimalValue.ToDecimal(orderData.Price);
+                var priceDecimal = MoneyTypes.DecimalValue.ToDecimal(orderData.Price);
 
                 var data = new DataCreateBestPrice(orderData.ProductId,
                                                    orderData.ProductName,

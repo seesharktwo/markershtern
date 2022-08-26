@@ -1,4 +1,4 @@
-﻿namespace OrdersService.Protos.CustomTypes
+﻿namespace MoneyTypes
 {
     public partial class DecimalValue
     {

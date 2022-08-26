@@ -16,18 +16,7 @@ service OrderProcessingForClient {
 }
 // Запрос на создание заявки
 message CreateOrderRequest {
-  //Id пользователя, который расшифровывается по схеме 8-4-4-4-12: 
-  //"3422b448-2460-4fd2-9183-8000de6f8343".
-  string user_id = 1;
-  //Тип заявки - "Покупка" или "Продажа"
-  OrderType type = 2;
-  //Id товара, который расшифровывается по схеме 8-4-4-4-12: 
-  //"3422b448-2460-4fd2-9183-8000de6f8343".
-  string product_id = 3;
-  //Цена товара
-  moneyTypes.DecimalValue price = 4;
-  //Количество товара
-  int32 quantity = 5;   
+  DataCreateOrder data = 1;
 }
 // Ответ на создание заявки
 message CreateOrderResponse {
@@ -43,6 +32,26 @@ message CreateOrderResponse {
       SuccessResponse success = 2;
    }
 }
+
+message DataCreateOrder
+{
+   //Id пользователя, который расшифровывается по схеме 8-4-4-4-12: 
+  //"3422b448-2460-4fd2-9183-8000de6f8343".
+  string user_id = 1;
+  //Тип заявки - "Покупка" или "Продажа"
+  OrderType type = 2;
+  //Id товара, который расшифровывается по схеме 8-4-4-4-12: 
+  //"3422b448-2460-4fd2-9183-8000de6f8343".
+  string product_id = 3;
+
+  string product_name = 4;
+
+  //Цена товара
+  moneyTypes.DecimalValue price = 5;
+  //Количество товара
+  int32 quantity = 6;   
+}
+
 //Пустое поле при успешной проверке данных
 message SuccessResponse {
 

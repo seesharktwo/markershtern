@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using OrdersService.Models.Enums;
 using OrdersService.Models.Messages;
-using OrdersService.Protos.CustomTypes;
+using MoneyTypes;
 
 namespace OrdersService.Models.Map
 {
@@ -9,23 +9,23 @@ namespace OrdersService.Models.Map
     {
         public OrdersProfile()
         {
-            CreateMap<DataCreateOrder, Protos.DataCreateOrder>();
-            CreateMap<Protos.DataCreateOrder, DataCreateOrder>();
+            CreateMap<DataCreateOrder, OrderProtos.DataCreateOrder>();
+            CreateMap<OrderProtos.DataCreateOrder, DataCreateOrder>();
 
-            CreateMap<ProductPriceChanged, Protos.ProductPriceChanged>();
-            CreateMap<Protos.ProductPriceChanged, ProductPriceChanged>();
+            CreateMap<ProductPriceChanged, OrderProtos.ProductPriceChanged>();
+            CreateMap<OrderProtos.ProductPriceChanged, ProductPriceChanged>();
 
             CreateMap<decimal, DecimalValue>().ConvertUsing(val => val);
             CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);
 
-            CreateMap<DecimalValue, Protos.DecimalValue>();
-            CreateMap<Protos.DecimalValue, DecimalValue>();
+            CreateMap<DecimalValue, MoneyTypes.DecimalValue>();
+            CreateMap<MoneyTypes.DecimalValue, DecimalValue>();
 
-            CreateMap<OrderType, Protos.OrderType>();
-            CreateMap<Protos.OrderType, OrderType>();
+            CreateMap<OrderType, OrderProtos.OrderType>();
+            CreateMap<OrderProtos.OrderType, OrderType>();
 
-            CreateMap<OrderCandidateOccuredProcessSuccess, Protos.OrderCandidateOccuredProcessSuccess>();
-            CreateMap<Protos.OrderCandidateOccuredProcessSuccess, OrderCandidateOccuredProcessSuccess>();
+            CreateMap<OrderCandidateOccuredProcessSuccess, OrderProtos.OrderCandidateOccuredProcessSuccess>();
+            CreateMap<OrderProtos.OrderCandidateOccuredProcessSuccess, OrderCandidateOccuredProcessSuccess>();
         }
     }
 }

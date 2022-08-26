@@ -1,5 +1,5 @@
 ﻿using OrdersService.Models.Enums;
-using OrdersService.Protos;
+using OrderProtos;
 
 namespace OrdersService.Models.Messages
 {
@@ -10,6 +10,6 @@ namespace OrdersService.Models.Messages
         public string ProductId { get; set; }
         public string ProductName { get; set; }
         public int Quantity { get; set; }
-        public Protos.CustomTypes.DecimalValue Price { get; set; }
+        public MoneyTypes.DecimalValue Price { get; set; }
     }
 }

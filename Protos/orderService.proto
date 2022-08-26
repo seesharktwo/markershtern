@@ -1,20 +1,29 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Order";
+option csharp_namespace = "OrderProtos";
 
 import "decimalValue.proto";
 
 package order;
 
 service OrderProcessing {
-   rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+	rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
 }
 
-// Сообщение приходит от Facade. На основе полей формируется заявка.
-message CreateOrderRequest {
-DataCreateOrder data = 1;
+enum Error {
+	USER_NOT_FOUND = 0;
+	USER_NOT_HAVE_PRODUCT = 1;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
 }
 
+message SuccessResponse {
+
+}
+
+enum OrderType {
+	SELL_ORDER = 0;
+	BUY_ORDER = 1;
+}
 
 message DataCreateOrder {
 	string user_id = 1;
@@ -22,30 +31,82 @@ message DataCreateOrder {
 	string product_id = 3;
 	string product_name = 4;
 	int32 quantity = 5;
-	DecimalValue price = 6;
+	moneyTypes.DecimalValue price = 6;
+}
+
+message CreateOrderRequest {
+	DataCreateOrder data = 1;
 }
 
 message CreateOrderResponse {
-   oneof result {
-      Error error = 1;
-      SuccessResponse success = 2;
-   }
+	oneof result {
+		Error error = 1;
+		SuccessResponse success = 2;
+	}
 }
 
-message SuccessResponse {
-
+message OrderCandidateOccuredProcessEvent {
+	string order_id = 1;
+	string order_id_seller = 2;
+	int32 quantity = 3;
+	string product_id = 4;
+	string user_id_buyer = 5;
+	string user_id_seller = 6;
+	moneyTypes.DecimalValue price = 7;
 }
 
-enum Error {
-   // Пользователь с таким Id не был найден. 
-	USER_NOT_FOUND = 0;
-	// Пользователь не имеет продукт с таким Id.  
-	USER_NOT_HAVE_PRODUCT = 1;
-	// Пользователь не имеет необходимое количества продукта. 
-	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
+message OrderCandidateOccuredProcessFailed {
+	string order_id = 1;
+	string order_id_seller = 2;
 }
 
-enum OrderType {
-   SELL_ORDER = 0;
-   BUY_ORDER = 1;
+message OrderCandidateOccuredProcessSuccess {
+    string order_id = 1;
+	string order_id_seller = 2;
+}
+
+message ProductSoldEvent {
+	string user_id = 1;
+	string product_id = 2;
+	int32 quantity = 3;
+}
+
+message ProductRemovedEvent {
+	string user_id = 1;
+	string product_id = 2;
+}
+
+message BuyOrderCreated {
+	// ID Продукта
+	string id = 1;
+	// Имя продукта
+	string name = 2;
+	// Количество продукта
+	int32 quantity = 3;
+	// Цена в заявке
+	moneyTypes.DecimalValue price = 4;
+	// Id пользователя заявки
+	string user_id = 5;
+}
+
+message SellOrderCreated {
+	string id = 1;
+	string name = 2;
+	int32 quantity = 3;
+	moneyTypes.DecimalValue price = 4;
+	string user_id = 5;
+}
+
+enum PriceType {
+	// Лучшее предложение стоимости покупки
+	BID = 0;
+	// Лучшее предложение стоимости продажи
+	ASK = 1;
+}
+
+message ProductPriceChanged {
+	string product_id = 1;
+	string name = 2;
+	PriceType type = 3;
+	moneyTypes.DecimalValue price = 4;
 }

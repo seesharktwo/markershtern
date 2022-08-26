@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using MongoDB.Bson;
 using OrdersService.Data.Repository;
 using OrdersService.Models;
-using OrdersService.Protos;
+using OrderProtos;
 using OrdersService.Services.KafkaSettingsFolder;
 
 namespace OrdersService.Services
@@ -178,7 +178,7 @@ namespace OrdersService.Services
 
                 var producer = new KafkaProducerService(_config);
 
-                var price = _mapper.Map<Protos.DecimalValue>(Protos.CustomTypes.DecimalValue.FromDecimal(data.Price));
+                var price = _mapper.Map<MoneyTypes.DecimalValue>(MoneyTypes.DecimalValue.FromDecimal(data.Price));
                 
                 // Исправить
                 var message = new Models.Messages.ProductPriceChanged();
@@ -187,7 +187,7 @@ namespace OrdersService.Services
                 message.PriceType = data.PriceType;
                 message.Price = price;
 
-                var priceChanged = _mapper.Map<Protos.ProductPriceChanged>(message);
+                var priceChanged = _mapper.Map<OrderProtos.ProductPriceChanged>(message);
 
                 await producer.ProduceMessageAsync(priceChanged, "ProductPriceChanged");
             }
@@ -201,7 +201,7 @@ namespace OrdersService.Services
             var activeProductId = data.ProductId;
             var activeProductName = data.ProductName;
             var activeQuantity = data.Quantity;
-            var activePrice = Protos.CustomTypes.DecimalValue.ToDecimal(data.Price);
+            var activePrice = MoneyTypes.DecimalValue.ToDecimal(data.Price);
 
             // Исправить это
             var sellOrder = new Order();
@@ -238,9 +238,9 @@ namespace OrdersService.Services
                 return;
             }
 
-            var priceBuy = Protos.CustomTypes.DecimalValue.FromDecimal(buyOrder.Price);
+            var priceBuy = MoneyTypes.DecimalValue.FromDecimal(buyOrder.Price);
 
-            var messagePriceBuy = new DecimalValue
+            var messagePriceBuy = new MoneyTypes.DecimalValue
             {
                 Nanos = priceBuy.Nanos,
                 Units = priceBuy.Units
@@ -269,7 +269,7 @@ namespace OrdersService.Services
 
             Order order = new Order();
 
-            var price = Protos.CustomTypes.DecimalValue.ToDecimal(data.Price);
+            var price = MoneyTypes.DecimalValue.ToDecimal(data.Price);
 
             order.Id = id;
             order.UserId = data.UserId;

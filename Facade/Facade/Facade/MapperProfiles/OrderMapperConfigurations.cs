@@ -7,10 +7,14 @@ namespace Facade.Mapper
     {
         public OrderMapperConfigurations()
         {
-            CreateMap<Order.CreateOrderRequest, OrderForClient.CreateOrderRequest>();
-            CreateMap<OrderForClient.CreateOrderRequest, Order.CreateOrderRequest>();
-            CreateMap<OrderForClient.CreateOrderResponse, Order.CreateOrderResponse>();
-            CreateMap<Order.CreateOrderResponse, OrderForClient.CreateOrderResponse>();
+            CreateMap<OrderProtos.CreateOrderRequest, OrderForClient.CreateOrderRequest>();
+            CreateMap<OrderForClient.CreateOrderRequest, OrderProtos.CreateOrderRequest>();
+            CreateMap<OrderForClient.CreateOrderResponse, OrderProtos.CreateOrderResponse>();
+            CreateMap<OrderProtos.CreateOrderResponse, OrderForClient.CreateOrderResponse>();
+            CreateMap<OrderProtos.DataCreateOrder, OrderForClient.DataCreateOrder>();
+            CreateMap<OrderForClient.DataCreateOrder, OrderProtos.DataCreateOrder>();
+            CreateMap<OrderForClient.SuccessResponse, OrderProtos.SuccessResponse>();
+            CreateMap<OrderProtos.SuccessResponse, OrderForClient.SuccessResponse>();
         }
     }
 }

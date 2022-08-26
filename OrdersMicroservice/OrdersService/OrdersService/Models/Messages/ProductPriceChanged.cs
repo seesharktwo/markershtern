@@ -1,5 +1,5 @@
 ﻿using OrdersService.Models.Enums;
-using OrdersService.Protos;
+using MoneyTypes;
 
 namespace OrdersService.Models.Messages
 {

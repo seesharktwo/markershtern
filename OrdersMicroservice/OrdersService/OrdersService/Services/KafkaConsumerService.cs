@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using OrdersService.Data.Repository;
 using OrdersService.Deserializer;
 using OrdersService.Models;
-using OrdersService.Protos;
+using OrderProtos;
 using OrdersService.Services.KafkaSettingsFolder;
 
 namespace OrdersService.Services

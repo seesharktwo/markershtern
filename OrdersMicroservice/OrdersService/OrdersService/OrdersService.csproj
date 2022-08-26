@@ -9,13 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\ord.proto" />
   </ItemGroup>
 
   <ItemGroup>
     <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
-    <Protobuf Include="Protos\ord.proto" GrpcServices="Server" />
-	<Protobuf Include="Protos\decimalValue.proto" GrpcServices="None" />
+    <Protobuf Include="..\..\..\Protos\orderService.proto" GrpcServices="Server" ProtoRoot="..\..\..\Protos" />
+	<Protobuf Include="..\..\..\Protos\decimalValue.proto" GrpcServices="None"  ProtoRoot="..\..\..\Protos"/>
   </ItemGroup>
 
   <ItemGroup>
