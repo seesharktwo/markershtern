@@ -270,7 +270,7 @@ namespace TransactService.Services
                 bool result = false;
                 if (credit.HasValue)
                 {
-                    result = await _context.UpdateBalanceValueAsync(IdBalance, UserId, balance.Credit - credit.Value, null, balance.Summ - credit.Value , globalTransact.Id, balance.CountUpdate);
+                    result = await _context.UpdateBalanceValueAsync(IdBalance, UserId, balance.Credit - credit.Value, null, balance.Summ - credit.Value , globalTransact.Id, balance.CountUpdate );
                 }
                 else if (debit.HasValue)
                 {

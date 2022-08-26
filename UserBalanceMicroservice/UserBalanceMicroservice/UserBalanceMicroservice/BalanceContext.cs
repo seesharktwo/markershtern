@@ -19,7 +19,6 @@ namespace UserBalanceMicroservice
 
             _mongoDatabase = mongoClient.GetDatabase(
                 balanceDatabaseSettings.Value.DatabaseName);
-
         }
 
         public async Task<bool> ChangeBalanceAsync(string idUser, decimal sum, bool isAdd, string transactionId)
