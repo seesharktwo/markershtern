@@ -45,22 +45,33 @@ namespace OrdersService.Services
         public async Task CloseOrders(TransactionProductCommitted message)
         {
             var deleteOrderId = message.IdOrder;
-            var deleteUserId = message.IdUser;
-            
+            //  var deleteUserId = message.IdUser;
+
             //var firstOrderId = message.;
             //var firstUserId = _orderRepository.FindById(firstOrderId).UserId;
 
             //var secondOrderId = result.OrderIdSeller;
             //var secondUserId = _orderRepository.FindById(secondOrderId).UserId;
 
-            var price = _orderRepository.FindById(deleteOrderId).Price;
-            var quantity = _orderRepository.FindById(deleteOrderId).Quantity;
-            var productName = _orderRepository.FindById(deleteOrderId).ProductName;
+            //var price = _orderRepository.FindById(deleteOrderId).Price;
+            //var quantity = _orderRepository.FindById(deleteOrderId).Quantity;
+            //var productName = _orderRepository.FindById(deleteOrderId).ProductName;
 
             // Убрать дублирование
-            await _repositoryBuyOrder.DeleteByIdAsync(deleteOrderId.ToString());
-           // await _repositorySellOrder.DeleteByIdAsync(secondOrderId.ToString());
-            await _orderRepository.DeleteByIdAsync(deleteOrderId.ToString());
+            try
+            {
+                var type = _orderRepository.FindById(deleteOrderId).OrderType;
+                if (type == Models.Enums.OrderType.BUY_ORDER)
+                    await _repositoryBuyOrder.DeleteByIdAsync(deleteOrderId.ToString());
+                if (type == Models.Enums.OrderType.SELL_ORDER)
+                    await _repositorySellOrder.DeleteByIdAsync(deleteOrderId.ToString());
+                // await _repositorySellOrder.DeleteByIdAsync(secondOrderId.ToString());
+                await _orderRepository.DeleteByIdAsync(deleteOrderId.ToString());
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+            }
          //   await _orderRepository.DeleteByIdAsync(secondOrderId.ToString());
             //var completedOrder = await(CreateCompletedOrder(deleteUserId,))
 
