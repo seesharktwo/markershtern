@@ -25,7 +25,7 @@ namespace UserBalanceMicroservice.Services
 
             producer.SetValueSerializer(new ProducerSerializer<T>());
             var producerBuild = producer.Build();
-            await producerBuild.ProduceAsync(topic, new Message<Null,T>
+            await producerBuild.ProduceAsync(topic, new Message<Null, T>
             {
                 Value = message
             });

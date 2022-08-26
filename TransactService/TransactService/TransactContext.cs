@@ -256,18 +256,43 @@ namespace UserBalanceMicroservice
 
 
             var update = Builders<BalanceValue>.Update.Set(x => x.LastIdTransact, lastIdTransact);
-            update.AddToSet("CountUpdate", countUpdate+1);
-            if (credit.HasValue)
+
+            if (credit.HasValue && virtualDebit.HasValue && summ.HasValue)
             {
-                update.AddToSet("Credit", credit.Value);
+                update = Builders<BalanceValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Summ, summ.Value)
+                    .Set(x => x.Credit, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
             }
-            if (virtualDebit.HasValue)
+            else if (credit.HasValue && virtualDebit.HasValue)
             {
-                update.AddToSet("VirtualDebit", virtualDebit.Value);
+                update = Builders<BalanceValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Credit, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
             }
-            if (summ.HasValue)
+            else if (virtualDebit.HasValue && summ.HasValue)
             {
-                update.AddToSet("Summ", summ.Value);
+                update = Builders<BalanceValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Summ, summ.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (credit.HasValue)
+            {
+                update = Builders<BalanceValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x=>x.Credit, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (virtualDebit.HasValue)
+            {
+                update = Builders<BalanceValue>.Update.Set(x => x.LastIdTransact, lastIdTransact).Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (summ.HasValue)
+            {
+                update = Builders<BalanceValue>.Update.Set(x => x.LastIdTransact, lastIdTransact).Set(x => x.Summ, summ.Value).Set(x => x.CountUpdate, countUpdate + 1);
             }
 
             var result = await _mongoDatabase.GetCollection<BalanceValue>(_balanceValueCollection)
@@ -325,18 +350,42 @@ namespace UserBalanceMicroservice
 
 
             var update = Builders<BriefcaseValue>.Update.Set(x => x.LastIdTransact, lastIdTransact);
-            update.AddToSet("CountUpdate", countUpdate + 1);
-            if (credit.HasValue)
+            if (credit.HasValue && virtualDebit.HasValue && quanity.HasValue)
             {
-                update.AddToSet("Credit", credit.Value);
+                update = Builders<BriefcaseValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Quanity, quanity.Value)
+                    .Set(x => x.Credit, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
             }
-            if (virtualDebit.HasValue)
+            else if (credit.HasValue && virtualDebit.HasValue)
             {
-                update.AddToSet("VirtualDebit", virtualDebit.Value);
+                update = Builders<BriefcaseValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Quanity, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
             }
-            if (quanity.HasValue)
+            else if (virtualDebit.HasValue && quanity.HasValue)
             {
-                update.AddToSet("Quanity", quanity.Value);
+                update = Builders<BriefcaseValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Quanity, quanity.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (credit.HasValue)
+            {
+                update = Builders<BriefcaseValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.Credit, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (virtualDebit.HasValue)
+            {
+                update = Builders<BriefcaseValue>.Update.Set(x => x.LastIdTransact, lastIdTransact).Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (quanity.HasValue)
+            {
+                update = Builders<BriefcaseValue>.Update.Set(x => x.LastIdTransact, lastIdTransact).Set(x => x.Quanity, quanity.Value).Set(x => x.CountUpdate, countUpdate + 1);
             }
 
             var result = await _mongoDatabase.GetCollection<BriefcaseValue>(_briefcaseValueCollection)
@@ -394,18 +443,42 @@ namespace UserBalanceMicroservice
 
 
             var update = Builders<OrderValue>.Update.Set(x => x.LastIdTransact, lastIdTransact);
-            update.AddToSet("CountUpdate", countUpdate + 1);
-            if (credit.HasValue)
+            if (credit.HasValue && virtualDebit.HasValue && quanity.HasValue)
             {
-                update.AddToSet("Credit", credit.Value);
+                update = Builders<OrderValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Quanity, quanity.Value)
+                    .Set(x => x.Credit, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
             }
-            if (virtualDebit.HasValue)
+            else if (credit.HasValue && virtualDebit.HasValue)
             {
-                update.AddToSet("VirtualDebit", virtualDebit.Value);
+                update = Builders<OrderValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Quanity, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
             }
-            if (quanity.HasValue)
+            else if (virtualDebit.HasValue && quanity.HasValue)
             {
-                update.AddToSet("Quanity", quanity.Value);
+                update = Builders<OrderValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.Quanity, quanity.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (credit.HasValue)
+            {
+                update = Builders<OrderValue>.Update.Set(x => x.LastIdTransact, lastIdTransact)
+                    .Set(x => x.Credit, credit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (virtualDebit.HasValue)
+            {
+                update = Builders<OrderValue>.Update.Set(x => x.LastIdTransact, lastIdTransact).Set(x => x.VirtualDebit, virtualDebit.Value)
+                    .Set(x => x.CountUpdate, countUpdate + 1);
+            }
+            else if (quanity.HasValue)
+            {
+                update = Builders<OrderValue>.Update.Set(x => x.LastIdTransact, lastIdTransact).Set(x => x.Quanity, quanity.Value).Set(x => x.CountUpdate, countUpdate + 1);
             }
 
             var result = await _mongoDatabase.GetCollection<OrderValue>(_orderValueCollection)
