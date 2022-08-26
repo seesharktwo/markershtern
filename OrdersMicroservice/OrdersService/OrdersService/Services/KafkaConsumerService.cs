@@ -39,8 +39,8 @@ namespace OrdersService.Services
         {
             Task[] UnionTasks = new Task[]
             {
-                Task.Run(() => OrderCandidateOccuredProcessSuccessConsumer(stoppingToken)),
-                Task.Run(() => OrderCandidateOccuredProcessFailedConsumer(stoppingToken)),
+                Task.Run(() => TransactionProductCommittedConsumer(stoppingToken)),
+                //Task.Run(() => OrderCandidateOccuredProcessFailedConsumer(stoppingToken)),
                 Task.Run(() => ProductSoldConsumer(stoppingToken)),
                 Task.Run(() => ProductRemovedConsumer(stoppingToken)),
 
@@ -49,13 +49,13 @@ namespace OrdersService.Services
             return Task.WhenAll(UnionTasks);
         }
 
-        private async Task OrderCandidateOccuredProcessSuccessConsumer(CancellationToken cancellationToken)
+        private async Task TransactionProductCommittedConsumer(CancellationToken cancellationToken)
         {
-            using (var consumerBuilder = new ConsumerBuilder<Ignore, OrderCandidateOccuredProcessSuccess>(_config)
-                .SetValueDeserializer(new ProtoDeserializer<OrderCandidateOccuredProcessSuccess>())
+            using (var consumerBuilder = new ConsumerBuilder<Ignore, TransactionProductCommitted>(_config)
+                .SetValueDeserializer(new ProtoDeserializer<TransactionProductCommitted>())
                 .Build())
             {
-                consumerBuilder.Subscribe("OrderCandidateProcessSuccess");
+                consumerBuilder.Subscribe("TransactionProductCommitted");
                 var cancelToken = new CancellationTokenSource();
 
                 while(!cancelToken.IsCancellationRequested)
@@ -73,33 +73,32 @@ namespace OrdersService.Services
                         _logger.LogError($"OrderService KafkaConsumerService Exception - {e.Message}");
                         continue;
                     }
-                    _logger.LogInformation($"OrderService KafkaConsumerService Orders closed: {message.OrderId}," +
-                        $" {message.OrderIdSeller}");
+                    _logger.LogInformation($"OrderService KafkaConsumerService Order closed: {message.IdOrder},");
                 }
             }
 
         }
 
-        private async Task OrderCandidateOccuredProcessFailedConsumer(CancellationToken cancellationToken)
-        {
-            using (var consumerBuilder = new ConsumerBuilder<Ignore, OrderCandidateOccuredProcessFailed>(_config)
-                .SetValueDeserializer(new ProtoDeserializer<OrderCandidateOccuredProcessFailed>())
-                .Build())
-            {
-                consumerBuilder.Subscribe("OrderCandidateOccuredProcessFailded");
-                var cancelToken = new CancellationTokenSource();
+        //private async Task OrderCandidateOccuredProcessFailedConsumer(CancellationToken cancellationToken)
+        //{
+        //    using (var consumerBuilder = new ConsumerBuilder<Ignore, OrderCandidateOccuredProcessFailed>(_config)
+        //        .SetValueDeserializer(new ProtoDeserializer<OrderCandidateOccuredProcessFailed>())
+        //        .Build())
+        //    {
+        //        consumerBuilder.Subscribe("OrderCandidateOccuredProcessFailded");
+        //        var cancelToken = new CancellationTokenSource();
 
-                while(!cancelToken.IsCancellationRequested)
-                {
-                    var consumer = consumerBuilder.Consume(cancelToken.Token);
+        //        while(!cancelToken.IsCancellationRequested)
+        //        {
+        //            var consumer = consumerBuilder.Consume(cancelToken.Token);
 
-                    var message = consumer.Message.Value;
+        //            var message = consumer.Message.Value;
 
-                    _logger.LogError($"OrderMicroservice KafkaConsumerService Exception - Transaction failed. " +
-                        $"{message.OrderId}, {message.OrderIdSeller}");
-                }
-            }
-        }
+        //            _logger.LogError($"OrderMicroservice KafkaConsumerService Exception - Transaction failed. " +
+        //                $"{message.OrderId}, {message.OrderIdSeller}");
+        //        }
+        //    }
+        //}
 
         private async Task ProductSoldConsumer(CancellationToken cancellationToken)
         {

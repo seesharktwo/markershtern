@@ -4,6 +4,7 @@ using OrdersService.Data.Settings;
 using OrdersService.KafkaServices;
 using OrdersService.Services;
 using OrdersService.Services.KafkaSettingsFolder;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services.AddTransient(typeof(KafkaProducerService));
 builder.Services.AddHostedService<KafkaConsumerService>();
 
 builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Host.UseSerilog((context, config) => config
+                        .WriteTo.Console());
 
 builder.Services.AddGrpc();
 

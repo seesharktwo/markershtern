@@ -111,7 +111,7 @@ namespace OrdersService.Services
                 var producer = new KafkaProducerService(_config);
                 SellOrderCreated message = new SellOrderCreated()
                 {
-                    Id = orderData.ProductId,
+                    Id = sellOrder.Id.ToString(),
                     Name = orderData.ProductName,
                     Quantity = orderData.Quantity,
                     Price = messagePrice,
@@ -158,7 +158,7 @@ namespace OrdersService.Services
                 var producer = new KafkaProducerService(_config);
                 BuyOrderCreated message = new BuyOrderCreated()
                 {
-                    Id = orderData.ProductId,
+                    Id = buyOrder.Id.ToString(),
                     Name = orderData.ProductName,
                     Quantity = orderData.Quantity,
                     Price = messagePrice,

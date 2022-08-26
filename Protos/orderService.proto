@@ -44,25 +44,15 @@ message CreateOrderResponse {
 		SuccessResponse success = 2;
 	}
 }
-
-message OrderCandidateOccuredProcessEvent {
-	string order_id = 1;
-	string order_id_seller = 2;
-	int32 quantity = 3;
-	string product_id = 4;
-	string user_id_buyer = 5;
-	string user_id_seller = 6;
-	moneyTypes.DecimalValue price = 7;
-}
-
-message OrderCandidateOccuredProcessFailed {
-	string order_id = 1;
-	string order_id_seller = 2;
-}
-
-message OrderCandidateOccuredProcessSuccess {
-    string order_id = 1;
-	string order_id_seller = 2;
+message OrderClosed
+{
+	moneyTypes.DecimalValue sum = 1;
+	int32 count_product = 2;
+	string id_product = 3;
+	string id_order_buyer = 4;
+	string id_user_buyer = 5;
+	string id_user_seller = 6;
+	string id_order_seller = 7;
 }
 
 message ProductSoldEvent {
@@ -74,6 +64,17 @@ message ProductSoldEvent {
 message ProductRemovedEvent {
 	string user_id = 1;
 	string product_id = 2;
+}
+
+message TransactionProductCommitted
+{
+	string id_global_transact = 1;
+	string id_product = 2;
+	string id_user = 3;
+	string id_order = 4;
+	int32 count = 5;
+	Operation MODE = 6;
+	TransactionType TYPE = 7;
 }
 
 message BuyOrderCreated {
@@ -109,4 +110,18 @@ message ProductPriceChanged {
 	string name = 2;
 	PriceType type = 3;
 	moneyTypes.DecimalValue price = 4;
+}
+
+enum Operation {
+	// Операция добавления 
+	ADDITION = 0;
+	// Операция вычитания  
+	SUBTRACT = 1;
+}
+
+enum TransactionType {
+	// Операция проводки транзакции 
+	ACTION  = 0;
+	// Операция отката транзакции 
+	ROLLBACK = 1;
 }

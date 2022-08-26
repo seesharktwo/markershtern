@@ -42,34 +42,36 @@ namespace OrdersService.Services
             _config = settings;
         } 
 
-        public async Task CloseOrders(OrderCandidateOccuredProcessSuccess message)
+        public async Task CloseOrders(TransactionProductCommitted message)
         {
-            var result = _mapper.Map<Models.Messages.OrderCandidateOccuredProcessSuccess>(message);
+            var deleteOrderId = message.IdOrder;
+            var deleteUserId = message.IdUser;
+            
+            //var firstOrderId = message.;
+            //var firstUserId = _orderRepository.FindById(firstOrderId).UserId;
 
-            var firstOrderId = result.OrderId;
-            var firstUserId = _orderRepository.FindById(firstOrderId).UserId;
+            //var secondOrderId = result.OrderIdSeller;
+            //var secondUserId = _orderRepository.FindById(secondOrderId).UserId;
 
-            var secondOrderId = result.OrderIdSeller;
-            var secondUserId = _orderRepository.FindById(secondOrderId).UserId;
-
-            var price = _orderRepository.FindById(firstOrderId).Price;
-            var quantity = _orderRepository.FindById(firstOrderId).Quantity;
-            var productName = _orderRepository.FindById(firstOrderId).ProductName;
+            var price = _orderRepository.FindById(deleteOrderId).Price;
+            var quantity = _orderRepository.FindById(deleteOrderId).Quantity;
+            var productName = _orderRepository.FindById(deleteOrderId).ProductName;
 
             // Убрать дублирование
-            await _repositoryBuyOrder.DeleteByIdAsync(firstOrderId.ToString());
-            await _repositorySellOrder.DeleteByIdAsync(secondOrderId.ToString());
-            await _orderRepository.DeleteByIdAsync(firstOrderId.ToString());
-            await _orderRepository.DeleteByIdAsync(secondOrderId.ToString());
+            await _repositoryBuyOrder.DeleteByIdAsync(deleteOrderId.ToString());
+           // await _repositorySellOrder.DeleteByIdAsync(secondOrderId.ToString());
+            await _orderRepository.DeleteByIdAsync(deleteOrderId.ToString());
+         //   await _orderRepository.DeleteByIdAsync(secondOrderId.ToString());
+            //var completedOrder = await(CreateCompletedOrder(deleteUserId,))
 
-            var firstCompletedOrder = await CreateCompletedOrder(firstUserId, firstOrderId, secondUserId, 
-                secondOrderId, price, quantity, productName);
-            var secondCompletedOrder = await CreateCompletedOrder(secondUserId, secondOrderId, firstUserId, 
-                firstOrderId, price, quantity, productName);
+            //var firstCompletedOrder = await CreateCompletedOrder(firstUserId, firstOrderId, secondUserId, 
+            //    secondOrderId, price, quantity, productName);
+            //var secondCompletedOrder = await CreateCompletedOrder(secondUserId, secondOrderId, firstUserId, 
+            //    в, price, quantity, productName);
 
-            await _repositoryCompleted.InsertManyAsync(new List<CompletedOrder> { 
-                firstCompletedOrder, secondCompletedOrder 
-            });
+            //await _repositoryCompleted.InsertManyAsync(new List<CompletedOrder> { 
+            //    firstCompletedOrder, secondCompletedOrder 
+            //});
         }
 
         private async Task<CompletedOrder> CreateCompletedOrder(string firstUserId, 
@@ -212,7 +214,7 @@ namespace OrdersService.Services
             // Избавиться от If 
             if(activeOrderType == Models.Enums.OrderType.SELL_ORDER)
             {
-                sellOrder = await CreateOrder(data, orderId);
+                sellOrder = CreateOrder(data, orderId);
                 buyOrder = _orderRepository.FilterBy(filter =>
                                                      filter.OrderType == Models.Enums.OrderType.BUY_ORDER &&
                                                      filter.ProductId == activeProductId &&
@@ -221,7 +223,7 @@ namespace OrdersService.Services
             }
             else
             {
-                buyOrder = await CreateOrder(data, orderId);
+                buyOrder = CreateOrder(data, orderId);
                 sellOrder = _orderRepository.FilterBy(filter =>
                                                       filter.OrderType == Models.Enums.OrderType.SELL_ORDER &&
                                                       filter.ProductId == activeProductId &&
@@ -248,24 +250,24 @@ namespace OrdersService.Services
 
             // Продюсер отправляет в топик
             var producer = new KafkaProducerService(_config);
-            var message = new OrderCandidateOccuredProcessEvent()
+            var message = new OrderClosed()
             {
-                OrderId = buyOrder.Id.ToString(),
-                OrderIdSeller = sellOrder.Id.ToString(),
-                Quantity = buyOrder.Quantity,
-                ProductId = buyOrder.ProductId,
-                UserIdBuyer = buyOrder.UserId,
-                UserIdSeller = sellOrder.UserId,
-                Price = messagePriceBuy,
+                IdOrderBuyer = buyOrder.Id.ToString(),
+                IdOrderSeller = sellOrder.Id.ToString(),
+                CountProduct = buyOrder.Quantity,
+                IdProduct = buyOrder.ProductId,
+                IdUserBuyer = buyOrder.UserId,
+                IdUserSeller = sellOrder.UserId,
+                Sum = messagePriceBuy,
             };
 
-            await producer.ProduceMessageAsync(message, "OrderCandidateOccuredProcessEvent");
+            await producer.ProduceMessageAsync(message, "OrderClosed");
         }
 
-        private async Task<Order> CreateOrder(Models.Messages.DataCreateOrder data, ObjectId id)
+        private Order CreateOrder(Models.Messages.DataCreateOrder data, ObjectId id)
         {
-            // Избавиться от этого
-            await Task.Delay(0);
+            // Избавиться от этого | "я избавился" by ted7007
+            //await Task.Delay(0); 
 
             Order order = new Order();
 

@@ -23,9 +23,6 @@ namespace OrdersService.Models.Map
 
             CreateMap<OrderType, OrderProtos.OrderType>();
             CreateMap<OrderProtos.OrderType, OrderType>();
-
-            CreateMap<OrderCandidateOccuredProcessSuccess, OrderProtos.OrderCandidateOccuredProcessSuccess>();
-            CreateMap<OrderProtos.OrderCandidateOccuredProcessSuccess, OrderCandidateOccuredProcessSuccess>();
         }
     }
 }
