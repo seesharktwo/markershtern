@@ -40,12 +40,14 @@ namespace UserBagMicroservice.Services
                     Name = product.Name,
                     Quantity = userProduct.Quantity
                 });
+
             }
 
             productList.Value = resultProductsList;
 
             response.List = _mapper.Map<ProductsList>(productList);
 
+            
 
             return response;
         }

@@ -20,8 +20,6 @@ namespace AuthMicroservice
             _usersCollection = mongoDatabase.GetCollection<User>(
                 MongoDBSettings.Value.CollectionName);
 
-            //InsertUser("Andrey", "password");
-            //InsertUser("Alexander", "passwordTest");
             //InsertUser("Roman", "passw0rd");
             //InsertUser("Sergey", "p@ssw0rd");
         }

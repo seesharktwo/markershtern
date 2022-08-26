@@ -47,8 +47,11 @@ namespace Facade.GrpcServices
             {
                 Briefcase.GetUserProductsResponse response =
                         await _briefcaseService.GetUserProductsAsync(mappedRequest);
-                var mappedResponse = _mapper.Map<Briefcase.GetUserProductsResponse,
-                                                 BriefcaseForClient.GetUserProductsResponse>(response);
+                //var mappedResponse = _mapper.Map<Briefcase.GetUserProductsResponse,
+                //                                 BriefcaseForClient.GetUserProductsResponse>(response);
+
+                var mappedResponse = new BriefcaseForClient.GetUserProductsResponse() { Error = _mapper.Map<Briefcase.Error, BriefcaseForClient.Error>(response.Error),  List = _mapper.Map<Briefcase.ProductsList, BriefcaseForClient.ProductsList>(response.List)};
+
                 return mappedResponse;
             }
             catch (ArgumentNullException ex)

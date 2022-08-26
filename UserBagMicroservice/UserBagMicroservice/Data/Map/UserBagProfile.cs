@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MoneyTypes;
+using MongoDB.Bson;
 
 namespace UserBagMicroservice.Data.Map
 {
@@ -7,12 +8,14 @@ namespace UserBagMicroservice.Data.Map
     {
         public UserBagProfile()
         {
-
-            CreateMap<Briefcase.Product, Protos.Product>();
-            CreateMap<Protos.Product, Briefcase.Product>();
-
             CreateMap<Protos.ProductsList, Briefcase.ProductsList>()
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Value));
+
+            CreateMap<Briefcase.Product, Protos.Product>()
+               .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId));
+
+            CreateMap<Protos.Product, Briefcase.Product>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id));
 
             CreateMap<DecimalValue, decimal>().ConvertUsing(val => val);
 
