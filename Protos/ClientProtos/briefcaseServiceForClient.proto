@@ -20,126 +20,135 @@ service UserBriefcaseServiceForClient  {
     rpc RemoveProduct (RemoveProductRequest) returns (RemoveProductResponse);
     rpc ValidateOrder (ValidateOrderRequest) returns (ValidateOrderResponse);
 }
-//Запрос на получение товаров пользователя
+
 message GetUserProductsRequest {
-    //Id пользователя, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
     string user_id = 1;
 } 
 
-//Ответ на получение товаров пользователя
 message GetUserProductsResponse {
-    //Поле, выводящее список товаров или сообщение об ошибке.
-    oneof response {
-        //Список товаров
-    	ProductsList list = 1;
-        /*Сообщение об ошибке 
-        Сообщение об ошибке выводится, если:
-        1. Пользователь с таким Id не найден
-        2. Пользователь с таким Id не имеет товаров*/
-    	Error error = 2;
+    oneof result {
+       ProductsList list = 1;
+       Error error = 2;
     }
 }
-//Запрос на добавление товара
+
 message AddProductRequest {
-    //Id пользователя, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
-    string user_id = 1;
-    //Информация о добавленном товаре
-    Product product = 2;
+	string user_id = 1;
+	string name = 2;
+	int32 quantity = 3;
 }  
-//Ответ на добавление товара
+
 message AddProductResponse {
- //Поле, выводящее ошибку или пустое поле при добавлении товара.
    oneof result {
-      /*Сообщение об ошибке 
-      Сообщение об ошибке выводится, если:
-      1. Пользователь с таким Id не найден
-      2. Пользователь с таким Id не имеет товаров*/
-      Error error = 1;
-      //В случае успешного добавления товара - пустое поле
-      SuccessResponse success = 2;
+	    Error error = 1;
+	    SuccessResponse success = 2;
    }
 }
-//Запрос на удаление товара
+
 message RemoveProductRequest {
-    //Id пользователя, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
     string user_id = 1;
-    //Id товара, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
     string product_id = 2;
-    //Id создателя товара, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
-    string author_id = 3;
 }
-//Ответ на удаление товара
+
 message RemoveProductResponse {
-   //Поле, выводящее ошибку или пустое поле в случае успешного удаления товара.
    oneof result {
-      /*Сообщение об ошибке 
-      Сообщение об ошибке выводится, если:
-      1. Пользователь с таким Id не найден
-      2. Пользователь с таким Id не имеет товаров*/
       Error error = 1;
-      //В случае успешного удаления товара - пустое поле
       SuccessResponse success = 2;
    }
 }
-//Запрос на валидацию входных данных
+
 message ValidateOrderRequest {
-    //Id пользователя, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
     string user_id = 1;
-    //Id товара, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
     string product_id = 2;
-    //Количество товара
     int32 quantity = 3;
 }
-//Ответ на валидацию входных данных
+
 message ValidateOrderResponse {
-    //Поле, выводящее ошибку или пустое поле при валидации входных данных.
     oneof result {
-      /*Сообщение об ошибке 
-      Сообщение об ошибке выводится, если:
-      1. Пользователь с таким Id не найден
-      2. Пользователь с таким Id не имеет товаров*/
-    	Error error = 1;
-        //В случае успешной валидации данных - пустое поле
-    	SuccessResponse success = 2;
+       Error error = 1;
+       SuccessResponse success = 2;
+        }
     }
-}
-//Информация о товаре
+
 message Product {
-    //Id товара, который расшифровывается по схеме 8-4-4-4-12: 
-    //"3422b448-2460-4fd2-9183-8000de6f8343".
-    string productId = 1; 
-    //Название товара
-    string name = 2;
-    //Маркер авторства - "Мой"/"Чужой"
-    string authorMarker = 3;
-    //Цена товара
-    moneyTypes.DecimalValue price = 4; 
-    //Описание товара
-    string description = 5; 
-    //Количество товара
-    int32 count = 6; 
-}
-//Сообщение об ошибке
-enum Error {
-    //Пользователь с таким Id не был найден. 
-	USER_NOT_FOUND = 0;
-    // Пользователь с таким Id не имеет товар.
-	USER_NOT_HAVE_PRODUCT = 1;
-    // Пользователь не имеет необходимое количества товара. 
-	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
-}
-//Пустое поле при успешной проверке данных
-message SuccessResponse {
-   
-}
-//Список товаров
+	string product_id = 1;
+	string name = 2;
+	string author_id = 3;
+	int32 quantity = 4;
+} 
+
 message ProductsList {
 	repeated Product products = 1;
+}
+
+enum Error {
+	USER_NOT_FOUND = 0;
+	PRODUCT_NOT_FOUND = 1;
+	USER_NOT_HAVE_PRODUCT = 2;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 3;
+	USER_IS_NOT_OWNER = 4; 
+}
+
+message SuccessResponse {
+}
+
+message TransactionProductCommitted
+{
+	string id_global_transact = 1;
+	string id_product = 2;
+	string id_user = 3;
+	string id_order = 4;
+	int32 count = 5;
+	Operation MODE = 6;
+	TransactionType TYPE = 7;
+}
+
+message TransactionCanceled
+{
+	string id_global_transact = 1;
+	SourceEventTransaction SOURCE = 2;
+}
+
+message TransactionCompleted
+{
+	string id_global_transact = 1;
+	SourceEventTransaction SOURCE = 2;
+	string id_object = 3;
+	moneyTypes.DecimalValue quanity = 4;
+}
+
+
+enum TransactionType {
+	// Операция проводки транзакции 
+	ACTION  = 0;
+	// Операция отката транзакции 
+	ROLLBACK = 1;
+}
+
+enum Operation {
+	// Операция добавления 
+	ADDITION = 0;
+	// Операция вычитания  
+	SUBTRACT = 1;
+}
+
+enum SourceEventTransaction {
+	// Операция проводки транзакции 
+	PRODUCT_ORDER_ADDITION_ACTION = 0;
+	PRODUCT_ORDER_SUBTRACT_ACTION = 1;
+	
+	BALANCE_ADDITION_IMMEDIATE = 2;
+	BALANCE_SUBTRACT_IMMEDIATE = 3;
+	
+	PRODUCT_ORDER_ADDITION_ROLLBACK = 4;
+	PRODUCT_ORDER_SUBTRACT_ROLLBACK = 5;
+	
+	BALANCE_ADDITION_ROLLBACK = 6;
+	BALANCE_SUBTRACT_ROLLBACK = 7;
+	
+	PRODUCT_BRIEFCASE_ADDITION_ROLLBACK = 8;
+	PRODUCT_BRIEFCASE_SUBTRACT_ROLLBACK = 9;
+	
+	PRODUCT_BRIEFCASE_ADDITION_ACTION = 10;
+	PRODUCT_BRIEFCASE_SUBTRACT_ACTION = 11;
 }

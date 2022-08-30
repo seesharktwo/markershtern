@@ -24,12 +24,12 @@ namespace Facade.GrpcServices
 
         public override async Task<OrderForClient.CreateOrderResponse> CreateOrder(OrderForClient.CreateOrderRequest request, ServerCallContext context)
         {
-            var mappedRequest = _mapper.Map<OrderForClient.CreateOrderRequest, Order.CreateOrderRequest>(request);
+            var mappedRequest = _mapper.Map<OrderForClient.CreateOrderRequest, OrderProtos.CreateOrderRequest>(request);
             try
             {
-                Order.CreateOrderResponse response =
+                OrderProtos.CreateOrderResponse response =
                         await _orderService.CreateOrderAsync(mappedRequest);
-                var mappedResponse = _mapper.Map<Order.CreateOrderResponse, OrderForClient.CreateOrderResponse>(response);
+                var mappedResponse = _mapper.Map<OrderProtos.CreateOrderResponse, OrderForClient.CreateOrderResponse>(response);
                 return mappedResponse;
             }
             catch(ArgumentNullException ex)

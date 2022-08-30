@@ -13,12 +13,14 @@ namespace Facade.GrpcServices
         private IMapper _mapper;
         private UserBalanceService _balanceService;
         private ILogger<GrpcBalanceService> _logger;
+        private ProducerService _producerService;
 
-        public GrpcBalanceService(IMapper mapper, UserBalanceService userBalanceService, ILogger<GrpcBalanceService> logger)
+        public GrpcBalanceService(ProducerService producerService, IMapper mapper, UserBalanceService userBalanceService, ILogger<GrpcBalanceService> logger)
         {
             _mapper = mapper;
             _balanceService = userBalanceService;
             _logger = logger;
+            _producerService = producerService;
         }
 
         public async override Task<GetBalanceResponse> GetBalance(GetBalanceRequest request, ServerCallContext context)
@@ -37,6 +39,25 @@ namespace Facade.GrpcServices
                 _logger.LogError(ex.Message);
                 throw new RpcException(Status.DefaultCancelled, "Exception in creating order");
             }
+        }
+
+        public async override Task<PutOnBalancesponse> PutOnBalance(PutOnBalanceRequest request, ServerCallContext context)
+        {
+            try
+            {
+                Transact.BalanceReplenished message = new Transact.BalanceReplenished()
+                {
+                    IdUserBuyer = request.UserId,
+                    Sum = request.Sum
+                };
+                await _producerService.ProduceMessageAsync<Transact.BalanceReplenished>(message, "BalanceReplenished");
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                throw new RpcException(Status.DefaultCancelled, "Exception in creating order");
+            }
+            return new PutOnBalancesponse();
         }
     }
 }

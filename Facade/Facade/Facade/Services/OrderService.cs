@@ -1,7 +1,7 @@
 ﻿using Confluent.Kafka;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
-using Order;
+using OrderProtos;
 using System;
 using Microsoft.Extensions.Configuration;
 using Grpc.Net.Client;
@@ -12,10 +12,10 @@ namespace Facade.Services
 {
     public class OrderService
     {
-        private Order.OrderProcessing.OrderProcessingClient _client;
+        private OrderProtos.OrderProcessing.OrderProcessingClient _client;
         private ILogger<OrderService> _logger;
 
-        public OrderService(Order.OrderProcessing.OrderProcessingClient client, ILogger<OrderService> logger)
+        public OrderService(OrderProtos.OrderProcessing.OrderProcessingClient client, ILogger<OrderService> logger)
         {
             _client = client;
             _logger = logger;

@@ -1,45 +1,127 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Order";
+option csharp_namespace = "OrderProtos";
 
 import "decimalValue.proto";
 
 package order;
 
 service OrderProcessing {
-   rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
+	rpc CreateOrder (CreateOrderRequest) returns (CreateOrderResponse);
 }
 
-// Сообщение приходит от Facade. На основе полей формируется заявка.
-message CreateOrderRequest {
-  string user_id = 1;
-  OrderType type = 2;
-  string product_id = 3;
-  moneyTypes.DecimalValue price = 4;
-  int32 quantity = 5;   
-}
-
-message CreateOrderResponse {
-   oneof result {
-      Error error = 1;
-      SuccessResponse success = 2;
-   }
+enum Error {
+	USER_NOT_FOUND = 0;
+	USER_NOT_HAVE_PRODUCT = 1;
+	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
 }
 
 message SuccessResponse {
 
 }
 
-enum Error {
-   // Пользователь с таким Id не был найден. 
-	USER_NOT_FOUND = 0;
-	// Пользователь не имеет продукт с таким Id.  
-	USER_NOT_HAVE_PRODUCT = 1;
-	// Пользователь не имеет необходимое количества продукта. 
-	USER_NOT_HAVE_QUANTITY_PRODUCT = 2;
+enum OrderType {
+	SELL_ORDER = 0;
+	BUY_ORDER = 1;
 }
 
-enum OrderType {
-   SELL_ORDER = 0;
-   BUY_ORDER = 1;
+message DataCreateOrder {
+	string user_id = 1;
+	OrderType type = 2;
+	string product_id = 3;
+	string product_name = 4;
+	int32 quantity = 5;
+	moneyTypes.DecimalValue price = 6;
+}
+
+message CreateOrderRequest {
+	DataCreateOrder data = 1;
+}
+
+message CreateOrderResponse {
+	oneof result {
+		Error error = 1;
+		SuccessResponse success = 2;
+	}
+}
+message OrderClosed
+{
+	moneyTypes.DecimalValue sum = 1;
+	int32 count_product = 2;
+	string id_product = 3;
+	string id_order_buyer = 4;
+	string id_user_buyer = 5;
+	string id_user_seller = 6;
+	string id_order_seller = 7;
+}
+
+message ProductSoldEvent {
+	string user_id = 1;
+	string product_id = 2;
+	int32 quantity = 3;
+}
+
+message ProductRemovedEvent {
+	string user_id = 1;
+	string product_id = 2;
+}
+
+message TransactionProductCommitted
+{
+	string id_global_transact = 1;
+	string id_product = 2;
+	string id_user = 3;
+	string id_order = 4;
+	int32 count = 5;
+	Operation MODE = 6;
+	TransactionType TYPE = 7;
+}
+
+message BuyOrderCreated {
+	// ID Продукта
+	string id = 1;
+	// Имя продукта
+	string name = 2;
+	// Количество продукта
+	int32 quantity = 3;
+	// Цена в заявке
+	moneyTypes.DecimalValue price = 4;
+	// Id пользователя заявки
+	string user_id = 5;
+}
+
+message SellOrderCreated {
+	string id = 1;
+	string name = 2;
+	int32 quantity = 3;
+	moneyTypes.DecimalValue price = 4;
+	string user_id = 5;
+}
+
+enum PriceType {
+	// Лучшее предложение стоимости покупки
+	BID = 0;
+	// Лучшее предложение стоимости продажи
+	ASK = 1;
+}
+
+message ProductPriceChanged {
+	string product_id = 1;
+	string name = 2;
+	PriceType type = 3;
+	moneyTypes.DecimalValue price = 4;
+}
+
+enum Operation {
+	// Операция добавления 
+	ADDITION = 0;
+	// Операция вычитания  
+	SUBTRACT = 1;
+}
+
+enum TransactionType {
+	// Операция проводки транзакции 
+	ACTION  = 0;
+	// Операция отката транзакции 
+	ROLLBACK = 1;
 }

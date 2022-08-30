@@ -11,7 +11,6 @@ namespace UserBagMicroservice.Services
     {
         private readonly IMongoRepository<Models.UserBag> _userBagRepository;
         private readonly IMongoRepository<Models.Product> _productRepository;
-        private readonly ILogger<UserBagServiceGrpc> _logger;
         private readonly IMapper _mapper;
 
         public UserBagServiceGrpc(IMongoRepository<Models.UserBag> userBagRepository,
@@ -21,7 +20,6 @@ namespace UserBagMicroservice.Services
         {
             _userBagRepository = userBagRepository;
             _productRepository = productRepository;
-            _logger = logger;
             _mapper = mapper;
         }
 
@@ -30,30 +28,26 @@ namespace UserBagMicroservice.Services
             var response = new GetUserProductsResponse();
             var resultProductsList = new List<Protos.Product>();
             var productList = new Protos.ProductsList();
-            try
+            var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId) });
+
+            foreach (var userProduct in userBag.Products)
             {
-                var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId)});
-
-                foreach (var userBagProduct in userBag.Products)
+                var product = await _productRepository.FindByIdAsync(userProduct.Id.ToString());
+                resultProductsList.Add(new Protos.Product
                 {
-                    var product = await _productRepository.FindByIdAsync(userBagProduct.Id.ToString());
-                    resultProductsList.Add(new Protos.Product
-                    {
-                        Id = product.Id,
-                        AuthorId = product.AuthorId,
-                        Name = product.Name,
-                        Quantity = userBagProduct.Quantity
-                    });
-                }
+                    Id = product.Id,
+                    AuthorId = product.AuthorId,
+                    Name = product.Name,
+                    Quantity = userProduct.Quantity
+                });
 
-                productList.Value = resultProductsList;
+            }
 
-                response.List = _mapper.Map<ProductsList>(productList);
-            }
-            catch (Exception e)
-            {    
-                _logger.LogError(e.Message);
-            }
+            productList.Value = resultProductsList;
+
+            response.List = _mapper.Map<ProductsList>(productList);
+
+            
 
             return response;
         }
@@ -61,26 +55,19 @@ namespace UserBagMicroservice.Services
         public override async Task<AddProductResponse> AddProduct(AddProductRequest request, ServerCallContext context)
         {
             var response = new AddProductResponse();
-            try
-            {
-                var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId) });
-                var product = await _productRepository.FindOrCreateOneAsync(p => p.Name == request.Name && p.AuthorId == request.UserId, new Models.Product { Name = request.Name, AuthorId = request.UserId });
-                var userProduct = userBag.Products.FirstOrDefault(userProduct => userProduct.Id == product.Id);
+            var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId) });
+            var product = await _productRepository.FindOrCreateOneAsync(p => p.Name == request.Name && p.AuthorId == request.UserId, new Models.Product { Name = request.Name, AuthorId = request.UserId });
+            var userProduct = userBag.Products.FirstOrDefault(userProduct => userProduct.Id == product.Id);
 
-                if (userProduct is null)
-                {
-                    userBag.Products.Add(new UserBagProduct { Id = product.Id, Quantity = 0, TransactionId = "" });
-                    userProduct = userBag.Products.First(userProduct => userProduct.Id == product.Id);
-                }
-                
-                userProduct.Quantity += request.Quantity;      
-                await _userBagRepository.ReplaceOneAsync(userBag);
-                response.Success = new SuccessResponse();      
-            }
-            catch (Exception e)
+            if (userProduct is null)
             {
-                _logger.LogError(e.Message);
+                userBag.Products.Add(new UserBagProduct { Id = product.Id, Quantity = 0, TransactionId = "" });
+                userProduct = userBag.Products.First(userProduct => userProduct.Id == product.Id);
             }
+
+            userProduct.Quantity += request.Quantity;
+            await _userBagRepository.ReplaceOneAsync(userBag);
+            response.Success = new SuccessResponse();
 
             return response;
         }
@@ -89,14 +76,16 @@ namespace UserBagMicroservice.Services
         {
             var response = new RemoveProductResponse();
             try
-            { 
-                CheckService.CheckProductOwner(request.UserId, request.AuthorId);
+            {
+                var product = await _productRepository.FindByIdAsync(request.ProductId);
+                CheckService.CheckProductOnNull(product);
+                CheckService.CheckProductOwner(request.UserId, product.AuthorId);
                 var userBag = await _userBagRepository.FindOrCreateByIdAsync(new UserBag { Id = new ObjectId(request.UserId)});
-                var product = userBag.Products.FirstOrDefault(product => product.Id.ToString() == request.ProductId);
+                var userProduct = userBag.Products.FirstOrDefault(product => product.Id.ToString() == request.ProductId);
 
-                if (product is not null)
+                if (userProduct is not null)
                 {
-                    userBag.Products.Remove(product);
+                    userBag.Products.Remove(userProduct);
                     await _userBagRepository.ReplaceOneAsync(userBag);
                 }
                           
@@ -104,14 +93,9 @@ namespace UserBagMicroservice.Services
             }
             catch (ArgumentException e)
             {
-                response.Error = CheckService.GerError(e.Message);
-                _logger.LogError(e.Message);
+                response.Error = CheckService.GetError(e.Message);
             }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
-            }
-
+            
             return response;
         }
 
@@ -122,19 +106,14 @@ namespace UserBagMicroservice.Services
             {
                 var userBag = await _userBagRepository.FindByIdAsync(request.UserId);
                 CheckService.CheckUserBagOnNull(userBag);
-                var product = userBag.Products.FirstOrDefault(product => product.Id.ToString() == request.ProductId);
-                CheckService.CheckProductOnNull(product);
-                CheckService.CheckProductOnQuantity(product.Quantity, request.Quantity);
+                var userProduct = userBag.Products.FirstOrDefault(product => product.Id.ToString() == request.ProductId);
+                CheckService.CheckUserProductOnNull(userProduct);
+                CheckService.CheckProductOnQuantity(userProduct.Quantity, request.Quantity);
                 response.Success = new SuccessResponse();
             }
             catch (ArgumentException e)
             {
-                response.Error = CheckService.GerError(e.Message);
-                _logger.LogError(e.Message);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError(e.Message);
+                response.Error = CheckService.GetError(e.Message);
             }
 
             return response;

@@ -13,8 +13,18 @@ namespace UserBagMicroservice.Services
             }
         }
 
-        public static void CheckProductOnNull(UserBagProduct ?product)
+        public static void CheckProductOnNull(Models.Product? product)
         {
+            if (product is null)
+            {
+                throw new ArgumentException(Error.ProductNotFound.ToString());
+            }
+        }
+
+        public static void CheckUserProductOnNull(UserBagProduct ?product)
+        {
+            
+
             if (product is null)
             {
                 throw new ArgumentException(Error.UserNotHaveProduct.ToString());
@@ -45,19 +55,13 @@ namespace UserBagMicroservice.Services
             }
         }
 
-        public static Error GerError(string errorMessage)
+        public static Error GetError(string errorMessage)
         {
-            if (errorMessage == Error.UserNotHaveProduct.ToString())
+
+            foreach(Error error in Enum.GetValues(typeof(Error)))
             {
-                return Error.UserNotHaveProduct;
-            }
-            else if (errorMessage == Error.UserNotHaveQuantityProduct.ToString())
-            {
-                return Error.UserNotHaveQuantityProduct;
-            }
-            else if (errorMessage == Error.UserIsNotOwner.ToString())
-            {
-                return Error.UserIsNotOwner;
+                if (errorMessage.Equals(error.ToString()))
+                    return error;
             }
 
             return Error.UserNotFound;

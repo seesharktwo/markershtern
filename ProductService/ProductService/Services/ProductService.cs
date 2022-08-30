@@ -33,12 +33,13 @@ namespace ProductService.Services
                 };
                 await _context.CreateAsync(product);
             }
-            else if (product.Ask < price)
+            else if (product.Ask > price||product.Ask==0)
             {
                 product.Ask = sellOrderCreated.Price;
                 await _context.UpdateAsync(product.Id, product);
             }
         }
+
         /// <summary>
         /// method that processing buyOrderCreated event.
         /// result is create/update document of product with bid.

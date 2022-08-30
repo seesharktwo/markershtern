@@ -22,6 +22,20 @@ namespace Facade.MapperProfiles
             CreateMap<BriefcaseForClient.RemoveProductResponse, Briefcase.RemoveProductResponse>();
             CreateMap<Briefcase.RemoveProductResponse, BriefcaseForClient.RemoveProductResponse>();
 
+            CreateMap<Briefcase.GetUserProductsRequest, BriefcaseForClient.GetUserProductsRequest>();
+            CreateMap<BriefcaseForClient.GetUserProductsRequest, Briefcase.GetUserProductsRequest>();
+            CreateMap<BriefcaseForClient.GetUserProductsResponse, Briefcase.GetUserProductsResponse>();
+            CreateMap<Briefcase.GetUserProductsResponse, BriefcaseForClient.GetUserProductsResponse>();
+
+            CreateMap<Briefcase.ProductsList, BriefcaseForClient.ProductsList>();
+            CreateMap<BriefcaseForClient.ProductsList, Briefcase.ProductsList>();
+
+            CreateMap<Briefcase.Error, BriefcaseForClient.Error>();
+            CreateMap<BriefcaseForClient.Error, Briefcase.Error>();
+
+            CreateMap<Briefcase.SuccessResponse, BriefcaseForClient.SuccessResponse>();
+            CreateMap<BriefcaseForClient.SuccessResponse, Briefcase.SuccessResponse>();
+
             CreateMap<Briefcase.Product, BriefcaseForClient.Product>();
             CreateMap<BriefcaseForClient.Product, Briefcase.Product>();
         }
