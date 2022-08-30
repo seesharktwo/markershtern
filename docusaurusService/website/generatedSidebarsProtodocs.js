@@ -1,0 +1,3 @@
+
+module.exports = {"protodocs":[{"type":"category","label":"Files","items":[{"type":"category","label":"/ClientProtos","items":[{"type":"doc","id":"decimalValue.proto"},{"type":"doc","id":"ClientProtos/authServiceForClient.proto"},{"type":"doc","id":"ClientProtos/briefcaseServiceForClient.proto"},{"type":"doc","id":"ClientProtos/orderServiceForClient.proto"},{"type":"doc","id":"ClientProtos/productServiceForClient.proto"},{"type":"doc","id":"ClientProtos/balanceServiceForClient.proto"}]}]}]};
+  

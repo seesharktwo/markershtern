@@ -1,0 +1,26 @@
+---
+title: decimalValue.proto
+hide_title: true
+---
+
+import { ProtoMessage, ProtoServiceMethod, ProtoEnum } from '@theme/ProtoFile';
+
+## `decimalValue.proto`
+_**path** decimalValue.proto_
+
+_**package** moneyTypes_
+
+
+
+---
+
+## Messages
+
+
+### `DecimalValue`
+<ProtoMessage key={0} message={{"name":"DecimalValue","longName":"DecimalValue","fullName":"moneyTypes.DecimalValue","description":"","hasExtensions":false,"hasFields":true,"hasOneofs":false,"extensions":[],"fields":[{"name":"units","description":"The whole units of the amount.","label":"","type":"int64","longType":"int64","fullType":"int64","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""},{"name":"nanos","description":"Number of nano (10^-9) units of the amount.\nThe value must be between -999,999,999 and +999,999,999 inclusive.\nIf `units` is positive, `nanos` must be positive or zero.\nIf `units` is zero, `nanos` can be positive, zero, or negative.\nIf `units` is negative, `nanos` must be negative or zero.\nFor example $-1.75 is represented as `units`=-1 and `nanos`=-750,000,000.","label":"","type":"sfixed32","longType":"sfixed32","fullType":"sfixed32","ismap":false,"isoneof":false,"oneofdecl":"","defaultValue":""}]}} />
+
+---
+
+
+  
